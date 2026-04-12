@@ -1,0 +1,12 @@
+{
+  "name": "careers-ops",
+  "version": "1.0.0",
+  "description": "Career Ops - AI-powered job search web interface",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0"
+  }
+}
