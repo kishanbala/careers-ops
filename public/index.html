@@ -228,7 +228,7 @@
             <span class="mode-chip active" data-mode="evaluate">Full Pipeline</span>
             <span class="mode-chip" data-mode="evaluate">Eval Only</span>
           </div>
-          <textarea id="jd-input" rows="6" placeholder="Paste a job description here...&#10;&#10;Include: role title, company, responsibilities, requirements, compensation if listed."></textarea>
+          <textarea id="jd-input" rows="6" placeholder="Paste the full job description text here...&#10;&#10;Tip: Always paste the full text, not a URL — LinkedIn and job boards block direct fetching. Include role title, company, location, responsibilities, requirements, and salary if listed."></textarea>
           <div class="input-actions">
             <button class="btn primary" id="run-btn" onclick="runEvaluation()">▶ Run Evaluation</button>
             <button class="btn sm" onclick="document.getElementById('jd-input').value=''">Clear</button>
@@ -344,15 +344,21 @@
             </div>
           </div>
           <div class="settings-card" style="min-height:400px">
-            <div id="pdf-placeholder" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted)">
-              <div style="font-size:36px;margin-bottom:12px;opacity:0.3">📄</div>
+            <div id="pdf-placeholder" style="height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted)">
+              <div style="font-size:36px;margin-bottom:12px;opacity:0.3">&#128196;</div>
               <div style="font-size:13px">Tailored CV will appear here</div>
-              <div style="font-size:11px;margin-top:4px">Keyword-injected for ATS</div>
+              <div style="font-size:11px;margin-top:4px">Styled to match your original · ATS-optimized</div>
             </div>
             <div id="pdf-result" style="display:none">
-              <div class="settings-title">Tailored CV Preview</div>
-              <div id="pdf-content"></div>
-              <button class="btn sm primary" style="margin-top:12px" onclick="downloadCV()">⬇ Download as Text</button>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div class="settings-title" style="margin-bottom:0">Tailored CV Preview</div>
+                <div style="display:flex;gap:8px">
+                  <button class="btn sm primary" onclick="printCV()">&#128438; Download PDF</button>
+                  <button class="btn sm" onclick="openCVPreview()">&#9974; Full Preview</button>
+                </div>
+              </div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Tip: Use Download PDF then File > Print > Save as PDF in your browser for best quality</div>
+              <div id="pdf-content" style="background:#fff;border-radius:var(--r);padding:12px;max-height:500px;overflow-y:auto"></div>
             </div>
           </div>
         </div>
@@ -405,6 +411,9 @@
               <div class="eval-block"><div class="eval-block-title">Anchor</div><div class="eval-block-text" id="neg-anchor"></div></div>
               <div class="eval-block"><div class="eval-block-title">Fallback</div><div class="eval-block-text" id="neg-fallback"></div></div>
               <div class="eval-block"><div class="eval-block-title">Close</div><div class="eval-block-text" id="neg-close"></div></div>
+              <div id="neg-crossborder-wrap" style="display:none;margin-top:10px">
+                <div class="eval-block"><div class="eval-block-title">Cross-border Notes</div><div class="eval-block-text" id="neg-crossborder"></div></div>
+              </div>
               <div style="margin-top:16px">
                 <div class="eval-block-title" style="margin-bottom:8px;font-size:11px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase">Email Version</div>
                 <div class="eval-block"><div class="eval-block-title" id="neg-email-subject"></div><div class="eval-block-text" id="neg-email-body" style="white-space:pre-line"></div></div>
@@ -436,6 +445,7 @@
             <div class="settings-title" id="r-title">Research Report</div>
             <div class="eval-block"><div class="eval-block-title">Overview</div><div class="eval-block-text" id="r-overview"></div></div>
             <div class="eval-block"><div class="eval-block-title">Culture Signals</div><div class="eval-block-text" id="r-culture"></div></div>
+            <div class="eval-block"><div class="eval-block-title">Tech Stack</div><div class="eval-block-text" id="r-techstack"></div></div>
             <div class="eval-block"><div class="eval-block-title">Interview Process</div><div class="eval-block-text" id="r-interview"></div></div>
             <div class="eval-block"><div class="eval-block-title">Compensation</div><div class="eval-block-text" id="r-comp"></div></div>
             <div class="eval-block"><div class="eval-block-title">Red Flags</div><div class="eval-block-text" id="r-flags"></div></div>
@@ -486,17 +496,26 @@
           <div class="settings-card">
             <div class="settings-title">Personal Info</div>
             <div class="form-group"><label class="form-label">Full Name</label><input id="p-name" class="form-input" placeholder="Your full name"/></div>
-            <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Head of Applied AI · LLMOps · Agentic Systems"/></div>
-            <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. London, UK (Remote-first)"/></div>
+            <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Senior Data Analyst · BigQuery · PowerBI · Python"/></div>
+            <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. Duesseldorf, Germany (Open to relocation)"/></div>
             <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option><option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option><option>Analytics Engineer</option><option>Data Science Analyst</option><option>Business Intelligence Manager</option><option>Head of Analytics</option><option>LLMOps Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option></select></div>
             <div class="form-group"><label class="form-label">Target Salary</label><input id="p-salary" class="form-input" placeholder="e.g. $180-200k or £120-150k"/></div>
             <div class="form-group"><label class="form-label">Min Score to Apply (1-5)</label><input id="p-minscore" class="form-input" type="number" min="1" max="5" step="0.1" value="4.0"/></div>
-            <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="Brief career narrative — your background, what you're good at, what you want to avoid..."></textarea></div>
+            <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="e.g. 5+ years in data analytics at L'Oreal, strong in BigQuery and PowerBI, built division-wide data products. Looking for Senior DA or Analytics Engineer roles in DACH or remote. Want more ownership and technical depth. Avoid pure reporting roles with no product/pipeline work."></textarea></div>
           </div>
           <div class="settings-card">
-            <div class="settings-title">CV (Markdown)</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">This CV is used by the AI for matching, gap analysis, and CV tailoring. The more detailed, the better.</div>
-            <textarea id="p-cv" rows="20" class="form-input" style="font-family:var(--font-mono);font-size:11px;line-height:1.6" placeholder="# Your Name&#10;&#10;## Current Role · Company&#10;&#10;## Experience&#10;&#10;**Company** · Role · Dates&#10;- Achievement with metrics&#10;- Another achievement&#10;&#10;## Skills&#10;Python, LLMs, RAG, Evals..."></textarea>
+            <div class="settings-title">CV</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Upload your CV as PDF — text is extracted automatically. Or paste manually below.</div>
+            <div onclick="document.getElementById('cv-file-input').click()" style="border:2px dashed var(--border2);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;margin-bottom:12px;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <div style="font-size:24px;margin-bottom:6px">&#128196;</div>
+              <div style="font-size:13px;color:var(--text)" id="cv-upload-label">Click to upload CV (PDF)</div>
+              <div style="font-size:11px;color:var(--muted);margin-top:4px">PDF only · Max 5MB</div>
+              <input type="file" id="cv-file-input" accept=".pdf" style="display:none" onchange="handleCVUpload(event)"/>
+            </div>
+            <div id="cv-extracting" style="display:none;font-size:12px;color:var(--accent);margin-bottom:8px;align-items:center;gap:6px">
+              <span class="dot-spin" style="display:inline-block"></span> Extracting text from PDF...
+            </div>
+            <textarea id="p-cv" rows="18" class="form-input" style="font-family:var(--font-mono);font-size:11px;line-height:1.6" placeholder="CV text will appear here after PDF upload, or paste manually..."></textarea>
           </div>
         </div>
         <div id="profile-saved" style="display:none" class="alert alert-success" style="margin-top:12px">Profile saved successfully.</div>
@@ -624,7 +643,7 @@ function renderEvalResult(d) {
   document.getElementById('res-score').style.color = color;
   document.getElementById('res-grade').textContent = 'Grade: ' + (d.grade || '—');
   document.getElementById('res-grade').style.color = color;
-  document.getElementById('res-rec').textContent = d.recommendation || '';
+  document.getElementById('res-rec').textContent = (d.recommendation || '') + (d.jobLocation ? ' · ' + d.jobLocation : '');
 
   const dims = d.dimensions || {};
   const dimLabels = {roleImpact:'Role & Impact',cvMatch:'CV Match',compensation:'Compensation',growthPath:'Growth Path',teamCulture:'Team & Culture',missionAlign:'Mission Align'};
@@ -641,7 +660,10 @@ function renderEvalResult(d) {
   const blockLabels = {roleSummary:'Role Summary',cvMatch:'CV Match',levelStrategy:'Level Strategy',compResearch:'Comp Research',personalizationHook:'Personalization Hook',interviewPrep:'Interview Prep'};
   let blocksHtml = '';
   Object.entries(blockLabels).forEach(([k, label]) => {
-    if (blocks[k]) blocksHtml += `<div class="eval-block"><div class="eval-block-title">${label}</div><div class="eval-block-text">${blocks[k]}</div></div>`;
+    if (blocks[k]) {
+      const cleanText = blocks[k].replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      blocksHtml += `<div class="eval-block"><div class="eval-block-title">${label}</div><div class="eval-block-text">${cleanText}</div></div>`;
+    }
   });
   document.getElementById('res-blocks').innerHTML = blocksHtml;
 }
@@ -800,6 +822,10 @@ async function generateScript() {
       document.getElementById('neg-close').textContent = d.close || '';
       document.getElementById('neg-email-subject').textContent = d.emailSubject || 'Email Subject';
       document.getElementById('neg-email-body').textContent = d.emailBody || '';
+      if (d.crossBorderNotes) {
+        document.getElementById('neg-crossborder').textContent = d.crossBorderNotes;
+        document.getElementById('neg-crossborder-wrap').style.display = 'block';
+      }
     }
   } catch (err) { alert('Error: ' + err.message); }
   btn.disabled = false; btn.textContent = 'Generate Script';
@@ -827,6 +853,8 @@ async function runResearch() {
       document.getElementById('r-comp').textContent = d.compensation || '';
       document.getElementById('r-flags').textContent = d.redFlags || '';
       document.getElementById('r-verdict').textContent = d.verdict || '';
+      const tsEl = document.getElementById('r-techstack');
+      if (tsEl) tsEl.textContent = d.techStack || '';
     }
   } catch (err) { alert('Error: ' + err.message); }
   btn.disabled = false; btn.textContent = 'Research';
@@ -897,6 +925,142 @@ async function runBatch() {
 }
 
 // ─── PDF / CV ─────────────────────────────────────────────────────────────────
+async function handleCVUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const label = document.getElementById('cv-upload-label');
+  const extracting = document.getElementById('cv-extracting');
+  label.textContent = file.name;
+  extracting.style.display = 'flex';
+
+  try {
+    // Load PDF.js from CDN
+    if (!window.pdfjsLib) {
+      await new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+        s.onload = resolve; s.onerror = reject;
+        document.head.appendChild(s);
+      });
+      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let fullText = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const textContent = await page.getTextContent();
+      const pageText = textContent.items.map(item => item.str).join(' ');
+      fullText += pageText + '\n\n';
+    }
+    document.getElementById('p-cv').value = fullText.trim();
+    label.textContent = '✓ ' + file.name + ' — extracted successfully';
+  } catch (err) {
+    label.textContent = 'Error reading PDF — please paste CV text manually';
+    console.error(err);
+  }
+  extracting.style.display = 'none';
+}
+
+function buildStyledCV(d) {
+  const skills_p = (d.skills && d.skills.proficient) ? d.skills.proficient : (Array.isArray(d.skills) ? d.skills : []);
+  const skills_i = (d.skills && d.skills.intermediate) ? d.skills.intermediate : [];
+  const langs = d.languages || [];
+  const edu = d.education || [];
+  const interests = d.interests || [];
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Source Sans Pro', sans-serif; background: #fff; color: #222; font-size: 9pt; }
+  .page { max-width: 794px; margin: 0 auto; background: #fff; }
+  .header { background: #f3f2ef; padding: 22px 36px 18px; text-align: center; border-bottom: 1px solid #e0ddd6; }
+  .header h1 { font-size: 20pt; font-weight: 700; color: #175253; letter-spacing: -0.3px; margin-bottom: 3px; }
+  .header .subtitle { font-size: 10pt; color: #555; margin-bottom: 10px; }
+  .header .contact { font-size: 8.5pt; color: #444; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
+  .body { display: flex; gap: 0; }
+  .main { flex: 1; padding: 18px 22px 18px 36px; border-right: 1px solid #e8e5de; }
+  .sidebar { width: 195px; min-width: 195px; padding: 18px 18px 18px 16px; background: #fafaf8; }
+  .summary { font-size: 9pt; line-height: 1.6; color: #333; margin-bottom: 16px; text-align: justify; }
+  .section-title { font-size: 9.5pt; font-weight: 700; color: #175253; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1.5px solid #175253; padding-bottom: 3px; margin-bottom: 10px; margin-top: 14px; }
+  .section-title:first-child { margin-top: 0; }
+  .job { margin-bottom: 12px; }
+  .job-title { font-size: 9.5pt; font-weight: 700; color: #222; }
+  .job-company { font-style: italic; color: #555; font-weight: 400; }
+  .job-meta { font-size: 8pt; color: #777; margin-bottom: 4px; }
+  .job ul { padding-left: 14px; }
+  .job ul li { margin-bottom: 3px; line-height: 1.5; font-size: 8.8pt; text-align: justify; }
+  .job ul li strong { font-weight: 600; }
+  .sidebar-section { margin-bottom: 14px; }
+  .sidebar-title { font-size: 9pt; font-weight: 700; color: #175253; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #c8c4bb; padding-bottom: 3px; margin-bottom: 7px; }
+  .skill-cat { font-size: 8.5pt; font-weight: 700; color: #333; margin: 5px 0 3px; }
+  .skill-list { padding-left: 12px; }
+  .skill-list li { font-size: 8.5pt; margin-bottom: 2px; color: #444; }
+  .edu-item { margin-bottom: 9px; }
+  .edu-inst { font-size: 8.5pt; font-weight: 700; color: #222; }
+  .edu-deg { font-size: 8pt; color: #555; font-style: italic; }
+  .edu-meta { font-size: 7.5pt; color: #777; }
+  .interest-chip { display: inline-block; border: 1px solid #c8c4bb; border-radius: 4px; padding: 3px 8px; font-size: 7.5pt; color: #555; margin: 2px 2px 2px 0; }
+  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <h1>${d.name || ''}</h1>
+    <div class="subtitle">${d.title || ''}</div>
+    <div class="contact">
+      ${d.email ? '<span>✉ ' + d.email + '</span>' : ''}
+      ${d.phone ? '<span>📞 ' + d.phone + '</span>' : ''}
+      ${d.location ? '<span>📍 ' + d.location + '</span>' : ''}
+      ${d.linkedin ? '<span>🔗 ' + d.linkedin + '</span>' : ''}
+    </div>
+  </div>
+  <div class="body">
+    <div class="main">
+      ${d.summary ? '<p class="summary">' + d.summary + '</p>' : ''}
+      <div class="section-title">Work Experience</div>
+      ${(d.experience || []).map(e => `
+        <div class="job">
+          <div class="job-title">${e.role || ''}<span class="job-company">, ${e.company || ''}</span></div>
+          <div class="job-meta">${e.period || ''}${e.location ? ' | ' + e.location : ''}</div>
+          <ul>${(e.bullets || []).map(b => '<li>' + b.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') + '</li>').join('')}</ul>
+        </div>`).join('')}
+    </div>
+    <div class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Core Competencies</div>
+        <div class="skill-cat">Proficient</div>
+        <ul class="skill-list">${skills_p.map(s => '<li>' + s + '</li>').join('')}</ul>
+        ${skills_i.length ? '<div class="skill-cat">Intermediate</div><ul class="skill-list">' + skills_i.map(s => '<li>' + s + '</li>').join('') + '</ul>' : ''}
+      </div>
+      ${langs.length ? `<div class="sidebar-section">
+        <div class="sidebar-title">Languages</div>
+        <ul class="skill-list">${langs.map(l => '<li>' + (l.lang || l) + (l.level ? ' - ' + l.level : '') + '</li>').join('')}</ul>
+      </div>` : ''}
+      ${edu.length ? `<div class="sidebar-section">
+        <div class="sidebar-title">Education</div>
+        ${edu.map(e => `<div class="edu-item">
+          <div class="edu-inst">${e.institution || ''}</div>
+          <div class="edu-deg">${e.degree || ''}</div>
+          <div class="edu-meta">${e.period || ''}${e.location ? ' · ' + e.location : ''}</div>
+        </div>`).join('')}
+      </div>` : ''}
+      ${interests.length ? `<div class="sidebar-section">
+        <div class="sidebar-title">Interests</div>
+        ${interests.map(i => '<span class="interest-chip">' + i + '</span>').join('')}
+      </div>` : ''}
+    </div>
+  </div>
+</div>
+</body></html>`;
+}
+
 async function generateCV() {
   const jd = document.getElementById('pdf-jd').value.trim();
   if (!jd) { alert('Paste a job description first.'); return; }
@@ -909,18 +1073,13 @@ async function generateCV() {
     const result = await callAPI('pdf', content);
     if (result.success && result.data) {
       const d = result.data;
-      let html = `<div style="font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text)">`;
-      html += `<div style="margin-bottom:12px"><div style="font-size:16px;font-weight:700">${d.name||''}</div><div style="color:var(--accent)">${d.title||''}</div><div style="color:var(--muted);font-size:10px">${d.contact||''}</div></div>`;
-      if (d.summary) html += `<div style="margin-bottom:12px;color:#9898b4">${d.summary}</div>`;
-      if (d.experience) d.experience.forEach(e => {
-        html += `<div style="margin-bottom:10px"><div style="font-weight:600">${e.role} · ${e.company}</div><div style="color:var(--muted);font-size:10px">${e.period}</div>${(e.bullets||[]).map(b=>`<div style="color:#9898b4">• ${b}</div>`).join('')}</div>`;
-      });
-      if (d.skills) html += `<div style="margin-top:8px"><span style="color:var(--accent);font-weight:600">Skills: </span><span style="color:#9898b4">${d.skills.join(', ')}</span></div>`;
-      if (d.keywords_injected) html += `<div style="margin-top:8px;font-size:10px;color:var(--muted)">Keywords injected: ${d.keywords_injected.join(', ')}</div>`;
-      html += `</div>`;
-      document.getElementById('pdf-content').innerHTML = html;
+      const styledHTML = buildStyledCV(d);
+      const preview = document.getElementById('pdf-content');
+      preview.innerHTML = '<iframe id="cv-iframe" style="width:100%;height:480px;border:none;border-radius:6px" srcdoc=""></iframe>';
+      document.getElementById('cv-iframe').srcdoc = styledHTML;
       document.getElementById('pdf-result').style.display = 'block';
       window._cvData = d;
+      window._cvHTML = styledHTML;
     }
   } catch (err) {
     alert('Error: ' + err.message);
@@ -929,14 +1088,19 @@ async function generateCV() {
   btn.disabled = false; btn.textContent = 'Generate Tailored CV';
 }
 
-function downloadCV() {
-  if (!window._cvData) return;
-  const d = window._cvData;
-  let text = `${d.name}\n${d.title}\n${d.contact}\n\n${d.summary}\n\n`;
-  (d.experience||[]).forEach(e => { text += `${e.role} · ${e.company} · ${e.period}\n`; (e.bullets||[]).forEach(b => text += `• ${b}\n`); text += '\n'; });
-  text += `Skills: ${(d.skills||[]).join(', ')}\n`;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tailored-cv.txt'; a.click();
+function printCV() {
+  if (!window._cvHTML) return;
+  const win = window.open('', '_blank');
+  win.document.write(window._cvHTML);
+  win.document.close();
+  setTimeout(() => win.print(), 800);
+}
+
+function openCVPreview() {
+  if (!window._cvHTML) return;
+  const win = window.open('', '_blank');
+  win.document.write(window._cvHTML);
+  win.document.close();
 }
 
 // ─── Outreach ─────────────────────────────────────────────────────────────────
