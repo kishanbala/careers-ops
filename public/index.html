@@ -278,7 +278,7 @@
       <div class="content">
         <div class="input-card">
           <label class="form-label">Focus Areas (optional)</label>
-          <input id="scan-focus" class="form-input" style="resize:none" placeholder="e.g. LLMOps engineer, AI safety, applied AI — leave blank to scan all categories" />
+          <input id="scan-focus" class="form-input" style="resize:none" placeholder="e.g. Senior Data Analyst, BI Developer, Analytics Engineer — leave blank to scan all categories" />
         </div>
         <div id="scan-output" style="display:none" class="output-card">
           <div class="output-header"><div class="dot-spin"></div><span style="font-size:12px;font-weight:500;color:var(--accent)">Scanning portals...</span></div>
@@ -339,7 +339,7 @@
             </div>
             <div class="settings-card">
               <div class="settings-title">Options</div>
-              <div class="form-group"><label class="form-label">Archetype</label><select id="pdf-archetype" class="form-input"><option>LLMOps Engineer</option><option>Agentic AI Lead</option><option>Head of AI</option><option>Product Manager</option><option>Solutions Architect</option><option>Founding Engineer</option></select></div>
+              <div class="form-group"><label class="form-label">Archetype</label><select id="pdf-archetype" class="form-input"><option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option><option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option><option>Analytics Engineer</option><option>Data Science Analyst</option><option>Business Intelligence Manager</option><option>Head of Analytics</option></select></div>
               <button class="btn primary" id="pdf-btn" onclick="generateCV()" style="width:100%">Generate Tailored CV</button>
             </div>
           </div>
@@ -488,7 +488,7 @@
             <div class="form-group"><label class="form-label">Full Name</label><input id="p-name" class="form-input" placeholder="Your full name"/></div>
             <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Head of Applied AI · LLMOps · Agentic Systems"/></div>
             <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. London, UK (Remote-first)"/></div>
-            <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>LLMOps Engineer</option><option>Head of AI</option><option>Founding AI Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option><option>Applied AI Lead</option></select></div>
+            <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option><option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option><option>Analytics Engineer</option><option>Data Science Analyst</option><option>Business Intelligence Manager</option><option>Head of Analytics</option><option>LLMOps Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option></select></div>
             <div class="form-group"><label class="form-label">Target Salary</label><input id="p-salary" class="form-input" placeholder="e.g. $180-200k or £120-150k"/></div>
             <div class="form-group"><label class="form-label">Min Score to Apply (1-5)</label><input id="p-minscore" class="form-input" type="number" min="1" max="5" step="0.1" value="4.0"/></div>
             <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="Brief career narrative — your background, what you're good at, what you want to avoid..."></textarea></div>
@@ -842,7 +842,7 @@ async function runScan() {
   outputEl.style.display = 'block';
   resultsEl.style.display = 'none';
 
-  const content = `Scan for AI/tech job openings. Focus: ${focus || 'LLMOps, Applied AI, Agentic systems, AI engineering roles'}. Companies: Anthropic, OpenAI, ElevenLabs, Mistral, Retool, Vercel, LangChain, n8n, Weights & Biases. Return realistic recent openings.`;
+  const content = `Scan for data analyst and BI job openings. Focus: ${focus || 'Senior Data Analyst, BI Developer, Analytics Engineer, Data Engineer, Product Analyst'}. Companies: L\'Oreal, Henkel, Unilever, Zalando, About You, HelloFresh, N26, Delivery Hero, Auto1, Celonis, SAP, Siemens, Deutsche Telekom, Booking.com, Trivago. Return realistic recent openings in Germany and Europe.`;
 
   try {
     const result = await callAPI('scan', content);
