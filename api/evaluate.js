@@ -23,9 +23,10 @@ CRITICAL RULES:
 2. SCORING: Score each dimension 1-5. Grade: A (4.5+), A- (4.0+), B+ (3.5+), B (3.0+), C (2.5+), D (below 2.5).
 3. CV MATCH: Be specific — name actual skills from the JD and map them to actual experience from the CV.
 4. PERSONALIZATION: Give 2-3 specific hooks based on actual CV achievements vs actual JD requirements.
+5. GAPS: Identify 2-4 real gaps between the CV and JD. For each gap name it clearly, explain why it matters for this specific role, and give a concrete bridging narrative using actual CV experience. Never be vague — name the specific missing skill or experience.
 
 Return ONLY valid JSON, no markdown fences:
-{"archetype":"string","roleTitle":"string","company":"string","jobLocation":"city, country","finalScore":4.2,"grade":"A-","recommendation":"Strongly Recommend","matchPercent":85,"dimensions":{"roleImpact":4.5,"cvMatch":4.2,"compensation":4.0,"growthPath":4.3,"teamCulture":4.1,"missionAlign":4.5},"blocks":{"roleSummary":"string","cvMatch":"string","levelStrategy":"string","compResearch":"string","personalizationHook":"string","interviewPrep":"string"},"starStories":[{"question":"string","starter":"string"},{"question":"string","starter":"string"},{"question":"string","starter":"string"}]}`,
+{"archetype":"string","roleTitle":"string","company":"string","jobLocation":"city, country","finalScore":4.2,"grade":"A-","recommendation":"Strongly Recommend","matchPercent":85,"dimensions":{"roleImpact":4.5,"cvMatch":4.2,"compensation":4.0,"growthPath":4.3,"teamCulture":4.1,"missionAlign":4.5},"blocks":{"roleSummary":"string","cvMatch":"string","levelStrategy":"string","compResearch":"string","personalizationHook":"string","interviewPrep":"string"},"starStories":[{"question":"string","starter":"string"},{"question":"string","starter":"string"},{"question":"string","starter":"string"}],"gaps":[{"gap":"string (name of the gap)","why":"string (why it matters for this role)","bridge":"string (how to frame existing experience to address it)"}]}`,
 
     pdf: `You are Career-Ops CV tailor. Given a CV and job description, rewrite the CV tailored to the JD. Inject relevant keywords naturally. Reframe bullets to match JD priorities. Do not invent experience. Lead with impact metrics.
 
