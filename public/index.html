@@ -836,7 +836,10 @@ function renderPipeline() {
       <div><div class="job-name">${e.roleTitle}</div><div class="job-company">${e.company}</div></div>
       <div><span class="tag tag-purple">${e.archetype}</span></div>
       <div style="color:var(--muted);font-size:12px">${e.date}</div>
-      <div><span class="score-pill ${scoreClass(e.score)}">${e.grade}</span></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span class="score-pill ${scoreClass(e.score)}">${e.grade}</span>
+        <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted)">${e.score ? e.score.toFixed(1) : '—'}</span>
+      </div>
       <div>
         <div class="prog-bar" style="width:80px"><div class="prog-fill" style="width:${pct(e.score)}%;background:${barColor(e.score)}"></div></div>
         <div style="font-size:10px;color:var(--muted);margin-top:2px">${e.matchPercent || pct(e.score)}%</div>
