@@ -794,7 +794,6 @@ function toggleGradeLegend() {
 function addToTracker(silent = false) {
   if (!state.lastEval) return;
   const d = state.lastEval;
-  // Avoid duplicates
   const exists = state.tracker.find(e => e.roleTitle === (d.roleTitle || '') && e.company === (d.company || ''));
   if (exists) { if (!silent) alert('Already in tracker.'); return; }
   const entry = {
@@ -806,7 +805,8 @@ function addToTracker(silent = false) {
     grade: d.grade || '—',
     matchPercent: d.matchPercent || 0,
     status: 'Evaluating',
-    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'})
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'}),
+    fullEval: d
   };
   state.tracker.unshift(entry);
   saveState();
@@ -874,20 +874,43 @@ function openTrackerDetail(idx, event) {
   const e = state.tracker[idx];
   if (!e) return;
   showView('evaluate');
-  // Pre-fill a summary view of the saved evaluation
   const logEl = document.getElementById('eval-log');
   const resultEl = document.getElementById('eval-result');
   const logBody = document.getElementById('eval-log-body');
+  const errorEl = document.getElementById('eval-error');
+  errorEl.style.display = 'none';
+  document.getElementById('jd-input').value = '';
+
   logEl.style.display = 'block';
   document.getElementById('eval-spinner').style.display = 'none';
-  document.getElementById('eval-log-title').textContent = 'Saved evaluation';
-  document.getElementById('eval-timer').textContent = '';
+  document.getElementById('eval-log-title').textContent = 'Saved evaluation — ' + e.roleTitle;
+  document.getElementById('eval-timer').textContent = e.date;
   logBody.innerHTML = '<div class="h">→ ' + e.roleTitle + ' at ' + e.company + '</div>' +
     '<div class="g">Grade: ' + e.grade + ' · Score: ' + e.score + '/5.0 · Match: ' + (e.matchPercent || '—') + '%</div>' +
-    '<div class="m">Evaluated on ' + e.date + ' · Archetype: ' + e.archetype + '</div>' +
-    '<div style="margin-top:8px;color:var(--muted)">Re-paste the JD above and run a fresh evaluation to see full details.</div>';
-  resultEl.style.display = 'none';
-  document.getElementById('jd-input').value = '';
+    '<div class="m">Archetype: ' + e.archetype + '</div>';
+
+  if (e.fullEval) {
+    state.lastEval = e.fullEval;
+    renderEvalResult(e.fullEval);
+    resultEl.style.display = 'block';
+    document.getElementById('res-gaps').style.display = 'none';
+    if (e.fullEval.gaps && e.fullEval.gaps.length > 0) {
+      let gapsHtml = '';
+      e.fullEval.gaps.forEach((g, i) => {
+        gapsHtml += '<div style="border:1px solid rgba(248,113,113,0.2);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;background:rgba(248,113,113,0.04)">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
+          '<span style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em">Gap ' + (i+1) + '</span>' +
+          '<span style="font-size:12px;font-weight:600;color:var(--text)">' + g.gap + '</span></div>' +
+          '<div style="font-size:11px;color:var(--muted);margin-bottom:6px"><span style="color:var(--amber);font-weight:600">Why it matters: </span>' + g.why + '</div>' +
+          '<div style="font-size:11px;color:#9898b4"><span style="color:var(--green);font-weight:600">How to frame it: </span>' + g.bridge + '</div></div>';
+      });
+      document.getElementById('res-gaps-content').innerHTML = gapsHtml;
+      document.getElementById('res-gaps').style.display = 'block';
+    }
+  } else {
+    logBody.innerHTML += '<div style="margin-top:8px;color:var(--muted);font-size:12px">Full details not available for this evaluation — re-paste the JD and run again to save full results.</div>';
+    resultEl.style.display = 'none';
+  }
 }
 
 function updateBadges() {
