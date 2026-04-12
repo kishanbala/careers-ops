@@ -351,14 +351,29 @@
             </div>
             <div id="pdf-result" style="display:none">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <div class="settings-title" style="margin-bottom:0">Tailored CV Preview</div>
+                <div class="settings-title" style="margin-bottom:0">Tailored CV</div>
                 <div style="display:flex;gap:8px">
                   <button class="btn sm primary" onclick="printCV()">&#128438; Download PDF</button>
                   <button class="btn sm" onclick="openCVPreview()">&#9974; Full Preview</button>
                 </div>
               </div>
-              <div style="font-size:11px;color:var(--muted);margin-bottom:10px">Tip: Use Download PDF then File > Print > Save as PDF in your browser for best quality</div>
-              <div id="pdf-content" style="background:#fff;border-radius:var(--r);padding:12px;max-height:500px;overflow-y:auto"></div>
+              <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Tip: Download PDF → File → Print → Save as PDF for best quality. Or use the copy buttons below to paste into FlowCV / Europass.</div>
+
+              <!-- Tab toggle -->
+              <div style="display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px">
+                <button onclick="switchCVTab('preview')" id="tab-preview" style="padding:8px 14px;font-size:12px;cursor:pointer;border:none;background:none;color:var(--accent);border-bottom:2px solid var(--accent);font-family:var(--font-body)">Styled Preview</button>
+                <button onclick="switchCVTab('copy')" id="tab-copy" style="padding:8px 14px;font-size:12px;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;font-family:var(--font-body)">Copy Sections</button>
+              </div>
+
+              <!-- Styled preview -->
+              <div id="cv-tab-preview">
+                <div id="pdf-content" style="background:#fff;border-radius:var(--r);padding:12px;max-height:520px;overflow-y:auto"></div>
+              </div>
+
+              <!-- Copy sections -->
+              <div id="cv-tab-copy" style="display:none">
+                <div id="cv-copy-sections"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -1102,6 +1117,94 @@ function openCVPreview() {
   const win = window.open('', '_blank');
   win.document.write(window._cvHTML);
   win.document.close();
+}
+
+function switchCVTab(tab) {
+  const preview = document.getElementById('cv-tab-preview');
+  const copy = document.getElementById('cv-tab-copy');
+  const tabPreview = document.getElementById('tab-preview');
+  const tabCopy = document.getElementById('tab-copy');
+  if (tab === 'preview') {
+    preview.style.display = 'block'; copy.style.display = 'none';
+    tabPreview.style.color = 'var(--accent)'; tabPreview.style.borderBottomColor = 'var(--accent)';
+    tabCopy.style.color = 'var(--muted)'; tabCopy.style.borderBottomColor = 'transparent';
+  } else {
+    preview.style.display = 'none'; copy.style.display = 'block';
+    tabCopy.style.color = 'var(--accent)'; tabCopy.style.borderBottomColor = 'var(--accent)';
+    tabPreview.style.color = 'var(--muted)'; tabPreview.style.borderBottomColor = 'transparent';
+    renderCopySections();
+  }
+}
+
+function renderCopySections() {
+  const d = window._cvData;
+  if (!d) return;
+  const container = document.getElementById('cv-copy-sections');
+
+  function copyBlock(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    navigator.clipboard.writeText(el.innerText).then(() => {
+      const btn = el.parentElement.querySelector('.copy-btn');
+      if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 1500); }
+    });
+  }
+
+  function section(title, id, text) {
+    return `<div class="eval-block" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div class="eval-block-title">${title}</div>
+        <button class="btn sm copy-btn" onclick="(function(){navigator.clipboard.writeText(document.getElementById('${id}').innerText).then(()=>{this.textContent='✓ Copied';setTimeout(()=>this.textContent='Copy',1500)})}).call(this)">Copy</button>
+      </div>
+      <div id="${id}" class="eval-block-text" style="white-space:pre-wrap;font-size:12px;line-height:1.7;user-select:text">${text}</div>
+    </div>`;
+  }
+
+  let html = '';
+
+  // Contact / Header
+  const contact = [d.name, d.title, [d.email, d.phone, d.location, d.nationality].filter(Boolean).join(' · '), d.linkedin].filter(Boolean).join('\n');
+  html += section('Contact & Header', 'copy-contact', contact);
+
+  // Summary
+  if (d.summary) html += section('Professional Summary', 'copy-summary', d.summary);
+
+  // Each experience role separately
+  (d.experience || []).forEach((exp, i) => {
+    const roleText = [
+      `${exp.role}${exp.company ? ', ' + exp.company : ''}`,
+      `${exp.period || ''}${exp.location ? ' | ' + exp.location : ''}`,
+      ...(exp.bullets || []).map(b => '• ' + b)
+    ].join('\n');
+    html += section(`Experience: ${exp.role} @ ${exp.company}`, `copy-exp-${i}`, roleText);
+  });
+
+  // Skills
+  const proficient = (d.skills && d.skills.proficient) ? d.skills.proficient : (Array.isArray(d.skills) ? d.skills : []);
+  const intermediate = (d.skills && d.skills.intermediate) ? d.skills.intermediate : [];
+  if (proficient.length || intermediate.length) {
+    const skillsText = (proficient.length ? 'Proficient:\n' + proficient.join(', ') : '') +
+      (intermediate.length ? '\nIntermediate:\n' + intermediate.join(', ') : '');
+    html += section('Skills', 'copy-skills', skillsText);
+  }
+
+  // Languages
+  if (d.languages && d.languages.length) {
+    html += section('Languages', 'copy-langs', d.languages.map(l => `${l.lang} - ${l.level}`).join('\n'));
+  }
+
+  // Education
+  if (d.education && d.education.length) {
+    const eduText = d.education.map(e => `${e.institution}\n${e.degree}\n${e.period}${e.location ? ' · ' + e.location : ''}`).join('\n\n');
+    html += section('Education', 'copy-edu', eduText);
+  }
+
+  // Keywords injected
+  if (d.keywords_injected && d.keywords_injected.length) {
+    html += section('Keywords Injected (ATS)', 'copy-keywords', d.keywords_injected.join(', '));
+  }
+
+  container.innerHTML = html;
 }
 
 // ─── Outreach ─────────────────────────────────────────────────────────────────
