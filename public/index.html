@@ -834,7 +834,7 @@ function renderPipeline() {
   const topGrade = state.tracker.map(e => e.grade).sort()[0] || '—';
   document.getElementById('m-top').textContent = topGrade;
 
-  consscoreClass = s => s >= 4.5 ? 'score-a' : s >= 3.5 ? 'score-b' : s >= 2.5 ? 'score-c' : 'score-d';
+  const scoreClass = s => s >= 4.5 ? 'score-a' : s >= 3.5 ? 'score-b' : s >= 2.5 ? 'score-c' : 'score-d';
   const pct = s => Math.round((s / 5) * 100);
   const barColor = s => s >= 4 ? 'var(--green)' : s >= 3 ? 'var(--teal)' : 'var(--amber)';
   const statusClass = s => s === 'Evaluating' ? 's-evaluating' : s === 'Applied' ? 's-applied' : s === 'Interview' ? 's-interview' : 's-rejected';
