@@ -23,8 +23,8 @@
   .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-display); }
   .logo-text span { color: var(--accent); }
   .nav-section { padding: 0 12px 8px; }
-  .nav-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--muted); transition: all 0.15s; font-size: 14px; font-weight: 400; border: none; background: none; width: 100%; text-align: left; font-family: var(--font-body); }
+  .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--muted); transition: all 0.15s; font-size: 13px; font-weight: 400; border: none; background: none; width: 100%; text-align: left; font-family: var(--font-body); }
   .nav-item:hover { background: var(--bg3); color: var(--text); }
   .nav-item.active { background: rgba(124,92,252,0.12); color: var(--accent); }
   .nav-sep { height: 1px; background: var(--border); margin: 12px 12px; }
@@ -34,31 +34,31 @@
   .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
   .topbar { padding: 16px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; background: var(--bg); position: sticky; top: 0; z-index: 10; }
   .topbar-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
-  .topbar-sub { color: var(--muted); font-size: 13px; margin-left: 4px; }
+  .topbar-sub { color: var(--muted); font-size: 12px; margin-left: 4px; }
   .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-  .btn { padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-family: var(--font-body); transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn { padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-family: var(--font-body); transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
   .btn:hover { background: var(--bg4); border-color: rgba(255,255,255,0.18); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
   .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
   .btn.primary:hover { background: #6b4de8; }
-  .btn.sm { padding: 6px 12px; font-size: 13px; }
+  .btn.sm { padding: 5px 10px; font-size: 12px; }
   .content { padding: 28px; flex: 1; }
   .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
   .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 20px; }
-  .metric-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
+  .metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
   .metric-value { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
-  .metric-sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .metric-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
   .metric-value.accent { color: var(--accent); }
   .metric-value.green { color: var(--green); }
   .metric-value.amber { color: var(--amber); }
   .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
   .pipeline-grid { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
-  .pipeline-header { display: grid; grid-template-columns: 2.5fr 1fr 1fr 0.8fr 0.8fr 0.8fr; padding: 10px 20px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); gap: 12px; }
+  .pipeline-header { display: grid; grid-template-columns: 2.5fr 1fr 1fr 0.8fr 0.8fr 0.8fr; padding: 10px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); gap: 12px; }
   .pipeline-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 0.8fr 0.8fr 0.8fr; padding: 12px 20px; border-bottom: 1px solid var(--border); gap: 12px; align-items: center; transition: background 0.1s; cursor: pointer; }
   .pipeline-row:last-child { border-bottom: none; }
   .pipeline-row:hover { background: var(--bg3); }
   .job-name { font-weight: 500; font-size: 13px; }
-  .job-company { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .job-company { font-size: 11px; color: var(--muted); margin-top: 2px; }
   .score-pill { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 22px; border-radius: 6px; font-size: 12px; font-weight: 600; font-family: var(--font-mono); }
   .score-a { background: rgba(74,222,128,0.15); color: var(--green); }
   .score-b { background: rgba(45,212,191,0.15); color: var(--teal); }
@@ -79,7 +79,7 @@
   .mode-chip:hover, .mode-chip.active { border-color: var(--accent); background: rgba(124,92,252,0.12); color: var(--accent); }
   .output-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 20px; }
   .output-header { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg3); }
-  .output-body { padding: 20px; font-family: var(--font-mono); font-size: 13px; line-height: 1.8; color: #b4b4cc; min-height: 100px; }
+  .output-body { padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; color: #b4b4cc; min-height: 100px; }
   .output-body .h { color: var(--accent); font-weight: 500; }
   .output-body .g { color: var(--green); }
   .output-body .err { color: var(--red); }
@@ -96,8 +96,8 @@
   .prog-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
   .eval-score-val { font-family: var(--font-mono); font-size: 11px; color: var(--text); width: 28px; text-align: right; }
   .eval-block { border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; margin-bottom: 10px; background: var(--bg3); }
-  .eval-block-title { font-size: 12px; font-weight: 600; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .eval-block-text { font-size: 14px; color: #9898b4; line-height: 1.8; }
+  .eval-block-title { font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .eval-block-text { font-size: 12px; color: #9898b4; line-height: 1.7; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
   .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
   .tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; display: inline-block; }
@@ -105,19 +105,19 @@
   .tag-teal { background: rgba(45,212,191,0.1); color: var(--teal); }
   .tag-green { background: rgba(74,222,128,0.1); color: var(--green); }
   .form-group { margin-bottom: 16px; }
-  .form-label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
+  .form-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
   select.form-input { cursor: pointer; }
   .story-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 10px; }
   .story-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; background: rgba(45,212,191,0.1); color: var(--teal); display: inline-block; margin-bottom: 8px; }
-  .story-q { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-  .story-text { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .story-q { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
+  .story-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
   .prog-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
   .scan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   .scan-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; transition: border-color 0.15s; }
   .scan-card.scanning { border-color: var(--accent); }
   .scan-company { font-weight: 500; font-size: 13px; margin-bottom: 4px; }
-  .scan-info { font-size: 12px; color: var(--muted); }
-  .scan-status { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+  .scan-info { font-size: 11px; color: var(--muted); }
+  .scan-status { font-size: 11px; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
   .tracker-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
   .tracker-empty .big { font-size: 36px; margin-bottom: 12px; opacity: 0.3; }
   ::-webkit-scrollbar { width: 4px; }
@@ -126,15 +126,6 @@
   .alert { padding: 10px 14px; border-radius: var(--r); font-size: 12px; margin-bottom: 12px; }
   .alert-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); color: var(--red); }
   .alert-success { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--green); }
-  .status-select { appearance: none; -webkit-appearance: none; cursor: pointer; font-family: var(--font-body); font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid var(--border2); background: var(--bg3); color: var(--muted); transition: all 0.15s; outline: none; }
-  .status-select:hover { border-color: var(--accent); color: var(--text); }
-  .status-select.s-evaluating { background: rgba(251,191,36,0.1); border-color: rgba(251,191,36,0.3); color: var(--amber); }
-  .status-select.s-applied { background: rgba(124,92,252,0.1); border-color: rgba(124,92,252,0.3); color: var(--accent); }
-  .status-select.s-interview { background: rgba(74,222,128,0.1); border-color: rgba(74,222,128,0.3); color: var(--green); }
-  .status-select.s-rejected { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.3); color: var(--red); }
-  .status-select option { background: #1c1c28; color: #e8e8f0; }
-  .row-clickable { cursor: pointer; }
-  .row-clickable:hover { background: var(--bg3); }
 </style>
 </head>
 <body>
@@ -206,53 +197,9 @@
       <div class="topbar">
         <div><div class="topbar-title">Pipeline Dashboard</div><span class="topbar-sub" id="pipeline-sub">0 applications tracked</span></div>
         <div class="topbar-actions">
-          <button class="btn sm" onclick="toggleGradeLegend()">? Grade Guide</button>
           <button class="btn sm primary" onclick="showView('evaluate')">+ Evaluate New</button>
         </div>
       </div>
-
-      <div id="grade-legend" style="display:none;padding:16px 28px;background:var(--bg2);border-bottom:1px solid var(--border)">
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid var(--green)">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--green)">A</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">4.5 – 5.0</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Strongly Recommend</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Exceptional fit. Apply immediately, prioritise above all others.</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid #86efac">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:#86efac">A-</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">4.0 – 4.4</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Recommend</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Strong fit with minor gaps. Worth applying — gaps are bridgeable.</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid var(--teal)">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--teal)">B+</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">3.5 – 3.9</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Consider with Caution</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Decent overlap but meaningful gaps. Apply only if pipeline is thin.</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid var(--amber)">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--amber)">B</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">3.0 – 3.4</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Neutral</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Partial fit. Significant gaps. Only proceed with a strong referral.</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid #fb923c">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:#fb923c">C</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">2.5 – 2.9</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Not Recommended</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Weak fit. More gaps than strengths. Time better spent elsewhere.</div>
-          </div>
-          <div style="background:var(--bg3);border-radius:var(--r);padding:16px;border-left:3px solid var(--red)">
-            <div style="font-family:var(--font-mono);font-size:20px;font-weight:700;color:var(--red)">D</div>
-            <div style="font-size:11px;color:var(--muted);margin:3px 0">Below 2.5</div>
-            <div style="font-size:12px;font-weight:600;color:var(--text)">Skip</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6">Poor fit. Applying wastes your time and the recruiter's.</div>
-          </div>
-        </div>
-        <div style="margin-top:12px;font-size:12px;color:var(--muted)">Career-ops philosophy: only apply to 4.0+ scores. Below that you spend interviews defending gaps rather than selling strengths.</div>
-      </div>
-
       <div class="content">
         <div class="metrics">
           <div class="metric"><div class="metric-label">Total Evaluated</div><div class="metric-value" id="m-total">0</div><div class="metric-sub">All time</div></div>
@@ -278,13 +225,10 @@
       <div class="content">
         <div class="input-card">
           <div class="mode-chips">
-            <span class="mode-chip active" id="chip-full" onclick="selectEvalMode('full')">Full Pipeline</span>
-            <span class="mode-chip" id="chip-eval" onclick="selectEvalMode('eval')">Eval Only</span>
+            <span class="mode-chip active" data-mode="evaluate">Full Pipeline</span>
+            <span class="mode-chip" data-mode="evaluate">Eval Only</span>
           </div>
-          <div id="mode-description" style="font-size:11px;color:var(--muted);margin-bottom:12px">
-            Full Pipeline: evaluate + auto-add to tracker after completion.
-          </div>
-          <textarea id="jd-input" rows="6" placeholder="Paste the full job description text here...&#10;&#10;Tip: Always paste the full text, not a URL — LinkedIn and job boards block direct fetching. Include role title, company, location, responsibilities, requirements, and salary if listed."></textarea>
+          <textarea id="jd-input" rows="6" placeholder="Paste a job description here...&#10;&#10;Include: role title, company, responsibilities, requirements, compensation if listed."></textarea>
           <div class="input-actions">
             <button class="btn primary" id="run-btn" onclick="runEvaluation()">▶ Run Evaluation</button>
             <button class="btn sm" onclick="document.getElementById('jd-input').value=''">Clear</button>
@@ -315,15 +259,6 @@
               <div id="res-blocks"></div>
             </div>
           </div>
-          <div id="res-gaps" style="display:none;margin-bottom:20px">
-            <div class="settings-card">
-              <div class="settings-title" style="display:flex;align-items:center;gap:8px">
-                Gaps & How to Frame Them
-                <span style="font-size:10px;background:rgba(248,113,113,0.1);color:var(--red);padding:2px 8px;border-radius:20px;font-weight:400">Address before applying</span>
-              </div>
-              <div id="res-gaps-content"></div>
-            </div>
-          </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <button class="btn primary" onclick="addToTracker()">+ Add to Tracker</button>
             <button class="btn" onclick="showView('pdf')">Generate CV</button>
@@ -343,7 +278,7 @@
       <div class="content">
         <div class="input-card">
           <label class="form-label">Focus Areas (optional)</label>
-          <input id="scan-focus" class="form-input" style="resize:none" placeholder="e.g. Senior Data Analyst, BI Developer, Analytics Engineer — leave blank to scan all categories" />
+          <input id="scan-focus" class="form-input" style="resize:none" placeholder="e.g. LLMOps engineer, AI safety, applied AI — leave blank to scan all categories" />
         </div>
         <div id="scan-output" style="display:none" class="output-card">
           <div class="output-header"><div class="dot-spin"></div><span style="font-size:12px;font-weight:500;color:var(--accent)">Scanning portals...</span></div>
@@ -404,41 +339,20 @@
             </div>
             <div class="settings-card">
               <div class="settings-title">Options</div>
-              <div class="form-group"><label class="form-label">Archetype</label><select id="pdf-archetype" class="form-input"><option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option><option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option><option>Analytics Engineer</option><option>Data Science Analyst</option><option>Business Intelligence Manager</option><option>Head of Analytics</option></select></div>
+              <div class="form-group"><label class="form-label">Archetype</label><select id="pdf-archetype" class="form-input"><option>LLMOps Engineer</option><option>Agentic AI Lead</option><option>Head of AI</option><option>Product Manager</option><option>Solutions Architect</option><option>Founding Engineer</option></select></div>
               <button class="btn primary" id="pdf-btn" onclick="generateCV()" style="width:100%">Generate Tailored CV</button>
             </div>
           </div>
           <div class="settings-card" style="min-height:400px">
-            <div id="pdf-placeholder" style="height:300px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted)">
-              <div style="font-size:36px;margin-bottom:12px;opacity:0.3">&#128196;</div>
+            <div id="pdf-placeholder" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted)">
+              <div style="font-size:36px;margin-bottom:12px;opacity:0.3">📄</div>
               <div style="font-size:13px">Tailored CV will appear here</div>
-              <div style="font-size:11px;margin-top:4px">Styled to match your original · ATS-optimized</div>
+              <div style="font-size:11px;margin-top:4px">Keyword-injected for ATS</div>
             </div>
             <div id="pdf-result" style="display:none">
-              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <div class="settings-title" style="margin-bottom:0">Tailored CV</div>
-                <div style="display:flex;gap:8px">
-                  <button class="btn sm primary" onclick="printCV()">&#128438; Download PDF</button>
-                  <button class="btn sm" onclick="openCVPreview()">&#9974; Full Preview</button>
-                </div>
-              </div>
-              <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Tip: Download PDF → File → Print → Save as PDF for best quality. Or use the copy buttons below to paste into FlowCV / Europass.</div>
-
-              <!-- Tab toggle -->
-              <div style="display:flex;gap:2px;border-bottom:1px solid var(--border);margin-bottom:16px">
-                <button onclick="switchCVTab('preview')" id="tab-preview" style="padding:8px 14px;font-size:12px;cursor:pointer;border:none;background:none;color:var(--accent);border-bottom:2px solid var(--accent);font-family:var(--font-body)">Styled Preview</button>
-                <button onclick="switchCVTab('copy')" id="tab-copy" style="padding:8px 14px;font-size:12px;cursor:pointer;border:none;background:none;color:var(--muted);border-bottom:2px solid transparent;font-family:var(--font-body)">Copy Sections</button>
-              </div>
-
-              <!-- Styled preview -->
-              <div id="cv-tab-preview">
-                <div id="pdf-content" style="background:#fff;border-radius:var(--r);padding:12px;max-height:520px;overflow-y:auto"></div>
-              </div>
-
-              <!-- Copy sections -->
-              <div id="cv-tab-copy" style="display:none">
-                <div id="cv-copy-sections"></div>
-              </div>
+              <div class="settings-title">Tailored CV Preview</div>
+              <div id="pdf-content"></div>
+              <button class="btn sm primary" style="margin-top:12px" onclick="downloadCV()">⬇ Download as Text</button>
             </div>
           </div>
         </div>
@@ -491,9 +405,6 @@
               <div class="eval-block"><div class="eval-block-title">Anchor</div><div class="eval-block-text" id="neg-anchor"></div></div>
               <div class="eval-block"><div class="eval-block-title">Fallback</div><div class="eval-block-text" id="neg-fallback"></div></div>
               <div class="eval-block"><div class="eval-block-title">Close</div><div class="eval-block-text" id="neg-close"></div></div>
-              <div id="neg-crossborder-wrap" style="display:none;margin-top:10px">
-                <div class="eval-block"><div class="eval-block-title">Cross-border Notes</div><div class="eval-block-text" id="neg-crossborder"></div></div>
-              </div>
               <div style="margin-top:16px">
                 <div class="eval-block-title" style="margin-bottom:8px;font-size:11px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase">Email Version</div>
                 <div class="eval-block"><div class="eval-block-title" id="neg-email-subject"></div><div class="eval-block-text" id="neg-email-body" style="white-space:pre-line"></div></div>
@@ -525,7 +436,6 @@
             <div class="settings-title" id="r-title">Research Report</div>
             <div class="eval-block"><div class="eval-block-title">Overview</div><div class="eval-block-text" id="r-overview"></div></div>
             <div class="eval-block"><div class="eval-block-title">Culture Signals</div><div class="eval-block-text" id="r-culture"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Tech Stack</div><div class="eval-block-text" id="r-techstack"></div></div>
             <div class="eval-block"><div class="eval-block-title">Interview Process</div><div class="eval-block-text" id="r-interview"></div></div>
             <div class="eval-block"><div class="eval-block-title">Compensation</div><div class="eval-block-text" id="r-comp"></div></div>
             <div class="eval-block"><div class="eval-block-title">Red Flags</div><div class="eval-block-text" id="r-flags"></div></div>
@@ -576,26 +486,17 @@
           <div class="settings-card">
             <div class="settings-title">Personal Info</div>
             <div class="form-group"><label class="form-label">Full Name</label><input id="p-name" class="form-input" placeholder="Your full name"/></div>
-            <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Senior Data Analyst · BigQuery · PowerBI · Python"/></div>
-            <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. Duesseldorf, Germany (Open to relocation)"/></div>
-            <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option><option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option><option>Analytics Engineer</option><option>Data Science Analyst</option><option>Business Intelligence Manager</option><option>Head of Analytics</option><option>LLMOps Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option></select></div>
+            <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Head of Applied AI · LLMOps · Agentic Systems"/></div>
+            <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. London, UK (Remote-first)"/></div>
+            <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>LLMOps Engineer</option><option>Head of AI</option><option>Founding AI Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option><option>Applied AI Lead</option></select></div>
             <div class="form-group"><label class="form-label">Target Salary</label><input id="p-salary" class="form-input" placeholder="e.g. $180-200k or £120-150k"/></div>
             <div class="form-group"><label class="form-label">Min Score to Apply (1-5)</label><input id="p-minscore" class="form-input" type="number" min="1" max="5" step="0.1" value="4.0"/></div>
-            <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="e.g. 5+ years in data analytics at L'Oreal, strong in BigQuery and PowerBI, built division-wide data products. Looking for Senior DA or Analytics Engineer roles in DACH or remote. Want more ownership and technical depth. Avoid pure reporting roles with no product/pipeline work."></textarea></div>
+            <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="Brief career narrative — your background, what you're good at, what you want to avoid..."></textarea></div>
           </div>
           <div class="settings-card">
-            <div class="settings-title">CV</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:12px">Upload your CV as PDF — text is extracted automatically. Or paste manually below.</div>
-            <div onclick="document.getElementById('cv-file-input').click()" style="border:2px dashed var(--border2);border-radius:var(--r);padding:20px;text-align:center;cursor:pointer;margin-bottom:12px;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
-              <div style="font-size:24px;margin-bottom:6px">&#128196;</div>
-              <div style="font-size:13px;color:var(--text)" id="cv-upload-label">Click to upload CV (PDF)</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:4px">PDF only · Max 5MB</div>
-              <input type="file" id="cv-file-input" accept=".pdf" style="display:none" onchange="handleCVUpload(event)"/>
-            </div>
-            <div id="cv-extracting" style="display:none;font-size:12px;color:var(--accent);margin-bottom:8px;align-items:center;gap:6px">
-              <span class="dot-spin" style="display:inline-block"></span> Extracting text from PDF...
-            </div>
-            <textarea id="p-cv" rows="18" class="form-input" style="font-family:var(--font-mono);font-size:11px;line-height:1.6" placeholder="CV text will appear here after PDF upload, or paste manually..."></textarea>
+            <div class="settings-title">CV (Markdown)</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">This CV is used by the AI for matching, gap analysis, and CV tailoring. The more detailed, the better.</div>
+            <textarea id="p-cv" rows="20" class="form-input" style="font-family:var(--font-mono);font-size:11px;line-height:1.6" placeholder="# Your Name&#10;&#10;## Current Role · Company&#10;&#10;## Experience&#10;&#10;**Company** · Role · Dates&#10;- Achievement with metrics&#10;- Another achievement&#10;&#10;## Skills&#10;Python, LLMs, RAG, Evals..."></textarea>
           </div>
         </div>
         <div id="profile-saved" style="display:none" class="alert alert-success" style="margin-top:12px">Profile saved successfully.</div>
@@ -700,10 +601,6 @@ async function runEvaluation() {
       state.lastEval = d;
       renderEvalResult(d);
       resultEl.style.display = 'block';
-      // Auto-add to tracker in Full Pipeline mode
-      if (currentEvalMode === 'full') {
-        addToTracker(true);
-      }
     } else {
       throw new Error('Unexpected response format');
     }
@@ -727,7 +624,7 @@ function renderEvalResult(d) {
   document.getElementById('res-score').style.color = color;
   document.getElementById('res-grade').textContent = 'Grade: ' + (d.grade || '—');
   document.getElementById('res-grade').style.color = color;
-  document.getElementById('res-rec').textContent = (d.recommendation || '') + (d.jobLocation ? ' · ' + d.jobLocation : '');
+  document.getElementById('res-rec').textContent = d.recommendation || '';
 
   const dims = d.dimensions || {};
   const dimLabels = {roleImpact:'Role & Impact',cvMatch:'CV Match',compensation:'Compensation',growthPath:'Growth Path',teamCulture:'Team & Culture',missionAlign:'Mission Align'};
@@ -744,58 +641,21 @@ function renderEvalResult(d) {
   const blockLabels = {roleSummary:'Role Summary',cvMatch:'CV Match',levelStrategy:'Level Strategy',compResearch:'Comp Research',personalizationHook:'Personalization Hook',interviewPrep:'Interview Prep'};
   let blocksHtml = '';
   Object.entries(blockLabels).forEach(([k, label]) => {
-    if (blocks[k]) {
-      const cleanText = blocks[k].replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-      blocksHtml += `<div class="eval-block"><div class="eval-block-title">${label}</div><div class="eval-block-text">${cleanText}</div></div>`;
-    }
+    if (blocks[k]) blocksHtml += `<div class="eval-block"><div class="eval-block-title">${label}</div><div class="eval-block-text">${blocks[k]}</div></div>`;
   });
   document.getElementById('res-blocks').innerHTML = blocksHtml;
-
-  const gaps = d.gaps || [];
-  if (gaps.length > 0) {
-    let gapsHtml = '';
-    gaps.forEach((g, i) => {
-      gapsHtml += '<div style="border:1px solid rgba(248,113,113,0.2);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;background:rgba(248,113,113,0.04)">' +
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
-        '<span style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em">Gap ' + (i+1) + '</span>' +
-        '<span style="font-size:12px;font-weight:600;color:var(--text)">' + g.gap + '</span></div>' +
-        '<div style="font-size:11px;color:var(--muted);margin-bottom:6px"><span style="color:var(--amber);font-weight:600">Why it matters: </span>' + g.why + '</div>' +
-        '<div style="font-size:11px;color:#9898b4"><span style="color:var(--green);font-weight:600">How to frame it: </span>' + g.bridge + '</div></div>';
-    });
-    document.getElementById('res-gaps-content').innerHTML = gapsHtml;
-    document.getElementById('res-gaps').style.display = 'block';
-  }
 }
 
 function resetEval() {
   document.getElementById('eval-result').style.display = 'none';
   document.getElementById('eval-log').style.display = 'none';
-  document.getElementById('res-gaps').style.display = 'none';
   document.getElementById('jd-input').value = '';
   state.lastEval = null;
 }
 
-let currentEvalMode = 'full';
-function selectEvalMode(mode) {
-  currentEvalMode = mode;
-  document.getElementById('chip-full').classList.toggle('active', mode === 'full');
-  document.getElementById('chip-eval').classList.toggle('active', mode === 'eval');
-  const desc = document.getElementById('mode-description');
-  desc.textContent = mode === 'full'
-    ? 'Full Pipeline: evaluate + auto-add to tracker after completion.'
-    : 'Eval Only: evaluation results only, no auto-tracking.';
-}
-
-function toggleGradeLegend() {
-  const el = document.getElementById('grade-legend');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function addToTracker(silent = false) {
+function addToTracker() {
   if (!state.lastEval) return;
   const d = state.lastEval;
-  const exists = state.tracker.find(e => e.roleTitle === (d.roleTitle || '') && e.company === (d.company || ''));
-  if (exists) { if (!silent) alert('Already in tracker.'); return; }
   const entry = {
     id: Date.now(),
     roleTitle: d.roleTitle || 'Unknown Role',
@@ -805,13 +665,12 @@ function addToTracker(silent = false) {
     grade: d.grade || '—',
     matchPercent: d.matchPercent || 0,
     status: 'Evaluating',
-    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'}),
-    fullEval: d
+    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'})
   };
   state.tracker.unshift(entry);
   saveState();
   updateBadges();
-  if (!silent) alert('Added to tracker!');
+  alert('Added to tracker!');
 }
 
 // ─── Pipeline Dashboard ───────────────────────────────────────────────────────
@@ -835,82 +694,32 @@ function renderPipeline() {
   const topGrade = state.tracker.map(e => e.grade).sort()[0] || '—';
   document.getElementById('m-top').textContent = topGrade;
 
+  const statusMap = { 'Evaluating':'s-evaluation', 'Applied':'s-applied', 'Interview':'s-interview', 'Rejected':'s-rejected' };
   const scoreClass = s => s >= 4.5 ? 'score-a' : s >= 3.5 ? 'score-b' : s >= 2.5 ? 'score-c' : 'score-d';
   const pct = s => Math.round((s / 5) * 100);
   const barColor = s => s >= 4 ? 'var(--green)' : s >= 3 ? 'var(--teal)' : 'var(--amber)';
-  const statusClass = s => s === 'Evaluating' ? 's-evaluating' : s === 'Applied' ? 's-applied' : s === 'Interview' ? 's-interview' : 's-rejected';
 
-  rows.innerHTML = state.tracker.map((e, i) => {
-    const statusOpts = ['Evaluating','Applied','Interview','Rejected'].map(s => '<option ' + (s===e.status?'selected':'') + '>' + s + '</option>').join('');
-    return '<div class="pipeline-row row-clickable" onclick="openTrackerDetail(' + i + ', event)">' +
-      '<div><div class="job-name">' + e.roleTitle + '</div><div class="job-company">' + e.company + '</div></div>' +
-      '<div><span class="tag tag-purple" style="font-size:11px">' + e.archetype + '</span></div>' +
-      '<div style="color:var(--muted);font-size:13px">' + e.date + '</div>' +
-      '<div style="display:flex;align-items:center;gap:6px">' +
-        '<span class="score-pill ' + scoreClass(e.score) + '">' + e.grade + '</span>' +
-        '<span style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">' + (e.score ? e.score.toFixed(1) : '—') + '</span>' +
-      '</div>' +
-      '<div><div class="prog-bar" style="width:80px"><div class="prog-fill" style="width:' + pct(e.score) + '%;background:' + barColor(e.score) + '"></div></div>' +
-        '<div style="font-size:12px;color:var(--muted);margin-top:2px">' + (e.matchPercent || pct(e.score)) + '%</div></div>' +
-      '<div onclick="event.stopPropagation()">' +
-        '<select class="status-select ' + statusClass(e.status) + '" onchange="updateStatus(' + i + ', this.value, this)">' + statusOpts + '</select>' +
-      '</div></div>';
-  }).join('');
+  rows.innerHTML = state.tracker.map((e, i) => `
+    <div class="pipeline-row">
+      <div><div class="job-name">${e.roleTitle}</div><div class="job-company">${e.company}</div></div>
+      <div><span class="tag tag-purple">${e.archetype}</span></div>
+      <div style="color:var(--muted);font-size:12px">${e.date}</div>
+      <div><span class="score-pill ${scoreClass(e.score)}">${e.grade}</span></div>
+      <div>
+        <div class="prog-bar" style="width:80px"><div class="prog-fill" style="width:${pct(e.score)}%;background:${barColor(e.score)}"></div></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px">${e.matchPercent || pct(e.score)}%</div>
+      </div>
+      <div>
+        <select onchange="updateStatus(${i}, this.value)" style="background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:11px;padding:3px 6px;cursor:pointer">
+          ${['Evaluating','Applied','Interview','Rejected'].map(s => `<option ${s===e.status?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </div>
+    </div>`).join('');
 }
 
-function updateStatus(idx, status, selectEl) {
+function updateStatus(idx, status) {
   state.tracker[idx].status = status;
   saveState();
-  if (selectEl) {
-    selectEl.className = 'status-select ' + (
-      status === 'Evaluating' ? 's-evaluating' :
-      status === 'Applied' ? 's-applied' :
-      status === 'Interview' ? 's-interview' : 's-rejected'
-    );
-  }
-}
-
-function openTrackerDetail(idx, event) {
-  const e = state.tracker[idx];
-  if (!e) return;
-  showView('evaluate');
-  const logEl = document.getElementById('eval-log');
-  const resultEl = document.getElementById('eval-result');
-  const logBody = document.getElementById('eval-log-body');
-  const errorEl = document.getElementById('eval-error');
-  errorEl.style.display = 'none';
-  document.getElementById('jd-input').value = '';
-
-  logEl.style.display = 'block';
-  document.getElementById('eval-spinner').style.display = 'none';
-  document.getElementById('eval-log-title').textContent = 'Saved evaluation — ' + e.roleTitle;
-  document.getElementById('eval-timer').textContent = e.date;
-  logBody.innerHTML = '<div class="h">→ ' + e.roleTitle + ' at ' + e.company + '</div>' +
-    '<div class="g">Grade: ' + e.grade + ' · Score: ' + e.score + '/5.0 · Match: ' + (e.matchPercent || '—') + '%</div>' +
-    '<div class="m">Archetype: ' + e.archetype + '</div>';
-
-  if (e.fullEval) {
-    state.lastEval = e.fullEval;
-    renderEvalResult(e.fullEval);
-    resultEl.style.display = 'block';
-    document.getElementById('res-gaps').style.display = 'none';
-    if (e.fullEval.gaps && e.fullEval.gaps.length > 0) {
-      let gapsHtml = '';
-      e.fullEval.gaps.forEach((g, i) => {
-        gapsHtml += '<div style="border:1px solid rgba(248,113,113,0.2);border-radius:var(--r);padding:14px 16px;margin-bottom:10px;background:rgba(248,113,113,0.04)">' +
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">' +
-          '<span style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:0.06em">Gap ' + (i+1) + '</span>' +
-          '<span style="font-size:12px;font-weight:600;color:var(--text)">' + g.gap + '</span></div>' +
-          '<div style="font-size:11px;color:var(--muted);margin-bottom:6px"><span style="color:var(--amber);font-weight:600">Why it matters: </span>' + g.why + '</div>' +
-          '<div style="font-size:11px;color:#9898b4"><span style="color:var(--green);font-weight:600">How to frame it: </span>' + g.bridge + '</div></div>';
-      });
-      document.getElementById('res-gaps-content').innerHTML = gapsHtml;
-      document.getElementById('res-gaps').style.display = 'block';
-    }
-  } else {
-    logBody.innerHTML += '<div style="margin-top:8px;color:var(--muted);font-size:12px">Full details not available for this evaluation — re-paste the JD and run again to save full results.</div>';
-    resultEl.style.display = 'none';
-  }
 }
 
 function updateBadges() {
@@ -991,10 +800,6 @@ async function generateScript() {
       document.getElementById('neg-close').textContent = d.close || '';
       document.getElementById('neg-email-subject').textContent = d.emailSubject || 'Email Subject';
       document.getElementById('neg-email-body').textContent = d.emailBody || '';
-      if (d.crossBorderNotes) {
-        document.getElementById('neg-crossborder').textContent = d.crossBorderNotes;
-        document.getElementById('neg-crossborder-wrap').style.display = 'block';
-      }
     }
   } catch (err) { alert('Error: ' + err.message); }
   btn.disabled = false; btn.textContent = 'Generate Script';
@@ -1022,8 +827,6 @@ async function runResearch() {
       document.getElementById('r-comp').textContent = d.compensation || '';
       document.getElementById('r-flags').textContent = d.redFlags || '';
       document.getElementById('r-verdict').textContent = d.verdict || '';
-      const tsEl = document.getElementById('r-techstack');
-      if (tsEl) tsEl.textContent = d.techStack || '';
     }
   } catch (err) { alert('Error: ' + err.message); }
   btn.disabled = false; btn.textContent = 'Research';
@@ -1039,7 +842,7 @@ async function runScan() {
   outputEl.style.display = 'block';
   resultsEl.style.display = 'none';
 
-  const content = `Scan for data analyst and BI job openings. Focus: ${focus || 'Senior Data Analyst, BI Developer, Analytics Engineer, Data Engineer, Product Analyst'}. Companies: L\'Oreal, Henkel, Unilever, Zalando, About You, HelloFresh, N26, Delivery Hero, Auto1, Celonis, SAP, Siemens, Deutsche Telekom, Booking.com, Trivago. Return realistic recent openings in Germany and Europe.`;
+  const content = `Scan for AI/tech job openings. Focus: ${focus || 'LLMOps, Applied AI, Agentic systems, AI engineering roles'}. Companies: Anthropic, OpenAI, ElevenLabs, Mistral, Retool, Vercel, LangChain, n8n, Weights & Biases. Return realistic recent openings.`;
 
   try {
     const result = await callAPI('scan', content);
@@ -1094,143 +897,6 @@ async function runBatch() {
 }
 
 // ─── PDF / CV ─────────────────────────────────────────────────────────────────
-async function handleCVUpload(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const label = document.getElementById('cv-upload-label');
-  const extracting = document.getElementById('cv-extracting');
-  label.textContent = file.name;
-  extracting.style.display = 'flex';
-
-  try {
-    // Load PDF.js from CDN
-    if (!window.pdfjsLib) {
-      await new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
-        s.onload = resolve; s.onerror = reject;
-        document.head.appendChild(s);
-      });
-      window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-    }
-
-    const arrayBuffer = await file.arrayBuffer();
-    const pdf = await window.pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    let fullText = '';
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const textContent = await page.getTextContent();
-      const pageText = textContent.items.map(item => item.str).join(' ');
-      fullText += pageText + '\n\n';
-    }
-    document.getElementById('p-cv').value = fullText.trim();
-    label.textContent = '✓ ' + file.name + ' — extracted successfully';
-  } catch (err) {
-    label.textContent = 'Error reading PDF — please paste CV text manually';
-    console.error(err);
-  }
-  extracting.style.display = 'none';
-}
-
-function buildStyledCV(d) {
-  const skills_p = (d.skills && d.skills.proficient) ? d.skills.proficient : (Array.isArray(d.skills) ? d.skills : []);
-  const skills_i = (d.skills && d.skills.intermediate) ? d.skills.intermediate : [];
-  const langs = d.languages || [];
-  const edu = d.education || [];
-  const interests = d.interests || [];
-
-  return `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Source Sans Pro', sans-serif; background: #fff; color: #222; font-size: 8.5pt; }
-  .page { max-width: 794px; margin: 0 auto; background: #fff; }
-  .header { background: #f3f2ef; padding: 16px 36px 14px; text-align: center; border-bottom: 1px solid #e0ddd6; }
-  .header h1 { font-size: 20pt; font-weight: 700; color: #175253; letter-spacing: -0.3px; margin-bottom: 3px; }
-  .header .subtitle { font-size: 10pt; color: #555; margin-bottom: 10px; }
-  .header .contact { font-size: 8.5pt; color: #444; display: flex; justify-content: center; gap: 18px; flex-wrap: wrap; }
-  .body { display: flex; gap: 0; }
-  .main { flex: 1; padding: 14px 22px 14px 36px; border-right: 1px solid #e8e5de; }
-  .sidebar { width: 195px; min-width: 195px; padding: 14px 16px 14px 14px; background: #fafaf8; }
-  .summary { font-size: 8.5pt; line-height: 1.5; color: #333; margin-bottom: 12px; text-align: justify; }
-  .section-title { font-size: 9pt; font-weight: 700; color: #175253; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1.5px solid #175253; padding-bottom: 2px; margin-bottom: 8px; margin-top: 12px; }
-  .section-title:first-child { margin-top: 0; }
-  .job { margin-bottom: 9px; }
-  .job-title { font-size: 9.5pt; font-weight: 700; color: #222; }
-  .job-company { font-style: italic; color: #555; font-weight: 400; }
-  .job-meta { font-size: 8pt; color: #777; margin-bottom: 4px; }
-  .job ul { padding-left: 14px; }
-  .job ul li { margin-bottom: 2px; line-height: 1.45; font-size: 8.2pt; text-align: justify; }
-  .job ul li strong { font-weight: 600; }
-  .sidebar-section { margin-bottom: 14px; }
-  .sidebar-title { font-size: 9pt; font-weight: 700; color: #175253; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #c8c4bb; padding-bottom: 3px; margin-bottom: 7px; }
-  .skill-cat { font-size: 8.5pt; font-weight: 700; color: #333; margin: 5px 0 3px; }
-  .skill-list { padding-left: 12px; }
-  .skill-list li { font-size: 8.5pt; margin-bottom: 2px; color: #444; }
-  .edu-item { margin-bottom: 9px; }
-  .edu-inst { font-size: 8.5pt; font-weight: 700; color: #222; }
-  .edu-deg { font-size: 8pt; color: #555; font-style: italic; }
-  .edu-meta { font-size: 7.5pt; color: #777; }
-  .interest-chip { display: inline-block; border: 1px solid #c8c4bb; border-radius: 4px; padding: 3px 8px; font-size: 7.5pt; color: #555; margin: 2px 2px 2px 0; }
-  @media print { body { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
-</style>
-</head>
-<body>
-<div class="page">
-  <div class="header">
-    <h1>${d.name || ''}</h1>
-    <div class="subtitle">${d.title || ''}</div>
-    <div class="contact">
-      ${d.email ? '<span>✉ ' + d.email + '</span>' : ''}
-      ${d.phone ? '<span>📞 ' + d.phone + '</span>' : ''}
-      ${d.location ? '<span>📍 ' + d.location + '</span>' : ''}
-      ${d.nationality ? '<span>🌍 ' + d.nationality + '</span>' : ''}
-      ${d.linkedin ? '<span>🔗 ' + d.linkedin + '</span>' : ''}
-    </div>
-  </div>
-  <div class="body">
-    <div class="main">
-      ${d.summary ? '<p class="summary">' + d.summary + '</p>' : ''}
-      <div class="section-title">Work Experience</div>
-      ${(d.experience || []).map(e => `
-        <div class="job">
-          <div class="job-title">${e.role || ''}<span class="job-company">, ${e.company || ''}</span></div>
-          <div class="job-meta">${e.period || ''}${e.location ? ' | ' + e.location : ''}</div>
-          <ul>${(e.bullets || []).map(b => '<li>' + b.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') + '</li>').join('')}</ul>
-        </div>`).join('')}
-    </div>
-    <div class="sidebar">
-      <div class="sidebar-section">
-        <div class="sidebar-title">Core Competencies</div>
-        <div class="skill-cat">Proficient</div>
-        <ul class="skill-list">${skills_p.map(s => '<li>' + s + '</li>').join('')}</ul>
-        ${skills_i.length ? '<div class="skill-cat">Intermediate</div><ul class="skill-list">' + skills_i.map(s => '<li>' + s + '</li>').join('') + '</ul>' : ''}
-      </div>
-      ${langs.length ? `<div class="sidebar-section">
-        <div class="sidebar-title">Languages</div>
-        <ul class="skill-list">${langs.map(l => '<li>' + (l.lang || l) + (l.level ? ' - ' + l.level : '') + '</li>').join('')}</ul>
-      </div>` : ''}
-      ${edu.length ? `<div class="sidebar-section">
-        <div class="sidebar-title">Education</div>
-        ${edu.map(e => `<div class="edu-item">
-          <div class="edu-inst">${e.institution || ''}</div>
-          <div class="edu-deg">${e.degree || ''}</div>
-          <div class="edu-meta">${e.period || ''}${e.location ? ' · ' + e.location : ''}</div>
-        </div>`).join('')}
-      </div>` : ''}
-      ${interests.length ? `<div class="sidebar-section">
-        <div class="sidebar-title">Interests</div>
-        ${interests.map(i => '<span class="interest-chip">' + i + '</span>').join('')}
-      </div>` : ''}
-    </div>
-  </div>
-</div>
-</body></html>`;
-}
-
 async function generateCV() {
   const jd = document.getElementById('pdf-jd').value.trim();
   if (!jd) { alert('Paste a job description first.'); return; }
@@ -1243,13 +909,18 @@ async function generateCV() {
     const result = await callAPI('pdf', content);
     if (result.success && result.data) {
       const d = result.data;
-      const styledHTML = buildStyledCV(d);
-      const preview = document.getElementById('pdf-content');
-      preview.innerHTML = '<iframe id="cv-iframe" style="width:100%;height:480px;border:none;border-radius:6px" srcdoc=""></iframe>';
-      document.getElementById('cv-iframe').srcdoc = styledHTML;
+      let html = `<div style="font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text)">`;
+      html += `<div style="margin-bottom:12px"><div style="font-size:16px;font-weight:700">${d.name||''}</div><div style="color:var(--accent)">${d.title||''}</div><div style="color:var(--muted);font-size:10px">${d.contact||''}</div></div>`;
+      if (d.summary) html += `<div style="margin-bottom:12px;color:#9898b4">${d.summary}</div>`;
+      if (d.experience) d.experience.forEach(e => {
+        html += `<div style="margin-bottom:10px"><div style="font-weight:600">${e.role} · ${e.company}</div><div style="color:var(--muted);font-size:10px">${e.period}</div>${(e.bullets||[]).map(b=>`<div style="color:#9898b4">• ${b}</div>`).join('')}</div>`;
+      });
+      if (d.skills) html += `<div style="margin-top:8px"><span style="color:var(--accent);font-weight:600">Skills: </span><span style="color:#9898b4">${d.skills.join(', ')}</span></div>`;
+      if (d.keywords_injected) html += `<div style="margin-top:8px;font-size:10px;color:var(--muted)">Keywords injected: ${d.keywords_injected.join(', ')}</div>`;
+      html += `</div>`;
+      document.getElementById('pdf-content').innerHTML = html;
       document.getElementById('pdf-result').style.display = 'block';
       window._cvData = d;
-      window._cvHTML = styledHTML;
     }
   } catch (err) {
     alert('Error: ' + err.message);
@@ -1258,107 +929,14 @@ async function generateCV() {
   btn.disabled = false; btn.textContent = 'Generate Tailored CV';
 }
 
-function printCV() {
-  if (!window._cvHTML) return;
-  const win = window.open('', '_blank');
-  win.document.write(window._cvHTML);
-  win.document.close();
-  setTimeout(() => win.print(), 800);
-}
-
-function openCVPreview() {
-  if (!window._cvHTML) return;
-  const win = window.open('', '_blank');
-  win.document.write(window._cvHTML);
-  win.document.close();
-}
-
-function switchCVTab(tab) {
-  const preview = document.getElementById('cv-tab-preview');
-  const copy = document.getElementById('cv-tab-copy');
-  const tabPreview = document.getElementById('tab-preview');
-  const tabCopy = document.getElementById('tab-copy');
-  if (tab === 'preview') {
-    preview.style.display = 'block'; copy.style.display = 'none';
-    tabPreview.style.color = 'var(--accent)'; tabPreview.style.borderBottomColor = 'var(--accent)';
-    tabCopy.style.color = 'var(--muted)'; tabCopy.style.borderBottomColor = 'transparent';
-  } else {
-    preview.style.display = 'none'; copy.style.display = 'block';
-    tabCopy.style.color = 'var(--accent)'; tabCopy.style.borderBottomColor = 'var(--accent)';
-    tabPreview.style.color = 'var(--muted)'; tabPreview.style.borderBottomColor = 'transparent';
-    renderCopySections();
-  }
-}
-
-function renderCopySections() {
+function downloadCV() {
+  if (!window._cvData) return;
   const d = window._cvData;
-  if (!d) return;
-  const container = document.getElementById('cv-copy-sections');
-
-  function copyBlock(id) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    navigator.clipboard.writeText(el.innerText).then(() => {
-      const btn = el.parentElement.querySelector('.copy-btn');
-      if (btn) { btn.textContent = '✓ Copied'; setTimeout(() => btn.textContent = 'Copy', 1500); }
-    });
-  }
-
-  function section(title, id, text) {
-    return `<div class="eval-block" style="margin-bottom:10px">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <div class="eval-block-title">${title}</div>
-        <button class="btn sm copy-btn" onclick="(function(){navigator.clipboard.writeText(document.getElementById('${id}').innerText).then(()=>{this.textContent='✓ Copied';setTimeout(()=>this.textContent='Copy',1500)})}).call(this)">Copy</button>
-      </div>
-      <div id="${id}" class="eval-block-text" style="white-space:pre-wrap;font-size:12px;line-height:1.7;user-select:text">${text}</div>
-    </div>`;
-  }
-
-  let html = '';
-
-  // Contact / Header
-  const contact = [d.name, d.title, [d.email, d.phone, d.location, d.nationality].filter(Boolean).join(' · '), d.linkedin].filter(Boolean).join('\n');
-  html += section('Contact & Header', 'copy-contact', contact);
-
-  // Summary
-  if (d.summary) html += section('Professional Summary', 'copy-summary', d.summary);
-
-  // Each experience role separately
-  (d.experience || []).forEach((exp, i) => {
-    const roleText = [
-      `${exp.role}${exp.company ? ', ' + exp.company : ''}`,
-      `${exp.period || ''}${exp.location ? ' | ' + exp.location : ''}`,
-      ...(exp.bullets || []).map(b => '• ' + b)
-    ].join('\n');
-    html += section(`Experience: ${exp.role} @ ${exp.company}`, `copy-exp-${i}`, roleText);
-  });
-
-  // Skills
-  const proficient = (d.skills && d.skills.proficient) ? d.skills.proficient : (Array.isArray(d.skills) ? d.skills : []);
-  const intermediate = (d.skills && d.skills.intermediate) ? d.skills.intermediate : [];
-  if (proficient.length || intermediate.length) {
-    const skillsText = (proficient.length ? 'Proficient:\n' + proficient.join(', ') : '') +
-      (intermediate.length ? '\nIntermediate:\n' + intermediate.join(', ') : '');
-    html += section('Skills', 'copy-skills', skillsText);
-  }
-
-  // Languages
-  if (d.languages && d.languages.length) {
-    html += section('Languages', 'copy-langs', d.languages.map(l => `${l.lang} - ${l.level}`).join('\n'));
-  }
-
-  // Education
-  if (d.education && d.education.length) {
-    const eduText = d.education.map(e => `${e.institution}\n${e.degree}\n${e.period}${e.location ? ' · ' + e.location : ''}`).join('\n\n');
-    html += section('Education', 'copy-edu', eduText);
-  }
-
-  // Keywords injected
-  if (d.keywords_injected && d.keywords_injected.length) {
-    html += section('Keywords Injected (ATS)', 'copy-keywords', d.keywords_injected.join(', '));
-  }
-
-  container.innerHTML = html;
+  let text = `${d.name}\n${d.title}\n${d.contact}\n\n${d.summary}\n\n`;
+  (d.experience||[]).forEach(e => { text += `${e.role} · ${e.company} · ${e.period}\n`; (e.bullets||[]).forEach(b => text += `• ${b}\n`); text += '\n'; });
+  text += `Skills: ${(d.skills||[]).join(', ')}\n`;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tailored-cv.txt'; a.click();
 }
 
 // ─── Outreach ─────────────────────────────────────────────────────────────────
