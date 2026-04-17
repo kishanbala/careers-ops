@@ -4,975 +4,1775 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Career Ops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg: #0a0a0f; --bg2: #111118; --bg3: #16161f; --bg4: #1c1c28;
-    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
-    --text: #e8e8f0; --muted: #6b6b80;
-    --accent: #7c5cfc; --accent2: #5c8afc;
-    --green: #4ade80; --amber: #fbbf24; --red: #f87171; --teal: #2dd4bf; --pink: #f472b6;
-    --font-display: 'Syne', sans-serif; --font-body: 'DM Sans', sans-serif; --font-mono: 'DM Mono', monospace;
-    --r: 10px; --r-lg: 16px;
+/* ===== CSS VARIABLES ===== */
+:root {
+  --nav-bg: #1f2937;
+  --page-bg: #ffffff;
+  --surface: #f9fafb;
+  --border: #e5e7eb;
+  --accent: #22c55e;
+  --accent-dark: #16a34a;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-on-dark: #e5e7eb;
+  --text-on-dark-muted: #9ca3af;
+  --btn-primary-bg: #1f2937;
+  --btn-primary-text: #ffffff;
+
+  /* Traffic light */
+  --strong: #16a34a;
+  --review: #d97706;
+  --weak: #e24b4a;
+  --neutral-num: #374151;
+
+  /* Gauge colours */
+  --gauge-a: #16a34a;
+  --gauge-b: #d97706;
+  --gauge-c: #e24b4a;
+
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'DM Mono', 'Fira Mono', monospace;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+  --nav-width: 224px;
+  --top-nav-h: 56px;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 14px; }
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--page-bg);
+  min-height: 100vh;
+}
+button { font-family: var(--font-body); cursor: pointer; }
+input, textarea, select { font-family: var(--font-body); font-size: 14px; }
+a { color: inherit; text-decoration: none; }
+
+/* ===== LAYOUT — DESKTOP (≥1024px) ===== */
+/* Top nav bar */
+.top-nav {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--top-nav-h);
+  background: var(--nav-bg);
+  align-items: center;
+  padding: 0 24px;
+  gap: 0;
+}
+.top-nav .logo {
+  display: flex; align-items: center; gap: 10px;
+  color: #fff; font-weight: 800; font-size: 16px;
+  margin-right: 32px; white-space: nowrap;
+}
+.logo-mark {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--accent); display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 13px; color: #fff; flex-shrink: 0;
+}
+.top-nav-links {
+  display: flex; align-items: center; gap: 2px; flex: 1;
+}
+.top-nav-links .nav-item {
+  padding: 6px 14px; border-radius: 6px;
+  color: var(--text-on-dark-muted); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.top-nav-links .nav-item:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.07); }
+.top-nav-links .nav-item.active { color: #fff; background: rgba(255,255,255,0.1); }
+
+/* Sidebar nav */
+.sidebar {
+  display: none;
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 90;
+  width: var(--nav-width);
+  background: var(--nav-bg);
+  flex-direction: column;
+  padding: 20px 0 16px;
+  overflow-y: auto;
+}
+.sidebar .logo {
+  display: flex; align-items: center; gap: 10px;
+  color: #fff; font-weight: 800; font-size: 15px;
+  padding: 0 16px 20px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 8px;
+}
+.sidebar .nav-section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-on-dark-muted); padding: 12px 16px 4px;
+}
+.sidebar .nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 16px; margin: 1px 8px; border-radius: var(--radius);
+  color: var(--text-on-dark-muted); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: color 0.15s, background 0.15s;
+}
+.sidebar .nav-item:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.07); }
+.sidebar .nav-item.active { color: #fff; background: rgba(255,255,255,0.1); }
+.nav-icon { width: 16px; height: 16px; opacity: 0.7; flex-shrink: 0; }
+.nav-item.active .nav-icon { opacity: 1; }
+.nav-badge {
+  margin-left: auto; background: var(--accent); color: #fff;
+  font-size: 11px; font-weight: 700; border-radius: 10px;
+  padding: 1px 7px; font-family: var(--font-mono);
+}
+
+/* Main content area */
+.main-content {
+  padding: 24px;
+  min-height: 100vh;
+}
+
+/* ===== PAGE SECTIONS ===== */
+.page-section { display: none; }
+.page-section.active { display: block; }
+
+/* ===== DESKTOP LAYOUT ===== */
+@media (min-width: 1024px) {
+  .top-nav { display: flex; }
+  .main-content { margin-top: var(--top-nav-h); padding: 32px 40px; max-width: 1200px; }
+  .mobile-bottom-nav { display: none !important; }
+  .hamburger-btn { display: none !important; }
+}
+
+/* ===== TABLET LAYOUT (768–1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar { display: flex; }
+  .main-content { margin-left: var(--nav-width); padding: 28px 28px; }
+  .top-nav { display: none; }
+  .mobile-bottom-nav { display: none !important; }
+  .hamburger-btn { display: none !important; }
+}
+
+/* ===== MOBILE LAYOUT (<768px) ===== */
+@media (max-width: 767px) {
+  .main-content { padding: 16px 16px 80px; }
+  .mobile-bottom-nav {
+    display: flex !important;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    background: var(--nav-bg); border-top: 1px solid rgba(255,255,255,0.1);
+    height: 60px;
   }
-  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 14px; }
-  .app { display: flex; height: 100vh; overflow: hidden; }
-  .sidebar { width: 220px; min-width: 220px; background: var(--bg2); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 0; overflow-y: auto; }
-  .logo { padding: 0 20px 24px; display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 18px; font-weight: 800; letter-spacing: -0.5px; }
-  .logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--accent), var(--accent2)); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; font-family: var(--font-display); }
-  .logo-text span { color: var(--accent); }
-  .nav-section { padding: 0 12px 8px; }
-  .nav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; padding: 0 8px; margin-bottom: 4px; }
-  .nav-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer; color: var(--muted); transition: all 0.15s; font-size: 13px; font-weight: 400; border: none; background: none; width: 100%; text-align: left; font-family: var(--font-body); }
-  .nav-item:hover { background: var(--bg3); color: var(--text); }
-  .nav-item.active { background: rgba(124,92,252,0.12); color: var(--accent); }
-  .nav-sep { height: 1px; background: var(--border); margin: 12px 12px; }
-  .badge { margin-left: auto; font-size: 10px; padding: 2px 6px; border-radius: 20px; background: rgba(124,92,252,0.2); color: var(--accent); font-weight: 500; }
-  .badge.green { background: rgba(74,222,128,0.15); color: var(--green); }
-  .badge.amber { background: rgba(251,191,36,0.15); color: var(--amber); }
-  .main { flex: 1; overflow-y: auto; display: flex; flex-direction: column; }
-  .topbar { padding: 16px 28px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; background: var(--bg); position: sticky; top: 0; z-index: 10; }
-  .topbar-title { font-family: var(--font-display); font-weight: 700; font-size: 16px; }
-  .topbar-sub { color: var(--muted); font-size: 12px; margin-left: 4px; }
-  .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-  .btn { padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text); font-family: var(--font-body); transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
-  .btn:hover { background: var(--bg4); border-color: rgba(255,255,255,0.18); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn.primary:hover { background: #6b4de8; }
-  .btn.sm { padding: 5px 10px; font-size: 12px; }
-  .content { padding: 28px; flex: 1; }
-  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
-  .metric { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 20px; }
-  .metric-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; }
-  .metric-value { font-family: var(--font-display); font-size: 28px; font-weight: 800; }
-  .metric-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
-  .metric-value.accent { color: var(--accent); }
-  .metric-value.green { color: var(--green); }
-  .metric-value.amber { color: var(--amber); }
-  .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
-  .pipeline-grid { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; }
-  .pipeline-header { display: grid; grid-template-columns: 2.5fr 1fr 1fr 0.8fr 0.8fr 0.8fr; padding: 10px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid var(--border); gap: 12px; }
-  .pipeline-row { display: grid; grid-template-columns: 2.5fr 1fr 1fr 0.8fr 0.8fr 0.8fr; padding: 12px 20px; border-bottom: 1px solid var(--border); gap: 12px; align-items: center; transition: background 0.1s; cursor: pointer; }
-  .pipeline-row:last-child { border-bottom: none; }
-  .pipeline-row:hover { background: var(--bg3); }
-  .job-name { font-weight: 500; font-size: 13px; }
-  .job-company { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .score-pill { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 22px; border-radius: 6px; font-size: 12px; font-weight: 600; font-family: var(--font-mono); }
-  .score-a { background: rgba(74,222,128,0.15); color: var(--green); }
-  .score-b { background: rgba(45,212,191,0.15); color: var(--teal); }
-  .score-c { background: rgba(251,191,36,0.15); color: var(--amber); }
-  .score-d { background: rgba(248,113,113,0.15); color: var(--red); }
-  .status-chip { font-size: 11px; padding: 3px 8px; border-radius: 20px; white-space: nowrap; display: inline-flex; align-items: center; gap: 4px; }
-  .s-applied { background: rgba(124,92,252,0.12); color: var(--accent); }
-  .s-interview { background: rgba(74,222,128,0.12); color: var(--green); }
-  .s-evaluation { background: rgba(251,191,36,0.12); color: var(--amber); }
-  .s-rejected { background: rgba(248,113,113,0.1); color: var(--red); }
-  .input-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 20px; margin-bottom: 20px; }
-  .input-card textarea, .form-input { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: var(--r); color: var(--text); font-family: var(--font-body); font-size: 13px; padding: 12px 14px; resize: none; outline: none; line-height: 1.6; transition: border-color 0.15s; }
-  .input-card textarea:focus, .form-input:focus { border-color: var(--accent); }
-  .input-card textarea::placeholder, .form-input::placeholder { color: var(--muted); }
-  .input-actions { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
-  .mode-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-  .mode-chip { font-size: 11px; padding: 4px 10px; border-radius: 20px; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--muted); transition: all 0.15s; font-family: var(--font-body); }
-  .mode-chip:hover, .mode-chip.active { border-color: var(--accent); background: rgba(124,92,252,0.12); color: var(--accent); }
-  .output-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; margin-bottom: 20px; }
-  .output-header { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--border); background: var(--bg3); }
-  .output-body { padding: 20px; font-family: var(--font-mono); font-size: 12px; line-height: 1.8; color: #b4b4cc; min-height: 100px; }
-  .output-body .h { color: var(--accent); font-weight: 500; }
-  .output-body .g { color: var(--green); }
-  .output-body .err { color: var(--red); }
-  .dot-spin { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--accent); border-top-color: transparent; animation: spin 0.7s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .settings-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 22px; }
-  .settings-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 16px; }
-  .score-display { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
-  .score-big { font-family: var(--font-display); font-size: 52px; font-weight: 800; line-height: 1; }
-  .eval-score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
-  .eval-score-label { font-size: 11px; color: var(--muted); width: 130px; flex-shrink: 0; }
-  .eval-score-bar { flex: 1; height: 3px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
-  .prog-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
-  .eval-score-val { font-family: var(--font-mono); font-size: 11px; color: var(--text); width: 28px; text-align: right; }
-  .eval-block { border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; margin-bottom: 10px; background: var(--bg3); }
-  .eval-block-title { font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 6px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .eval-block-text { font-size: 12px; color: #9898b4; line-height: 1.7; }
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-  .tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; display: inline-block; }
-  .tag-purple { background: rgba(124,92,252,0.12); color: var(--accent); }
-  .tag-teal { background: rgba(45,212,191,0.1); color: var(--teal); }
-  .tag-green { background: rgba(74,222,128,0.1); color: var(--green); }
-  .form-group { margin-bottom: 16px; }
-  .form-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; display: block; }
-  select.form-input { cursor: pointer; }
-  .story-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; margin-bottom: 10px; }
-  .story-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-weight: 500; background: rgba(45,212,191,0.1); color: var(--teal); display: inline-block; margin-bottom: 8px; }
-  .story-q { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
-  .story-text { font-size: 12px; color: var(--muted); line-height: 1.7; }
-  .prog-bar { height: 4px; background: var(--bg4); border-radius: 2px; overflow: hidden; }
-  .scan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .scan-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--r); padding: 14px 16px; transition: border-color 0.15s; }
-  .scan-card.scanning { border-color: var(--accent); }
-  .scan-company { font-weight: 500; font-size: 13px; margin-bottom: 4px; }
-  .scan-info { font-size: 11px; color: var(--muted); }
-  .scan-status { font-size: 11px; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
-  .tracker-empty { text-align: center; padding: 60px 20px; color: var(--muted); }
-  .tracker-empty .big { font-size: 36px; margin-bottom: 12px; opacity: 0.3; }
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-  .alert { padding: 10px 14px; border-radius: var(--r); font-size: 12px; margin-bottom: 12px; }
-  .alert-error { background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); color: var(--red); }
-  .alert-success { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--green); }
+}
+
+/* Mobile bottom tab bar */
+.mobile-bottom-nav {
+  display: none;
+  align-items: stretch;
+}
+.mobile-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; cursor: pointer; padding: 6px 4px;
+  color: var(--text-on-dark-muted); font-size: 10px; font-weight: 500;
+  transition: color 0.15s;
+}
+.mobile-tab.active { color: var(--accent); }
+.mobile-tab svg { width: 20px; height: 20px; }
+
+/* ===== PAGE HEADER ===== */
+.page-header { margin-bottom: 28px; }
+.page-title { font-size: 22px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+.page-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--page-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.card + .card { margin-top: 16px; }
+.card-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 16px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: var(--radius); border: none;
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-primary); }
+.btn-ghost { background: transparent; color: var(--text-secondary); padding: 7px 12px; }
+.btn-ghost:hover { background: var(--surface); color: var(--text-primary); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
+.btn:disabled { opacity: 0.45; pointer-events: none; }
+
+/* ===== FORM ELEMENTS ===== */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; line-height: 1.5;
+  background: var(--page-bg); color: var(--text-primary);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+}
+.form-textarea { resize: vertical; min-height: 120px; }
+
+/* ===== TOGGLE CHIPS ===== */
+.chip-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip {
+  padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  color: var(--text-secondary); background: var(--page-bg);
+}
+.chip.active {
+  background: var(--btn-primary-bg); color: #fff; border-color: var(--btn-primary-bg);
+}
+
+/* ===== STATUS CHIPS ===== */
+.status-chip {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.status-applied { background: #dbeafe; color: #1d4ed8; }
+.status-interview { background: #fef3c7; color: #92400e; }
+.status-offer { background: #dcfce7; color: #166534; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+.status-researching { background: #f3f4f6; color: #374151; }
+.status-saved { background: #ede9fe; color: #5b21b6; }
+
+/* ===== GRADE BADGE ===== */
+.grade-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+}
+.grade-a { background: #dcfce7; color: #166534; }
+.grade-b { background: #fef3c7; color: #92400e; }
+.grade-c { background: #fee2e2; color: #991b1b; }
+.grade-d { background: #f3f4f6; color: #374151; }
+
+/* ===== SCORE GAUGE ===== */
+.gauge-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 0 8px;
+}
+.gauge-svg { width: 180px; height: 100px; overflow: visible; }
+.gauge-grade-pill {
+  margin-top: 8px; padding: 4px 16px; border-radius: 20px;
+  font-weight: 700; font-size: 13px; letter-spacing: 0.05em;
+}
+.gauge-recommendation {
+  font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-weight: 500;
+}
+
+/* ===== DIMENSION BARS ===== */
+.dim-list { display: flex; flex-direction: column; gap: 10px; }
+.dim-row { display: flex; align-items: center; gap: 12px; }
+.dim-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); width: 110px; flex-shrink: 0; }
+.dim-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.dim-bar { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.dim-bar.strong { background: var(--strong); }
+.dim-bar.review { background: var(--review); }
+.dim-bar.weak { background: var(--weak); }
+.dim-score { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--neutral-num); width: 28px; text-align: right; }
+.dim-legend { display: flex; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.dim-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-secondary); }
+.dim-legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+/* ===== EVAL RESULT BLOCKS ===== */
+.eval-block { margin-bottom: 16px; }
+.eval-block-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+.eval-block-body { font-size: 14px; line-height: 1.7; color: var(--text-primary); background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
+
+/* STAR story block */
+.star-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.star-item { background: var(--surface); border-radius: var(--radius); padding: 12px 14px; }
+.star-q { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.star-starter { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== PIPELINE TABLE ===== */
+.pipeline-table { width: 100%; border-collapse: collapse; }
+.pipeline-table th {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-secondary); padding: 8px 12px; text-align: left;
+  border-bottom: 1.5px solid var(--border); background: var(--surface);
+}
+.pipeline-table td {
+  padding: 12px 12px; border-bottom: 1px solid var(--border);
+  font-size: 13px; vertical-align: middle;
+}
+.pipeline-table tr:last-child td { border-bottom: none; }
+.pipeline-table tbody tr { cursor: pointer; transition: background 0.1s; }
+.pipeline-table tbody tr:hover { background: var(--surface); }
+.score-num { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--neutral-num); }
+
+/* ===== STATS GRID ===== */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 767px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.stat-card {
+  background: var(--page-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.stat-value { font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--text-primary); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ===== GRADE LEGEND ===== */
+.grade-legend { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.grade-legend-row {
+  display: grid; grid-template-columns: 48px 60px 1fr;
+  align-items: center; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.grade-legend-row:last-child { border-bottom: none; }
+.grade-legend-row:hover { background: var(--surface); }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text-secondary); }
+.empty-icon { font-size: 36px; margin-bottom: 12px; }
+.empty-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.empty-text { font-size: 13px; }
+
+/* ===== MODAL / DRAWER ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--page-bg); border-radius: var(--radius-lg);
+  padding: 28px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+.modal-title { font-size: 18px; font-weight: 800; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-secondary); padding: 0 4px; line-height: 1; }
+
+/* ===== LOADING ===== */
+.spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-bar {
+  height: 3px; background: var(--border); border-radius: 2px;
+  overflow: hidden; margin-top: 16px;
+}
+.loading-bar-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  animation: fill 2s ease-in-out infinite;
+}
+@keyframes fill { 0% { width: 0; } 70% { width: 80%; } 100% { width: 95%; } }
+.loading-msg { font-size: 13px; color: var(--text-secondary); margin-top: 10px; }
+.timer-text { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+
+/* ===== TABS ===== */
+.tab-bar { display: flex; gap: 2px; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+.tab-btn {
+  padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: none; background: none; color: var(--text-secondary);
+  border-bottom: 2.5px solid transparent; margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ===== PORTAL SCANNER ===== */
+.portal-list { display: flex; flex-direction: column; gap: 8px; }
+.portal-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; background: var(--surface); border-radius: var(--radius);
+  font-size: 13px;
+}
+.portal-meta { color: var(--text-secondary); font-size: 12px; margin-top: 2px; }
+.portal-status { font-size: 12px; font-weight: 600; color: var(--strong); }
+
+/* ===== CV PREVIEW ===== */
+.cv-preview-wrap {
+  border: 1px solid var(--border); border-radius: var(--radius-lg);
+  overflow: hidden; background: #fff;
+}
+.cv-preview-toolbar {
+  display: flex; align-items: center; gap: 8px; padding: 10px 14px;
+  background: var(--surface); border-bottom: 1px solid var(--border);
+}
+.cv-preview-content { padding: 32px; font-size: 13px; line-height: 1.7; }
+
+/* ===== SECTION COPY ===== */
+.copy-section-btn {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--surface); border-radius: var(--radius);
+  margin-bottom: 8px; cursor: pointer; border: 1.5px solid var(--border);
+  font-size: 13px; transition: border-color 0.15s;
+}
+.copy-section-btn:hover { border-color: var(--accent); background: #f0fdf4; }
+.copy-section-btn.copied { border-color: var(--strong); background: #f0fdf4; color: var(--strong); }
+
+/* ===== RESEARCH REPORT ===== */
+.research-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 767px) { .research-grid { grid-template-columns: 1fr; } }
+.research-block { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
+.research-block-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); margin-bottom: 6px; }
+.research-block-val { font-size: 13px; line-height: 1.7; }
+
+/* ===== NEGOTIATION ===== */
+.neg-section { margin-bottom: 20px; }
+.neg-label { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+.neg-body { background: var(--surface); border-radius: var(--radius); padding: 14px 16px; font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
+.neg-email-wrap { background: var(--nav-bg); border-radius: var(--radius); padding: 16px; color: var(--text-on-dark); font-size: 13px; line-height: 1.7; }
+.neg-subject { font-weight: 600; color: var(--text-on-dark); margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+
+/* ===== STORY BANK ===== */
+.story-card { border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 18px; margin-bottom: 12px; cursor: pointer; transition: border-color 0.15s; }
+.story-card:hover { border-color: var(--accent); }
+.story-q { font-size: 14px; font-weight: 600; margin-bottom: 8px; }
+.story-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.story-tag { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2px 10px; font-size: 11px; color: var(--text-secondary); }
+
+/* ===== OUTREACH ===== */
+.outreach-char-count { font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+.outreach-note { background: var(--nav-bg); border-radius: var(--radius); padding: 16px; color: var(--text-on-dark); font-size: 13px; line-height: 1.6; }
+
+/* ===== PROFILE ===== */
+.profile-avatar { width: 56px; height: 56px; border-radius: 12px; background: var(--nav-bg); display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; color: var(--accent); margin-bottom: 16px; }
+.cv-upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 32px; text-align: center; cursor: pointer; transition: all 0.15s;
+  background: var(--surface);
+}
+.cv-upload-zone:hover { border-color: var(--accent); background: #f0fdf4; }
+.cv-upload-zone.has-cv { border-style: solid; border-color: var(--accent); background: #f0fdf4; }
+
+/* ===== NOTIFICATION TOAST ===== */
+.toast {
+  position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: var(--nav-bg); color: var(--text-on-dark); padding: 10px 20px;
+  border-radius: 24px; font-size: 13px; font-weight: 500; z-index: 300;
+  opacity: 0; transition: opacity 0.2s; pointer-events: none; white-space: nowrap;
+  box-shadow: var(--shadow-md);
+}
+.toast.show { opacity: 1; }
+@media (min-width: 768px) { .toast { bottom: 24px; } }
+
+/* ===== EVAL RESULT HEADER ===== */
+.eval-header {
+  display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start;
+  margin-bottom: 24px;
+}
+@media (max-width: 767px) { .eval-header { grid-template-columns: 1fr; } }
+.eval-meta-title { font-size: 20px; font-weight: 800; line-height: 1.2; }
+.eval-meta-company { font-size: 15px; color: var(--text-secondary); margin-top: 2px; }
+.eval-meta-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+.eval-meta-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 12px; font-weight: 500; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #d1d5db; }
+
+/* ===== TWO COLUMN EVAL LAYOUT ===== */
+.eval-two-col { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+@media (max-width: 900px) { .eval-two-col { grid-template-columns: 1fr; } }
+
+/* ===== MATCH BADGE ===== */
+.match-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.match-ring { width: 36px; height: 36px; }
+
+/* ===== BATCH ===== */
+.batch-results-table { width: 100%; border-collapse: collapse; }
+.batch-results-table th { font-size: 11px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-secondary); padding: 8px 12px; border-bottom: 1.5px solid var(--border); background: var(--surface); text-align: left; }
+.batch-results-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; }
+
+/* ===== EVAL ACTION BUTTONS ===== */
+.eval-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
 </style>
 </head>
 <body>
-<div class="app">
-  <!-- Sidebar -->
-  <nav class="sidebar">
-    <div class="logo">
-      <div class="logo-icon">CO</div>
-      <div class="logo-text">Career<span>Ops</span></div>
-    </div>
-    <div class="nav-section">
-      <div class="nav-label">Pipeline</div>
-      <button class="nav-item active" onclick="showView('pipeline')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Dashboard <span class="badge" id="tracker-count">0</span>
-      </button>
-      <button class="nav-item" onclick="showView('evaluate')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        Evaluate Offer
-      </button>
-      <button class="nav-item" onclick="showView('scan')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21H3V3"/><path d="M7 14l4-4 4 4 4-4"/></svg>
-        Scan Portals
-      </button>
-      <button class="nav-item" onclick="showView('batch')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
-        Batch Process
-      </button>
-    </div>
-    <div class="nav-sep"></div>
-    <div class="nav-section">
-      <div class="nav-label">Tools</div>
-      <button class="nav-item" onclick="showView('pdf')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Generate PDF CV
-      </button>
-      <button class="nav-item" onclick="showView('stories')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-        Story Bank <span class="badge green" id="story-count">0</span>
-      </button>
-      <button class="nav-item" onclick="showView('negotiate')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-        Negotiation
-      </button>
-      <button class="nav-item" onclick="showView('research')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-        Deep Research
-      </button>
-      <button class="nav-item" onclick="showView('contacto')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-        LinkedIn Outreach
-      </button>
-    </div>
-    <div class="nav-sep"></div>
-    <div class="nav-section">
-      <div class="nav-label">Config</div>
-      <button class="nav-item" onclick="showView('profile')">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        Profile & CV
-      </button>
-    </div>
-  </nav>
 
-  <!-- Main content -->
-  <div class="main" id="main-content">
+<!-- ===== TOP NAV (Desktop ≥1024px) ===== -->
+<nav class="top-nav">
+  <div class="logo">
+    <div class="logo-mark">CO</div>
+    CareerOps
+  </div>
+  <div class="top-nav-links">
+    <div class="nav-item active" data-page="dashboard">Dashboard</div>
+    <div class="nav-item" data-page="evaluate">Evaluate Offer</div>
+    <div class="nav-item" data-page="scan">Find Jobs</div>
+    <div class="nav-item" data-page="cv">My CV</div>
+    <div class="nav-item" data-page="strategy">Career Strategy</div>
+    <div class="nav-item" data-page="profile">My Profile</div>
+  </div>
+</nav>
 
-    <!-- PIPELINE DASHBOARD -->
-    <div id="view-pipeline">
-      <div class="topbar">
-        <div><div class="topbar-title">Pipeline Dashboard</div><span class="topbar-sub" id="pipeline-sub">0 applications tracked</span></div>
-        <div class="topbar-actions">
-          <button class="btn sm primary" onclick="showView('evaluate')">+ Evaluate New</button>
-        </div>
-      </div>
-      <div class="content">
-        <div class="metrics">
-          <div class="metric"><div class="metric-label">Total Evaluated</div><div class="metric-value" id="m-total">0</div><div class="metric-sub">All time</div></div>
-          <div class="metric"><div class="metric-label">Active Pipeline</div><div class="metric-value accent" id="m-active">0</div><div class="metric-sub">In progress</div></div>
-          <div class="metric"><div class="metric-label">Avg Score</div><div class="metric-value green" id="m-avg">—</div><div class="metric-sub">Out of 5.0</div></div>
-          <div class="metric"><div class="metric-label">Top Grade</div><div class="metric-value amber" id="m-top">—</div><div class="metric-sub">Best evaluated</div></div>
-        </div>
-        <div class="section-title">Applications</div>
-        <div class="pipeline-grid">
-          <div class="pipeline-header"><span>Role</span><span>Archetype</span><span>Date</span><span>Score</span><span>Match</span><span>Status</span></div>
-          <div id="pipeline-rows">
-            <div class="tracker-empty"><div class="big">📋</div><div>No applications yet</div><div style="font-size:11px;margin-top:4px">Evaluate an offer to get started</div></div>
-          </div>
-        </div>
-      </div>
+<!-- ===== SIDEBAR (Tablet 768–1023px) ===== -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">CO</div>
+    CareerOps
+  </div>
+  <div class="nav-section-label">Pipeline</div>
+  <div class="nav-item active" data-page="dashboard">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/></svg>
+    Dashboard <span class="nav-badge" id="sb-badge">0</span>
+  </div>
+  <div class="nav-item" data-page="evaluate">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+    Evaluate Offer
+  </div>
+  <div class="nav-section-label">Jobs</div>
+  <div class="nav-item" data-page="scan">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+    Find Jobs
+  </div>
+  <div class="nav-item" data-page="batch">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/><path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"/></svg>
+    Evaluate Multiple Jobs
+  </div>
+  <div class="nav-section-label">Tools</div>
+  <div class="nav-item" data-page="cv">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+    My CV
+  </div>
+  <div class="nav-item" data-page="stories">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"/></svg>
+    Interview Stories <span class="nav-badge" id="sb-stories-badge">0</span>
+  </div>
+  <div class="nav-item" data-page="negotiate">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z"/><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd"/></svg>
+    Negotiation Script
+  </div>
+  <div class="nav-item" data-page="research">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm2 10a1 1 0 10-2 0v3a1 1 0 102 0v-3zm2-3a1 1 0 011 1v5a1 1 0 11-2 0v-5a1 1 0 011-1zm4-1a1 1 0 10-2 0v7a1 1 0 102 0V8z" clip-rule="evenodd"/></svg>
+    Company Research
+  </div>
+  <div class="nav-item" data-page="outreach">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+    Outreach Message
+  </div>
+  <div class="nav-section-label">You</div>
+  <div class="nav-item" data-page="strategy">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+    Career Strategy
+  </div>
+  <div class="nav-item" data-page="profile">
+    <svg class="nav-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+    My Profile
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<main class="main-content">
+
+  <!-- DASHBOARD -->
+  <section class="page-section active" id="page-dashboard">
+    <div class="page-header">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-subtitle">Your job application pipeline at a glance.</p>
     </div>
 
-    <!-- EVALUATE -->
-    <div id="view-evaluate" style="display:none">
-      <div class="topbar">
-        <div><div class="topbar-title">Evaluate Offer</div><span class="topbar-sub">Paste a job URL or description — AI runs the full pipeline</span></div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-label">Total Evaluated</div>
       </div>
-      <div class="content">
-        <div class="input-card">
-          <div class="mode-chips">
-            <span class="mode-chip active" data-mode="evaluate">Full Pipeline</span>
-            <span class="mode-chip" data-mode="evaluate">Eval Only</span>
-          </div>
-          <textarea id="jd-input" rows="6" placeholder="Paste a job description here...&#10;&#10;Include: role title, company, responsibilities, requirements, compensation if listed."></textarea>
-          <div class="input-actions">
-            <button class="btn primary" id="run-btn" onclick="runEvaluation()">▶ Run Evaluation</button>
-            <button class="btn sm" onclick="document.getElementById('jd-input').value=''">Clear</button>
-            <span id="eval-status" style="font-size:12px;color:var(--muted)"></span>
-          </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-active">0</div>
+        <div class="stat-label">Active Pipeline</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-avg">—</div>
+        <div class="stat-label">Avg Score</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-top">—</div>
+        <div class="stat-label">Top Grade</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <h2 class="card-title" style="margin:0">Applications</h2>
+        <div style="display:flex;gap:8px;">
+          <button class="btn btn-outline btn-sm" id="grade-guide-btn">? Grade Guide</button>
+          <button class="btn btn-accent btn-sm" data-page="evaluate">+ Evaluate New</button>
         </div>
-        <div id="eval-log" style="display:none" class="output-card">
-          <div class="output-header">
-            <div class="dot-spin" id="eval-spinner"></div>
-            <span style="font-size:12px;font-weight:500;color:var(--accent)" id="eval-log-title">Running pipeline...</span>
-            <span style="font-size:11px;color:var(--muted);margin-left:auto" id="eval-timer">0s</span>
-          </div>
-          <div class="output-body" id="eval-log-body"></div>
-        </div>
-        <div id="eval-result" style="display:none">
-          <div id="eval-error" style="display:none" class="alert alert-error"></div>
-          <div class="result-grid">
-            <div class="settings-card">
-              <div class="settings-title">Evaluation Score</div>
-              <div class="score-display">
-                <div class="score-big" id="res-score" style="color:var(--green)">—</div>
-                <div><div style="font-size:13px;font-weight:600" id="res-grade"></div><div style="font-size:11px;color:var(--muted)" id="res-rec"></div></div>
-              </div>
-              <div id="res-dimensions"></div>
-            </div>
-            <div class="settings-card">
-              <div class="settings-title">Key Signals</div>
-              <div id="res-blocks"></div>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn primary" onclick="addToTracker()">+ Add to Tracker</button>
-            <button class="btn" onclick="showView('pdf')">Generate CV</button>
-            <button class="btn" onclick="showView('stories')">STAR Stories</button>
-            <button class="btn sm" onclick="resetEval()">← New Evaluation</button>
-          </div>
+      </div>
+      <div id="pipeline-table-wrap">
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <div class="empty-title">No applications yet</div>
+          <div class="empty-text">Evaluate an offer to get started</div>
+          <br>
+          <button class="btn btn-primary btn-sm" data-page="evaluate">Evaluate Offer</button>
         </div>
       </div>
     </div>
 
-    <!-- SCAN -->
-    <div id="view-scan" style="display:none">
-      <div class="topbar">
-        <div><div class="topbar-title">Portal Scanner</div><span class="topbar-sub">AI-powered scan across 45+ companies</span></div>
-        <div class="topbar-actions"><button class="btn primary" id="scan-btn" onclick="runScan()">⟳ Start Scan</button></div>
+    <!-- Grade Legend (hidden by default) -->
+    <div id="grade-legend-panel" style="display:none;" class="card">
+      <h2 class="card-title">Grade Guide</h2>
+      <div class="grade-legend">
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-a">A</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">4.5–5.0</span>
+          <div><strong>Strongly Recommend</strong> — Exceptional fit. Apply immediately.</div>
+        </div>
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-a">A-</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">4.0–4.4</span>
+          <div><strong>Recommend</strong> — Strong fit with minor gaps. Worth applying.</div>
+        </div>
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-b">B+</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">3.5–3.9</span>
+          <div><strong>Consider with Caution</strong> — Decent overlap but meaningful gaps.</div>
+        </div>
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-b">B</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">3.0–3.4</span>
+          <div><strong>Neutral</strong> — Partial fit. Only proceed with a strong referral.</div>
+        </div>
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-c">C</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">2.5–2.9</span>
+          <div><strong>Not Recommended</strong> — Weak fit. More gaps than strengths.</div>
+        </div>
+        <div class="grade-legend-row">
+          <span class="grade-badge grade-d">D</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">&lt; 2.5</span>
+          <div><strong>Skip</strong> — Poor fit. Applying wastes everyone's time.</div>
+        </div>
       </div>
-      <div class="content">
-        <div class="input-card">
-          <label class="form-label">Focus Areas (optional)</label>
-          <input id="scan-focus" class="form-input" style="resize:none" placeholder="e.g. LLMOps engineer, AI safety, applied AI — leave blank to scan all categories" />
+      <p style="font-size:12px;color:var(--text-secondary);margin-top:12px;">Philosophy: only apply to 4.0+ scores. Below that you spend interviews defending gaps rather than selling strengths.</p>
+    </div>
+  </section>
+
+  <!-- EVALUATE OFFER -->
+  <section class="page-section" id="page-evaluate">
+    <div class="page-header">
+      <h1 class="page-title">Evaluate Offer</h1>
+      <p class="page-subtitle">Paste a job description — AI scores fit, compensation, and prepares you to interview.</p>
+    </div>
+
+    <!-- Input state -->
+    <div id="eval-input-state">
+      <div class="card">
+        <div class="chip-group" id="eval-mode-chips">
+          <div class="chip active" data-mode="full">Evaluate &amp; Track</div>
+          <div class="chip" data-mode="quick">Quick Evaluation</div>
         </div>
-        <div id="scan-output" style="display:none" class="output-card">
-          <div class="output-header"><div class="dot-spin"></div><span style="font-size:12px;font-weight:500;color:var(--accent)">Scanning portals...</span></div>
-          <div class="output-body" id="scan-body"></div>
+        <p id="eval-mode-desc" style="font-size:12px;color:var(--text-secondary);margin-bottom:16px;">Evaluate &amp; Track: score the role and auto-add to your pipeline.</p>
+        <div class="form-group">
+          <label class="form-label">Job Description</label>
+          <textarea class="form-textarea" id="eval-jd" placeholder="Paste the full job description here..." style="min-height:200px;"></textarea>
         </div>
-        <div id="scan-results" style="display:none">
-          <div class="section-title">Found Roles</div>
-          <div class="pipeline-grid">
-            <div class="pipeline-header" style="grid-template-columns:2fr 1fr 1fr 1fr"><span>Role</span><span>Company</span><span>Portal</span><span>Action</span></div>
-            <div id="scan-rows"></div>
-          </div>
-        </div>
-        <div style="margin-top:20px">
-          <div class="section-title">Pre-configured Portals</div>
-          <div class="scan-grid">
-            <div class="scan-card"><div class="scan-company">Anthropic</div><div class="scan-info">Ashby · AI Safety</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-            <div class="scan-card"><div class="scan-company">OpenAI</div><div class="scan-info">Greenhouse · Research</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-            <div class="scan-card"><div class="scan-company">ElevenLabs</div><div class="scan-info">Ashby · Voice AI</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-            <div class="scan-card"><div class="scan-company">Mistral AI</div><div class="scan-info">Lever · Research</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-            <div class="scan-card"><div class="scan-company">Retool</div><div class="scan-info">Greenhouse · Platform</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-            <div class="scan-card"><div class="scan-company">Vercel</div><div class="scan-info">Greenhouse · Engineering</div><div class="scan-status" style="color:var(--muted)">Ready</div></div>
-          </div>
-        </div>
+        <button class="btn btn-primary btn-full" id="eval-run-btn">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+          Run Evaluation
+        </button>
       </div>
     </div>
 
-    <!-- BATCH -->
-    <div id="view-batch" style="display:none">
-      <div class="topbar"><div><div class="topbar-title">Batch Process</div><span class="topbar-sub">Evaluate multiple job descriptions in parallel</span></div></div>
-      <div class="content">
-        <div class="input-card">
-          <label class="form-label">Paste job descriptions — separate each with "---"</label>
-          <textarea id="batch-input" rows="10" placeholder="JOB 1&#10;Company: Anthropic&#10;Role: AI Engineer&#10;...paste full JD...&#10;&#10;---&#10;&#10;JOB 2&#10;Company: OpenAI&#10;..."></textarea>
-          <div class="input-actions">
-            <button class="btn primary" id="batch-btn" onclick="runBatch()">⟳ Evaluate All</button>
-            <span id="batch-status" style="font-size:12px;color:var(--muted)"></span>
-          </div>
+    <!-- Loading state -->
+    <div id="eval-loading-state" style="display:none;" class="card" style="text-align:center;">
+      <div style="text-align:center;padding:16px 0;">
+        <div style="display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:14px;">
+          <div class="spinner" style="border-top-color:var(--accent);border-color:rgba(34,197,94,0.2);"></div>
+          Running evaluation…
         </div>
-        <div id="batch-results" style="display:none">
-          <div class="section-title">Batch Results</div>
-          <div class="pipeline-grid">
-            <div class="pipeline-header" style="grid-template-columns:2fr 1fr 0.8fr 0.8fr 0.8fr"><span>Role</span><span>Company</span><span>Score</span><span>Match</span><span>Action</span></div>
-            <div id="batch-rows"></div>
-          </div>
-        </div>
+        <div class="loading-bar" style="margin-top:20px;"><div class="loading-bar-fill"></div></div>
+        <div class="loading-msg">Analysing role fit and compensation…</div>
+        <div class="timer-text" id="eval-timer">0s</div>
       </div>
     </div>
 
-    <!-- PDF -->
-    <div id="view-pdf" style="display:none">
-      <div class="topbar"><div><div class="topbar-title">Generate PDF CV</div><span class="topbar-sub">ATS-optimized CV tailored to a specific role</span></div></div>
-      <div class="content">
-        <div class="two-col">
+    <!-- Result state -->
+    <div id="eval-result-state" style="display:none;">
+      <div class="card" style="margin-bottom:16px;">
+        <div class="eval-header" id="eval-result-header">
+          <!-- populated by JS -->
+        </div>
+        <div class="eval-two-col">
           <div>
-            <div class="input-card" style="margin-bottom:16px">
-              <label class="form-label">Target Job Description</label>
-              <textarea id="pdf-jd" rows="7" placeholder="Paste the job description to tailor your CV against..."></textarea>
-            </div>
-            <div class="settings-card">
-              <div class="settings-title">Options</div>
-              <div class="form-group"><label class="form-label">Archetype</label><select id="pdf-archetype" class="form-input"><option>LLMOps Engineer</option><option>Agentic AI Lead</option><option>Head of AI</option><option>Product Manager</option><option>Solutions Architect</option><option>Founding Engineer</option></select></div>
-              <button class="btn primary" id="pdf-btn" onclick="generateCV()" style="width:100%">Generate Tailored CV</button>
-            </div>
+            <div class="gauge-wrap" id="eval-gauge-wrap"><!-- gauge --></div>
+            <div id="eval-dims-wrap" style="margin-top:16px;"><!-- dimensions --></div>
           </div>
-          <div class="settings-card" style="min-height:400px">
-            <div id="pdf-placeholder" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:var(--muted)">
-              <div style="font-size:36px;margin-bottom:12px;opacity:0.3">📄</div>
-              <div style="font-size:13px">Tailored CV will appear here</div>
-              <div style="font-size:11px;margin-top:4px">Keyword-injected for ATS</div>
-            </div>
-            <div id="pdf-result" style="display:none">
-              <div class="settings-title">Tailored CV Preview</div>
-              <div id="pdf-content"></div>
-              <button class="btn sm primary" style="margin-top:12px" onclick="downloadCV()">⬇ Download as Text</button>
-            </div>
-          </div>
+          <div id="eval-blocks-wrap"><!-- blocks --></div>
+        </div>
+        <div class="eval-actions" id="eval-action-btns">
+          <button class="btn btn-primary" id="eval-add-btn">+ Add to Tracker</button>
+          <button class="btn btn-outline" data-page="cv" id="eval-go-cv-btn">Generate CV</button>
+          <button class="btn btn-outline" data-page="stories" id="eval-go-stories-btn">STAR Stories</button>
+          <button class="btn btn-ghost" id="eval-new-btn">← New Evaluation</button>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- STORIES -->
-    <div id="view-stories" style="display:none">
-      <div class="topbar">
-        <div><div class="topbar-title">Story Bank</div><span class="topbar-sub">STAR+Reflection stories for behavioral interviews</span></div>
-        <div class="topbar-actions"><button class="btn sm primary" onclick="showStoryForm()">+ Generate Story</button></div>
+  <!-- FIND JOBS -->
+  <section class="page-section" id="page-scan">
+    <div class="page-header">
+      <h1 class="page-title">Find Jobs</h1>
+      <p class="page-subtitle">AI-powered scan across curated portals and companies.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Focus Areas (optional)</label>
+        <input class="form-input" id="scan-focus" placeholder="e.g. Analytics Engineer, Germany, remote-friendly…">
       </div>
-      <div class="content">
-        <div id="story-form" style="display:none" class="input-card">
-          <div class="form-group"><label class="form-label">Behavioral Question</label><textarea id="story-question" rows="2" placeholder="e.g. Tell me about a time you led a team under pressure..."></textarea></div>
-          <div class="form-group"><label class="form-label">Your Context (optional)</label><textarea id="story-context" rows="2" placeholder="Brief notes about the experience to draw from..."></textarea></div>
-          <div class="input-actions">
-            <button class="btn primary" id="story-btn" onclick="generateStory()">Generate STAR+R Story</button>
-            <button class="btn sm" onclick="document.getElementById('story-form').style.display='none'">Cancel</button>
+      <button class="btn btn-primary" id="scan-run-btn">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg>
+        Start Scan
+      </button>
+    </div>
+    <div class="card" id="scan-results-wrap">
+      <h2 class="card-title">Pre-configured Portals</h2>
+      <div class="portal-list" id="scan-portal-list">
+        <!-- pre-populated -->
+      </div>
+    </div>
+  </section>
+
+  <!-- EVALUATE MULTIPLE -->
+  <section class="page-section" id="page-batch">
+    <div class="page-header">
+      <h1 class="page-title">Evaluate Multiple Jobs</h1>
+      <p class="page-subtitle">Paste multiple job descriptions — separate each with "---"</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Job Descriptions</label>
+        <textarea class="form-textarea" id="batch-jds" placeholder="Job description 1...&#10;---&#10;Job description 2..." style="min-height:240px;"></textarea>
+      </div>
+      <button class="btn btn-primary" id="batch-run-btn">
+        <svg width="14" height="14" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/></svg>
+        Evaluate All
+      </button>
+    </div>
+    <div class="card" id="batch-results-wrap" style="display:none;">
+      <h2 class="card-title">Batch Results</h2>
+      <table class="batch-results-table">
+        <thead><tr><th>Role</th><th>Company</th><th>Score</th><th>Match</th><th></th></tr></thead>
+        <tbody id="batch-results-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- MY CV -->
+  <section class="page-section" id="page-cv">
+    <div class="page-header">
+      <h1 class="page-title">My CV</h1>
+      <p class="page-subtitle">Generate an ATS-optimised, tailored CV for any role.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Target Job Description</label>
+        <textarea class="form-textarea" id="cv-jd" placeholder="Paste the job description to tailor your CV to…" style="min-height:160px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Role Archetype</label>
+        <select class="form-select" id="cv-archetype">
+          <option>Senior Data Analyst</option>
+          <option>Data Analyst</option>
+          <option>Lead Data Analyst</option>
+          <option>BI Developer / Analyst</option>
+          <option>Product Analyst</option>
+          <option>Data Engineer</option>
+          <option>Analytics Engineer</option>
+          <option>Data Science Analyst</option>
+          <option>Business Intelligence Manager</option>
+          <option>Head of Analytics</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="cv-gen-btn">Generate Tailored CV</button>
+    </div>
+    <div id="cv-result-wrap" style="display:none;">
+      <div class="card">
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="preview">Styled Preview</button>
+          <button class="tab-btn" data-tab="copy">Copy Sections</button>
+        </div>
+        <div class="tab-panel active" id="cv-tab-preview">
+          <div class="cv-preview-wrap" id="cv-styled-preview"><!-- populated --></div>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="btn btn-outline btn-sm" id="cv-dl-btn">🖶 Download PDF</button>
+            <button class="btn btn-ghost btn-sm" id="cv-fullscreen-btn">⛶ Full Preview</button>
           </div>
+          <p style="font-size:12px;color:var(--text-secondary);margin-top:8px;">Tip: Download PDF → File → Print → Save as PDF for best quality.</p>
         </div>
-        <div id="story-log" style="display:none" class="output-card">
-          <div class="output-header"><div class="dot-spin"></div><span style="font-size:12px;font-weight:500;color:var(--accent)">Generating story...</span></div>
-        </div>
-        <div class="section-title">Saved Stories (<span id="story-count-display">0</span>)</div>
-        <div id="stories-list">
-          <div class="tracker-empty"><div class="big">📖</div><div>No stories yet</div><div style="font-size:11px;margin-top:4px">Generate your first STAR+R story above</div></div>
+        <div class="tab-panel" id="cv-tab-copy">
+          <div id="cv-copy-sections"><!-- populated --></div>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- NEGOTIATE -->
-    <div id="view-negotiate" style="display:none">
-      <div class="topbar"><div><div class="topbar-title">Negotiation Scripts</div><span class="topbar-sub">AI-generated salary and offer negotiation frameworks</span></div></div>
-      <div class="content">
-        <div class="two-col">
-          <div class="settings-card">
-            <div class="settings-title">Setup</div>
-            <div class="form-group"><label class="form-label">Scenario</label><select id="neg-scenario" class="form-input"><option>Counter initial offer</option><option>Leverage competing offer</option><option>Geographic discount pushback</option><option>Equity vs cash tradeoff</option><option>Role leveling pushback</option></select></div>
-            <div class="form-group"><label class="form-label">Their Offer</label><input id="neg-offer" class="form-input" placeholder="e.g. $165,000 + 0.05% equity over 4yr"/></div>
-            <div class="form-group"><label class="form-label">Your Target</label><input id="neg-target" class="form-input" placeholder="e.g. $185,000 + 0.1% equity"/></div>
-            <div class="form-group"><label class="form-label">Competing Offer (optional)</label><input id="neg-competing" class="form-input" placeholder="e.g. $178k at ElevenLabs"/></div>
-            <div class="form-group"><label class="form-label">Additional Context</label><textarea id="neg-context" rows="3" class="form-input" placeholder="Any other context — role level, location, your leverage..."></textarea></div>
-            <button class="btn primary" id="neg-btn" onclick="generateScript()" style="width:100%">Generate Script</button>
+  <!-- INTERVIEW STORIES -->
+  <section class="page-section" id="page-stories">
+    <div class="page-header">
+      <h1 class="page-title">Interview Stories</h1>
+      <p class="page-subtitle">STAR+Reflection stories for behavioural interviews.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;" id="story-gen-form">
+      <div class="form-group">
+        <label class="form-label">Behavioural Question</label>
+        <input class="form-input" id="story-q" placeholder="e.g. Tell me about a time you influenced stakeholders…">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Context (optional)</label>
+        <textarea class="form-textarea" id="story-ctx" placeholder="Any specific achievement or situation you'd like to build this around…" style="min-height:80px;"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-primary" id="story-gen-btn">Generate STAR+R Story</button>
+        <button class="btn btn-ghost" id="story-cancel-btn">Cancel</button>
+      </div>
+    </div>
+    <div id="stories-list-wrap">
+      <div class="empty-state" id="stories-empty">
+        <div class="empty-icon">📖</div>
+        <div class="empty-title">No stories yet</div>
+        <div class="empty-text">Generate your first STAR+R story above</div>
+      </div>
+      <div id="stories-list"></div>
+    </div>
+  </section>
+
+  <!-- NEGOTIATION -->
+  <section class="page-section" id="page-negotiate">
+    <div class="page-header">
+      <h1 class="page-title">Negotiation Script</h1>
+      <p class="page-subtitle">AI-generated salary and offer negotiation frameworks, including cross-border scenarios.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Scenario</label>
+        <select class="form-select" id="neg-scenario">
+          <option>Counter initial offer</option>
+          <option>Leverage competing offer</option>
+          <option>Geographic discount pushback</option>
+          <option>Equity vs cash tradeoff</option>
+          <option>Role leveling pushback</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Their Offer</label>
+          <input class="form-input" id="neg-offer" placeholder="e.g. EUR 70,000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Target</label>
+          <input class="form-input" id="neg-target" placeholder="e.g. EUR 85,000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Competing Offer (optional)</label>
+        <input class="form-input" id="neg-competing" placeholder="e.g. CHF 95,000 from Company X">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Additional Context</label>
+        <textarea class="form-textarea" id="neg-ctx" placeholder="Any relevant context — years of experience, specific achievements, relocation, etc." style="min-height:80px;"></textarea>
+      </div>
+      <button class="btn btn-primary" id="neg-run-btn">Generate Script</button>
+    </div>
+    <div id="neg-result-wrap" style="display:none;" class="card">
+      <div id="neg-result-content"></div>
+    </div>
+  </section>
+
+  <!-- COMPANY RESEARCH -->
+  <section class="page-section" id="page-research">
+    <div class="page-header">
+      <h1 class="page-title">Company Research</h1>
+      <p class="page-subtitle">Deep intelligence on culture, tech stack, interview process, and compensation.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Company Name</label>
+        <input class="form-input" id="research-company" placeholder="e.g. Personio, N26, Zalando…">
+      </div>
+      <button class="btn btn-primary" id="research-run-btn">Research</button>
+    </div>
+    <div id="research-result-wrap" style="display:none;" class="card">
+      <div id="research-result-content"></div>
+    </div>
+  </section>
+
+  <!-- OUTREACH MESSAGE -->
+  <section class="page-section" id="page-outreach">
+    <div class="page-header">
+      <h1 class="page-title">Outreach Message</h1>
+      <p class="page-subtitle">Personalised LinkedIn connection notes and InMail messages.</p>
+    </div>
+    <div class="card" style="margin-bottom:16px;">
+      <div class="form-group">
+        <label class="form-label">Job Description or Role Context</label>
+        <textarea class="form-textarea" id="outreach-jd" placeholder="Paste the job description or describe the role you're reaching out about…" style="min-height:120px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Who are you reaching out to?</label>
+        <input class="form-input" id="outreach-target" placeholder="e.g. Head of Analytics at Zalando, hiring manager for Data team">
+      </div>
+      <button class="btn btn-primary" id="outreach-run-btn">Generate Messages</button>
+    </div>
+    <div id="outreach-result-wrap" style="display:none;" class="card">
+      <div id="outreach-result-content"></div>
+    </div>
+  </section>
+
+  <!-- CAREER STRATEGY -->
+  <section class="page-section" id="page-strategy">
+    <div class="page-header">
+      <h1 class="page-title">Career Strategy</h1>
+      <p class="page-subtitle">Coming soon — target company recommendations, career path mapping, and AI-powered next-move analysis.</p>
+    </div>
+    <div class="card" style="text-align:center;padding:48px 24px;">
+      <div style="font-size:40px;margin-bottom:16px;">🗺️</div>
+      <h2 style="font-size:18px;font-weight:800;margin-bottom:8px;">Career Strategy Module</h2>
+      <p style="font-size:14px;color:var(--text-secondary);max-width:380px;margin:0 auto;">Target Company Recommendations, three Odyssey Plan-style career path prototypes, and AI next-title recommendations grounded in career strategy frameworks.</p>
+      <div style="margin-top:24px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+        <span style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;">Target Companies</span>
+        <span style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;">Career Path Maps</span>
+        <span style="background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:4px 12px;font-size:12px;">Next Title AI</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MY PROFILE -->
+  <section class="page-section" id="page-profile">
+    <div class="page-header">
+      <h1 class="page-title">My Profile</h1>
+      <p class="page-subtitle">Your career context — the more detail, the better every evaluation gets.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="card">
+        <h2 class="card-title">Personal Info</h2>
+        <div class="form-group"><label class="form-label">Full Name</label><input class="form-input" id="p-name" placeholder="Your full name"></div>
+        <div class="form-group"><label class="form-label">Title / Headline</label><input class="form-input" id="p-title" placeholder="e.g. Senior Data Analyst"></div>
+        <div class="form-group"><label class="form-label">Location</label><input class="form-input" id="p-location" placeholder="e.g. Düsseldorf, Germany"></div>
+        <h2 class="card-title" style="margin-top:20px;">Career Goals</h2>
+        <div class="form-group">
+          <label class="form-label">Target Role</label>
+          <select class="form-select" id="p-target">
+            <option>Senior Data Analyst</option><option>Data Analyst</option><option>Lead Data Analyst</option>
+            <option>BI Developer / Analyst</option><option>Product Analyst</option><option>Data Engineer</option>
+            <option>Analytics Engineer</option><option>Data Science Analyst</option>
+            <option>Business Intelligence Manager</option><option>Head of Analytics</option>
+            <option>LLMOps Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Target Salary</label><input class="form-input" id="p-salary" placeholder="e.g. EUR 85,000"></div>
+        <div class="form-group"><label class="form-label">Min Score to Apply (1–5)</label><input class="form-input" id="p-minscore" type="number" min="1" max="5" step="0.1" placeholder="4.0"></div>
+      </div>
+      <div class="card">
+        <h2 class="card-title">Career Story</h2>
+        <div class="form-group"><textarea class="form-textarea" id="p-story" style="min-height:120px;" placeholder="Your background, key achievements, what makes you distinctive as a candidate…"></textarea></div>
+        <h2 class="card-title" style="margin-top:4px;">CV</h2>
+        <p style="font-size:12px;color:var(--text-secondary);margin-bottom:12px;">Upload your CV as PDF — text is extracted automatically. Or paste manually below.</p>
+        <div class="cv-upload-zone" id="cv-upload-zone">
+          <div id="cv-upload-prompt">
+            <div style="font-size:28px;margin-bottom:8px;">📄</div>
+            <div style="font-size:13px;font-weight:600;">Click to upload CV (PDF)</div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">PDF only · Max 5MB</div>
           </div>
-          <div>
-            <div id="neg-placeholder" style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--muted);font-size:13px">Script will appear here</div>
-            <div id="neg-result" style="display:none">
-              <div class="eval-block"><div class="eval-block-title">Opening</div><div class="eval-block-text" id="neg-opening"></div></div>
-              <div class="eval-block"><div class="eval-block-title">Anchor</div><div class="eval-block-text" id="neg-anchor"></div></div>
-              <div class="eval-block"><div class="eval-block-title">Fallback</div><div class="eval-block-text" id="neg-fallback"></div></div>
-              <div class="eval-block"><div class="eval-block-title">Close</div><div class="eval-block-text" id="neg-close"></div></div>
-              <div style="margin-top:16px">
-                <div class="eval-block-title" style="margin-bottom:8px;font-size:11px;color:var(--accent);letter-spacing:0.06em;text-transform:uppercase">Email Version</div>
-                <div class="eval-block"><div class="eval-block-title" id="neg-email-subject"></div><div class="eval-block-text" id="neg-email-body" style="white-space:pre-line"></div></div>
-              </div>
-            </div>
-          </div>
+          <div id="cv-uploading" style="display:none;font-size:13px;color:var(--text-secondary);">Extracting text from PDF…</div>
+          <input type="file" id="cv-file-input" accept=".pdf" style="display:none;">
+        </div>
+        <div class="form-group" style="margin-top:12px;">
+          <label class="form-label">CV Text (auto-filled or paste manually)</label>
+          <textarea class="form-textarea" id="p-cv" style="min-height:120px;" placeholder="Paste CV text here…"></textarea>
         </div>
       </div>
     </div>
-
-    <!-- RESEARCH -->
-    <div id="view-research" style="display:none">
-      <div class="topbar"><div><div class="topbar-title">Deep Research</div><span class="topbar-sub">Company intel — culture, process, compensation, red flags</span></div></div>
-      <div class="content">
-        <div class="input-card">
-          <label class="form-label">Company Name</label>
-          <div style="display:flex;gap:10px">
-            <input id="research-input" class="form-input" style="resize:none;flex:1" placeholder="e.g. Anthropic, ElevenLabs, Mistral AI..."/>
-            <button class="btn primary" id="research-btn" onclick="runResearch()">Research</button>
-          </div>
-        </div>
-        <div id="research-result" style="display:none">
-          <div class="three-col" style="margin-bottom:20px">
-            <div class="metric"><div class="metric-label">Stage</div><div class="metric-value accent" style="font-size:18px" id="r-stage">—</div></div>
-            <div class="metric"><div class="metric-label">Headcount</div><div class="metric-value" style="font-size:20px" id="r-headcount">—</div></div>
-            <div class="metric"><div class="metric-label">AI Score</div><div class="metric-value green" id="r-score">—</div></div>
-          </div>
-          <div class="settings-card">
-            <div class="settings-title" id="r-title">Research Report</div>
-            <div class="eval-block"><div class="eval-block-title">Overview</div><div class="eval-block-text" id="r-overview"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Culture Signals</div><div class="eval-block-text" id="r-culture"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Interview Process</div><div class="eval-block-text" id="r-interview"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Compensation</div><div class="eval-block-text" id="r-comp"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Red Flags</div><div class="eval-block-text" id="r-flags"></div></div>
-            <div class="eval-block"><div class="eval-block-title">Verdict</div><div class="eval-block-text" id="r-verdict"></div></div>
-          </div>
-        </div>
-      </div>
+    <div style="margin-top:16px;display:flex;gap:8px;align-items:center;">
+      <button class="btn btn-accent" id="save-profile-btn">Save Profile</button>
+      <span id="profile-save-msg" style="font-size:12px;color:var(--strong);display:none;">✓ Profile saved</span>
     </div>
+  </section>
 
-    <!-- CONTACTO -->
-    <div id="view-contacto" style="display:none">
-      <div class="topbar"><div><div class="topbar-title">LinkedIn Outreach</div><span class="topbar-sub">Personalized connection notes and InMail messages</span></div></div>
-      <div class="content">
-        <div class="input-card">
-          <div class="form-group"><label class="form-label">Job Description or Role Context</label><textarea id="contacto-jd" rows="4" placeholder="Paste the job description or describe the role and company..."></textarea></div>
-          <div class="form-group"><label class="form-label">Who are you reaching out to?</label><input id="contacto-target" class="form-input" placeholder="e.g. Hiring manager, recruiter, team lead at Anthropic..."/></div>
-          <button class="btn primary" id="contacto-btn" onclick="generateOutreach()">Generate Messages</button>
-        </div>
-        <div id="contacto-result" style="display:none">
-          <div class="two-col">
-            <div class="eval-block">
-              <div class="eval-block-title">Connection Note (300 chars)</div>
-              <div class="eval-block-text" id="c-note" style="font-size:13px"></div>
-              <button class="btn sm" style="margin-top:10px" onclick="copyText('c-note')">Copy</button>
-            </div>
-            <div class="eval-block">
-              <div class="eval-block-title" id="c-inmail-subject"></div>
-              <div class="eval-block-text" id="c-inmail-body" style="white-space:pre-line"></div>
-              <button class="btn sm" style="margin-top:10px" onclick="copyText('c-inmail-body')">Copy</button>
-            </div>
-          </div>
-          <div class="eval-block" style="margin-top:10px">
-            <div class="eval-block-title">Tips</div>
-            <div id="c-tips"></div>
-          </div>
-        </div>
-      </div>
+</main>
+
+<!-- ===== MOBILE BOTTOM NAV ===== -->
+<nav class="mobile-bottom-nav">
+  <div class="mobile-tab active" data-page="dashboard">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 16a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"/></svg>
+    Dashboard
+  </div>
+  <div class="mobile-tab" data-page="evaluate">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/></svg>
+    Evaluate
+  </div>
+  <div class="mobile-tab" data-page="cv">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd"/></svg>
+    CV
+  </div>
+  <div class="mobile-tab" data-page="strategy">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/></svg>
+    Strategy
+  </div>
+  <div class="mobile-tab" data-page="profile">
+    <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+    Profile
+  </div>
+</nav>
+
+<!-- ===== STORY MODAL ===== -->
+<div class="modal-overlay" id="story-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title" id="story-modal-title">Story</h2>
+      <button class="modal-close" id="story-modal-close">✕</button>
     </div>
-
-    <!-- PROFILE -->
-    <div id="view-profile" style="display:none">
-      <div class="topbar">
-        <div><div class="topbar-title">Profile & CV</div><span class="topbar-sub">Your career context — the more detail, the better evaluations</span></div>
-        <div class="topbar-actions"><button class="btn primary" onclick="saveProfile()">Save Profile</button></div>
-      </div>
-      <div class="content">
-        <div class="two-col">
-          <div class="settings-card">
-            <div class="settings-title">Personal Info</div>
-            <div class="form-group"><label class="form-label">Full Name</label><input id="p-name" class="form-input" placeholder="Your full name"/></div>
-            <div class="form-group"><label class="form-label">Title / Headline</label><input id="p-title" class="form-input" placeholder="e.g. Head of Applied AI · LLMOps · Agentic Systems"/></div>
-            <div class="form-group"><label class="form-label">Location</label><input id="p-location" class="form-input" placeholder="e.g. London, UK (Remote-first)"/></div>
-            <div class="form-group"><label class="form-label">Target Role</label><select id="p-target" class="form-input"><option>LLMOps Engineer</option><option>Head of AI</option><option>Founding AI Engineer</option><option>AI Product Manager</option><option>Solutions Architect</option><option>Applied AI Lead</option></select></div>
-            <div class="form-group"><label class="form-label">Target Salary</label><input id="p-salary" class="form-input" placeholder="e.g. $180-200k or £120-150k"/></div>
-            <div class="form-group"><label class="form-label">Min Score to Apply (1-5)</label><input id="p-minscore" class="form-input" type="number" min="1" max="5" step="0.1" value="4.0"/></div>
-            <div class="form-group"><label class="form-label">Career Story</label><textarea id="p-story" rows="3" class="form-input" placeholder="Brief career narrative — your background, what you're good at, what you want to avoid..."></textarea></div>
-          </div>
-          <div class="settings-card">
-            <div class="settings-title">CV (Markdown)</div>
-            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">This CV is used by the AI for matching, gap analysis, and CV tailoring. The more detailed, the better.</div>
-            <textarea id="p-cv" rows="20" class="form-input" style="font-family:var(--font-mono);font-size:11px;line-height:1.6" placeholder="# Your Name&#10;&#10;## Current Role · Company&#10;&#10;## Experience&#10;&#10;**Company** · Role · Dates&#10;- Achievement with metrics&#10;- Another achievement&#10;&#10;## Skills&#10;Python, LLMs, RAG, Evals..."></textarea>
-          </div>
-        </div>
-        <div id="profile-saved" style="display:none" class="alert alert-success" style="margin-top:12px">Profile saved successfully.</div>
-      </div>
-    </div>
-
+    <div id="story-modal-content"></div>
   </div>
 </div>
 
+<!-- ===== PIPELINE ENTRY MODAL ===== -->
+<div class="modal-overlay" id="pipeline-modal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 class="modal-title" id="pipeline-modal-title">Evaluation Details</h2>
+      <button class="modal-close" id="pipeline-modal-close">✕</button>
+    </div>
+    <div id="pipeline-modal-content"></div>
+  </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div class="toast" id="toast"></div>
+
+<!-- ===== PDF.js ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
 <script>
-// ─── State ────────────────────────────────────────────────────────────────────
-const state = {
-  tracker: JSON.parse(localStorage.getItem('co-tracker') || '[]'),
-  stories: JSON.parse(localStorage.getItem('co-stories') || '[]'),
-  profile: JSON.parse(localStorage.getItem('co-profile') || '{}'),
-  lastEval: null
+// ===== PDF.js WORKER =====
+if (typeof pdfjsLib !== 'undefined') {
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+// ===== NAVIGATION =====
+function navigateTo(pageId) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item, .mobile-tab').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + pageId)?.classList.add('active');
+  document.querySelectorAll('[data-page="' + pageId + '"]').forEach(n => n.classList.add('active'));
+  window.scrollTo(0, 0);
+}
+
+document.querySelectorAll('[data-page]').forEach(el => {
+  el.addEventListener('click', () => navigateTo(el.dataset.page));
+});
+
+// ===== TOAST =====
+function showToast(msg, duration = 2200) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ===== LOCAL STORAGE =====
+const LS = {
+  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
+  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
 };
 
-function saveState() {
-  localStorage.setItem('co-tracker', JSON.stringify(state.tracker));
-  localStorage.setItem('co-stories', JSON.stringify(state.stories));
-  localStorage.setItem('co-profile', JSON.stringify(state.profile));
-}
+// ===== PIPELINE STATE =====
+let pipeline = LS.get('co_pipeline') || [];
+let stories = LS.get('co_stories') || [];
+let profile = LS.get('co_profile') || {};
+let lastEvalResult = null;
+let lastEvalJD = '';
 
-// ─── Navigation ───────────────────────────────────────────────────────────────
-const views = ['pipeline','evaluate','scan','batch','pdf','stories','negotiate','research','contacto','profile'];
-function showView(name) {
-  views.forEach(v => { const el = document.getElementById('view-'+v); if(el) el.style.display='none'; });
-  const t = document.getElementById('view-'+name);
-  if(t) t.style.display='block';
-  document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(i => { if(i.getAttribute('onclick')?.includes("'"+name+"'")) i.classList.add('active'); });
-  if(name==='pipeline') renderPipeline();
-  if(name==='stories') renderStories();
-  if(name==='profile') loadProfile();
-}
-
-// ─── API Call ─────────────────────────────────────────────────────────────────
-async function callAPI(mode, content, extra = {}) {
-  const profile = state.profile;
-  const cv = profile.cv || '';
-  const res = await fetch('/api/evaluate', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ mode, content, cv, profile, ...extra })
-  });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || 'API error');
-  }
-  return res.json();
-}
-
-// ─── Evaluation ───────────────────────────────────────────────────────────────
-let evalTimerInterval;
-async function runEvaluation() {
-  const jd = document.getElementById('jd-input').value.trim();
-  if (!jd) { alert('Please paste a job description first.'); return; }
-
-  const btn = document.getElementById('run-btn');
-  const logEl = document.getElementById('eval-log');
-  const logBody = document.getElementById('eval-log-body');
-  const timerEl = document.getElementById('eval-timer');
-  const resultEl = document.getElementById('eval-result');
-  const errorEl = document.getElementById('eval-error');
-
-  btn.disabled = true;
-  btn.textContent = 'Running...';
-  logEl.style.display = 'block';
-  resultEl.style.display = 'none';
-  errorEl.style.display = 'none';
-  logBody.innerHTML = '';
-
-  const steps = [
-    '→ <span class="h">Archetype Detection</span>',
-    '→ <span class="h">CV Match Analysis</span>',
-    '→ <span class="h">Compensation Research</span>',
-    '→ <span class="h">Generating STAR+R Stories</span>',
-    '→ <span class="h">Scoring & Grading</span>',
-  ];
-  let step = 0;
-  const stepInterval = setInterval(() => {
-    if (step < steps.length) {
-      logBody.innerHTML += '<div>' + steps[step] + '</div>';
-      step++;
-    }
-  }, 800);
-
-  let t = 0;
-  evalTimerInterval = setInterval(() => { t++; timerEl.textContent = t + 's'; }, 1000);
-
-  try {
-    const result = await callAPI('evaluate', jd);
-    clearInterval(stepInterval);
-    clearInterval(evalTimerInterval);
-
-    if (result.success && result.data) {
-      const d = result.data;
-      logBody.innerHTML += '<div class="g">✓ Complete — ' + (d.grade || '') + ' · ' + (d.finalScore || '') + '/5.0</div>';
-      document.getElementById('eval-log-title').textContent = 'Complete';
-      document.getElementById('eval-spinner').style.display = 'none';
-      state.lastEval = d;
-      renderEvalResult(d);
-      resultEl.style.display = 'block';
-    } else {
-      throw new Error('Unexpected response format');
-    }
-  } catch (err) {
-    clearInterval(stepInterval);
-    clearInterval(evalTimerInterval);
-    logBody.innerHTML += '<div class="err">✗ Error: ' + err.message + '</div>';
-    resultEl.style.display = 'block';
-    errorEl.style.display = 'block';
-    errorEl.textContent = 'Error: ' + err.message;
-  }
-
-  btn.disabled = false;
-  btn.textContent = '▶ Run Evaluation';
-}
-
-function renderEvalResult(d) {
-  const score = d.finalScore || 0;
-  const color = score >= 4.5 ? 'var(--green)' : score >= 3.5 ? 'var(--teal)' : score >= 2.5 ? 'var(--amber)' : 'var(--red)';
-  document.getElementById('res-score').textContent = score;
-  document.getElementById('res-score').style.color = color;
-  document.getElementById('res-grade').textContent = 'Grade: ' + (d.grade || '—');
-  document.getElementById('res-grade').style.color = color;
-  document.getElementById('res-rec').textContent = d.recommendation || '';
-
-  const dims = d.dimensions || {};
-  const dimLabels = {roleImpact:'Role & Impact',cvMatch:'CV Match',compensation:'Compensation',growthPath:'Growth Path',teamCulture:'Team & Culture',missionAlign:'Mission Align'};
-  let dimHtml = '';
-  Object.entries(dimLabels).forEach(([k, label]) => {
-    const val = dims[k] || 0;
-    const pct = (val / 5) * 100;
-    const c = val >= 4 ? 'var(--green)' : val >= 3 ? 'var(--teal)' : 'var(--amber)';
-    dimHtml += `<div class="eval-score-row"><div class="eval-score-label">${label}</div><div class="eval-score-bar"><div class="prog-fill" style="width:${pct}%;background:${c}"></div></div><div class="eval-score-val">${val}</div></div>`;
-  });
-  document.getElementById('res-dimensions').innerHTML = dimHtml;
-
-  const blocks = d.blocks || {};
-  const blockLabels = {roleSummary:'Role Summary',cvMatch:'CV Match',levelStrategy:'Level Strategy',compResearch:'Comp Research',personalizationHook:'Personalization Hook',interviewPrep:'Interview Prep'};
-  let blocksHtml = '';
-  Object.entries(blockLabels).forEach(([k, label]) => {
-    if (blocks[k]) blocksHtml += `<div class="eval-block"><div class="eval-block-title">${label}</div><div class="eval-block-text">${blocks[k]}</div></div>`;
-  });
-  document.getElementById('res-blocks').innerHTML = blocksHtml;
-}
-
-function resetEval() {
-  document.getElementById('eval-result').style.display = 'none';
-  document.getElementById('eval-log').style.display = 'none';
-  document.getElementById('jd-input').value = '';
-  state.lastEval = null;
-}
-
-function addToTracker() {
-  if (!state.lastEval) return;
-  const d = state.lastEval;
-  const entry = {
-    id: Date.now(),
-    roleTitle: d.roleTitle || 'Unknown Role',
-    company: d.company || 'Unknown Company',
-    archetype: d.archetype || '—',
-    score: d.finalScore || 0,
-    grade: d.grade || '—',
-    matchPercent: d.matchPercent || 0,
-    status: 'Evaluating',
-    date: new Date().toLocaleDateString('en-GB', {day:'numeric',month:'short'})
-  };
-  state.tracker.unshift(entry);
-  saveState();
-  updateBadges();
-  alert('Added to tracker!');
-}
-
-// ─── Pipeline Dashboard ───────────────────────────────────────────────────────
-function renderPipeline() {
-  const rows = document.getElementById('pipeline-rows');
-  const sub = document.getElementById('pipeline-sub');
-  updateBadges();
-
-  if (state.tracker.length === 0) {
-    rows.innerHTML = '<div class="tracker-empty"><div class="big">📋</div><div>No applications yet</div><div style="font-size:11px;margin-top:4px">Evaluate an offer to get started</div></div>';
-    sub.textContent = '0 applications tracked';
-    return;
-  }
-
-  sub.textContent = state.tracker.length + ' applications tracked';
-  const scores = state.tracker.map(e => e.score).filter(s => s > 0);
-  const avg = scores.length ? (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1) : '—';
-  document.getElementById('m-total').textContent = state.tracker.length;
-  document.getElementById('m-active').textContent = state.tracker.filter(e => e.status !== 'Rejected').length;
-  document.getElementById('m-avg').textContent = avg;
-  const topGrade = state.tracker.map(e => e.grade).sort()[0] || '—';
-  document.getElementById('m-top').textContent = topGrade;
-
-  const statusMap = { 'Evaluating':'s-evaluation', 'Applied':'s-applied', 'Interview':'s-interview', 'Rejected':'s-rejected' };
-  const scoreClass = s => s >= 4.5 ? 'score-a' : s >= 3.5 ? 'score-b' : s >= 2.5 ? 'score-c' : 'score-d';
-  const pct = s => Math.round((s / 5) * 100);
-  const barColor = s => s >= 4 ? 'var(--green)' : s >= 3 ? 'var(--teal)' : 'var(--amber)';
-
-  rows.innerHTML = state.tracker.map((e, i) => `
-    <div class="pipeline-row">
-      <div><div class="job-name">${e.roleTitle}</div><div class="job-company">${e.company}</div></div>
-      <div><span class="tag tag-purple">${e.archetype}</span></div>
-      <div style="color:var(--muted);font-size:12px">${e.date}</div>
-      <div><span class="score-pill ${scoreClass(e.score)}">${e.grade}</span></div>
-      <div>
-        <div class="prog-bar" style="width:80px"><div class="prog-fill" style="width:${pct(e.score)}%;background:${barColor(e.score)}"></div></div>
-        <div style="font-size:10px;color:var(--muted);margin-top:2px">${e.matchPercent || pct(e.score)}%</div>
-      </div>
-      <div>
-        <select onchange="updateStatus(${i}, this.value)" style="background:var(--bg3);border:1px solid var(--border2);border-radius:6px;color:var(--text);font-size:11px;padding:3px 6px;cursor:pointer">
-          ${['Evaluating','Applied','Interview','Rejected'].map(s => `<option ${s===e.status?'selected':''}>${s}</option>`).join('')}
-        </select>
-      </div>
-    </div>`).join('');
-}
-
-function updateStatus(idx, status) {
-  state.tracker[idx].status = status;
-  saveState();
-}
+function savePipeline() { LS.set('co_pipeline', pipeline); renderDashboard(); }
+function saveStories() { LS.set('co_stories', stories); renderStories(); updateBadges(); }
 
 function updateBadges() {
-  document.getElementById('tracker-count').textContent = state.tracker.length;
-  document.getElementById('story-count').textContent = state.stories.length;
-}
-
-// ─── Stories ──────────────────────────────────────────────────────────────────
-function showStoryForm() {
-  document.getElementById('story-form').style.display = 'block';
-}
-
-async function generateStory() {
-  const q = document.getElementById('story-question').value.trim();
-  const ctx = document.getElementById('story-context').value.trim();
-  if (!q) { alert('Please enter a behavioral question.'); return; }
-
-  const btn = document.getElementById('story-btn');
-  const logEl = document.getElementById('story-log');
-  btn.disabled = true;
-  logEl.style.display = 'block';
-
-  try {
-    const content = q + (ctx ? '\n\nContext: ' + ctx : '') + (state.profile.cv ? '\n\nCV:\n' + state.profile.cv : '');
-    const result = await callAPI('story', content);
-    if (result.success && result.data) {
-      const d = result.data;
-      state.stories.unshift({ id: Date.now(), question: d.question || q, tags: d.tags || [], fullStory: d.fullStory || '', situation: d.situation, task: d.task, action: d.action, result: d.result, reflection: d.reflection });
-      saveState();
-      document.getElementById('story-question').value = '';
-      document.getElementById('story-context').value = '';
-      document.getElementById('story-form').style.display = 'none';
-      renderStories();
-    }
-  } catch (err) {
-    alert('Error: ' + err.message);
+  const count = pipeline.length;
+  document.getElementById('sb-badge').textContent = count;
+  document.getElementById('stat-total').textContent = count;
+  const active = pipeline.filter(p => !['rejected','offer accepted'].includes((p.status||'').toLowerCase())).length;
+  document.getElementById('stat-active').textContent = active;
+  if (count > 0) {
+    const avg = (pipeline.reduce((s, p) => s + (p.score || 0), 0) / count).toFixed(1);
+    document.getElementById('stat-avg').textContent = avg;
+    const top = pipeline.reduce((best, p) => (p.score || 0) > (best.score || 0) ? p : best, pipeline[0]);
+    document.getElementById('stat-top').textContent = top?.grade || '—';
+  } else {
+    document.getElementById('stat-avg').textContent = '—';
+    document.getElementById('stat-top').textContent = '—';
   }
-  btn.disabled = false;
-  logEl.style.display = 'none';
+  const sc = pipeline.length;
+  const sb2 = document.getElementById('sb-stories-badge');
+  if (sb2) sb2.textContent = stories.length;
 }
 
-function renderStories() {
-  const list = document.getElementById('stories-list');
-  document.getElementById('story-count-display').textContent = state.stories.length;
+// ===== DASHBOARD =====
+const statusLabels = ['Researching','Saved','Applied','Interviewing','Offer Received','Rejected'];
+const statusClassMap = {
+  'researching':'status-researching','saved':'status-saved','applied':'status-applied',
+  'interviewing':'status-interview','offer received':'status-offer','offer accepted':'status-offer',
+  'rejected':'status-rejected'
+};
+
+function gradeClass(grade) {
+  if (!grade) return 'grade-d';
+  const g = grade.toUpperCase();
+  if (g.startsWith('A')) return 'grade-a';
+  if (g.startsWith('B')) return 'grade-b';
+  if (g.startsWith('C')) return 'grade-c';
+  return 'grade-d';
+}
+
+function renderDashboard() {
   updateBadges();
-  if (state.stories.length === 0) {
-    list.innerHTML = '<div class="tracker-empty"><div class="big">📖</div><div>No stories yet</div></div>';
+  const wrap = document.getElementById('pipeline-table-wrap');
+  if (pipeline.length === 0) {
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-title">No applications yet</div><div class="empty-text">Evaluate an offer to get started</div><br><button class="btn btn-primary btn-sm" data-page="evaluate">Evaluate Offer</button></div>`;
+    wrap.querySelectorAll('[data-page]').forEach(el => el.addEventListener('click', () => navigateTo(el.dataset.page)));
     return;
   }
-  list.innerHTML = state.stories.map(s => `
-    <div class="story-card">
-      ${(s.tags||[]).map(t => `<span class="story-tag">${t}</span>`).join(' ')}
-      <div class="story-q">${s.question}</div>
-      <div class="story-text">${s.fullStory || [s.situation,s.task,s.action,s.result,s.reflection].filter(Boolean).join(' → ')}</div>
-    </div>`).join('');
-}
+  const rows = pipeline.map((p, i) => {
+    const sc = p.status?.toLowerCase() || 'researching';
+    const cls = statusClassMap[sc] || 'status-researching';
+    const date = p.date ? new Date(p.date).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '—';
+    return `<tr data-idx="${i}">
+      <td><div style="font-weight:600;font-size:13px;">${p.role || '—'}</div><div style="font-size:12px;color:var(--text-secondary)">${p.company || ''}</div></td>
+      <td><span class="grade-badge ${gradeClass(p.grade)}" style="font-size:11px;width:28px;height:28px;">${p.grade || '—'}</span></td>
+      <td>${date}</td>
+      <td><span class="score-num">${p.score?.toFixed(1) || '—'}</span></td>
+      <td><span class="match-pct" style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">${p.match ? p.match+'%' : '—'}</span></td>
+      <td>
+        <select class="status-sel" data-idx="${i}" style="font-size:12px;border:1px solid var(--border);border-radius:6px;padding:3px 6px;background:var(--page-bg);" onclick="event.stopPropagation()">
+          ${statusLabels.map(s => `<option ${s.toLowerCase() === sc ? 'selected' : ''}>${s}</option>`).join('')}
+        </select>
+      </td>
+    </tr>`;
+  }).join('');
 
-// ─── Negotiate ────────────────────────────────────────────────────────────────
-async function generateScript() {
-  const scenario = document.getElementById('neg-scenario').value;
-  const offer = document.getElementById('neg-offer').value;
-  const target = document.getElementById('neg-target').value;
-  const competing = document.getElementById('neg-competing').value;
-  const context = document.getElementById('neg-context').value;
-  const btn = document.getElementById('neg-btn');
-  btn.disabled = true; btn.textContent = 'Generating...';
+  wrap.innerHTML = `<div style="overflow-x:auto;"><table class="pipeline-table">
+    <thead><tr><th>Role / Company</th><th>Grade</th><th>Date</th><th>Score</th><th>Match</th><th>Status</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
 
-  const content = `Scenario: ${scenario}\nTheir offer: ${offer}\nMy target: ${target}\nCompeting offer: ${competing}\nContext: ${context}`;
-  try {
-    const result = await callAPI('negotiate', content);
-    if (result.success && result.data) {
-      const d = result.data;
-      document.getElementById('neg-placeholder').style.display = 'none';
-      document.getElementById('neg-result').style.display = 'block';
-      document.getElementById('neg-opening').textContent = d.opening || '';
-      document.getElementById('neg-anchor').textContent = d.anchor || '';
-      document.getElementById('neg-fallback').textContent = d.fallback || '';
-      document.getElementById('neg-close').textContent = d.close || '';
-      document.getElementById('neg-email-subject').textContent = d.emailSubject || 'Email Subject';
-      document.getElementById('neg-email-body').textContent = d.emailBody || '';
-    }
-  } catch (err) { alert('Error: ' + err.message); }
-  btn.disabled = false; btn.textContent = 'Generate Script';
-}
-
-// ─── Research ─────────────────────────────────────────────────────────────────
-async function runResearch() {
-  const company = document.getElementById('research-input').value.trim();
-  if (!company) { alert('Enter a company name.'); return; }
-  const btn = document.getElementById('research-btn');
-  btn.disabled = true; btn.textContent = 'Researching...';
-
-  try {
-    const result = await callAPI('research', company);
-    if (result.success && result.data) {
-      const d = result.data;
-      document.getElementById('research-result').style.display = 'block';
-      document.getElementById('r-stage').textContent = d.stage || '—';
-      document.getElementById('r-headcount').textContent = d.headcount || '—';
-      document.getElementById('r-score').textContent = d.aiScore || '—';
-      document.getElementById('r-title').textContent = 'Research Report — ' + (d.company || company);
-      document.getElementById('r-overview').textContent = d.overview || '';
-      document.getElementById('r-culture').textContent = d.culture || '';
-      document.getElementById('r-interview').textContent = d.interviewProcess || '';
-      document.getElementById('r-comp').textContent = d.compensation || '';
-      document.getElementById('r-flags').textContent = d.redFlags || '';
-      document.getElementById('r-verdict').textContent = d.verdict || '';
-    }
-  } catch (err) { alert('Error: ' + err.message); }
-  btn.disabled = false; btn.textContent = 'Research';
-}
-
-// ─── Scan ─────────────────────────────────────────────────────────────────────
-async function runScan() {
-  const focus = document.getElementById('scan-focus').value;
-  const btn = document.getElementById('scan-btn');
-  const outputEl = document.getElementById('scan-output');
-  const resultsEl = document.getElementById('scan-results');
-  btn.disabled = true; btn.textContent = 'Scanning...';
-  outputEl.style.display = 'block';
-  resultsEl.style.display = 'none';
-
-  const content = `Scan for AI/tech job openings. Focus: ${focus || 'LLMOps, Applied AI, Agentic systems, AI engineering roles'}. Companies: Anthropic, OpenAI, ElevenLabs, Mistral, Retool, Vercel, LangChain, n8n, Weights & Biases. Return realistic recent openings.`;
-
-  try {
-    const result = await callAPI('scan', content);
-    outputEl.style.display = 'none';
-    if (result.success && result.data && result.data.results) {
-      const rows = result.data.results.map(r => `
-        <div class="pipeline-row" style="grid-template-columns:2fr 1fr 1fr 1fr">
-          <div class="job-name">${r.role}</div>
-          <div style="color:var(--muted);font-size:12px">${r.company}</div>
-          <div><span class="tag tag-teal">${r.portal}</span></div>
-          <div><button class="btn sm" onclick="prefillEval('${r.role} at ${r.company}')">Evaluate</button></div>
-        </div>`).join('');
-      document.getElementById('scan-rows').innerHTML = rows;
-      resultsEl.style.display = 'block';
-    }
-  } catch (err) { alert('Error: ' + err.message); outputEl.style.display='none'; }
-  btn.disabled = false; btn.textContent = '⟳ Start Scan';
-}
-
-function prefillEval(text) {
-  showView('evaluate');
-  document.getElementById('jd-input').value = text;
-}
-
-// ─── Batch ────────────────────────────────────────────────────────────────────
-async function runBatch() {
-  const input = document.getElementById('batch-input').value.trim();
-  if (!input) { alert('Paste some job descriptions first.'); return; }
-  const jds = input.split('---').map(s => s.trim()).filter(Boolean);
-  if (jds.length === 0) return;
-
-  const btn = document.getElementById('batch-btn');
-  const statusEl = document.getElementById('batch-status');
-  btn.disabled = true;
-  statusEl.textContent = `Evaluating ${jds.length} jobs...`;
-
-  try {
-    const results = await Promise.all(jds.map(jd => callAPI('evaluate', jd).catch(e => ({ success: false, error: e.message }))));
-    const rows = results.map((r, i) => {
-      if (!r.success || !r.data) return `<div class="pipeline-row" style="grid-template-columns:2fr 1fr 0.8fr 0.8fr 0.8fr"><div class="job-name">Job ${i+1}</div><div>—</div><div>—</div><div>—</div><div style="color:var(--red)">Error</div></div>`;
-      const d = r.data;
-      const sc = d.finalScore || 0;
-      const cls = sc >= 4.5 ? 'score-a' : sc >= 3.5 ? 'score-b' : sc >= 2.5 ? 'score-c' : 'score-d';
-      const rec = sc >= 4 ? '<span style="color:var(--green)">Apply</span>' : sc >= 3 ? '<span style="color:var(--amber)">Review</span>' : '<span style="color:var(--red)">Skip</span>';
-      return `<div class="pipeline-row" style="grid-template-columns:2fr 1fr 0.8fr 0.8fr 0.8fr"><div><div class="job-name">${d.roleTitle||'Role '+(i+1)}</div></div><div style="color:var(--muted);font-size:12px">${d.company||'—'}</div><div><span class="score-pill ${cls}">${d.grade||'—'}</span></div><div style="font-size:12px">${d.matchPercent||'—'}%</div><div>${rec}</div></div>`;
+  wrap.querySelectorAll('tbody tr').forEach(row => {
+    row.addEventListener('click', () => openPipelineModal(parseInt(row.dataset.idx)));
+  });
+  wrap.querySelectorAll('.status-sel').forEach(sel => {
+    sel.addEventListener('change', e => {
+      const idx = parseInt(e.target.dataset.idx);
+      pipeline[idx].status = e.target.value.toLowerCase();
+      savePipeline();
     });
-    document.getElementById('batch-rows').innerHTML = rows.join('');
-    document.getElementById('batch-results').style.display = 'block';
-    statusEl.textContent = `Done — ${results.length} evaluated`;
-  } catch (err) { alert('Error: ' + err.message); }
-  btn.disabled = false;
+  });
 }
 
-// ─── PDF / CV ─────────────────────────────────────────────────────────────────
-async function generateCV() {
-  const jd = document.getElementById('pdf-jd').value.trim();
-  if (!jd) { alert('Paste a job description first.'); return; }
-  const btn = document.getElementById('pdf-btn');
-  btn.disabled = true; btn.textContent = 'Generating...';
-  document.getElementById('pdf-placeholder').style.display = 'none';
-
-  const content = `Job Description:\n${jd}\n\nArchetype: ${document.getElementById('pdf-archetype').value}`;
-  try {
-    const result = await callAPI('pdf', content);
-    if (result.success && result.data) {
-      const d = result.data;
-      let html = `<div style="font-family:var(--font-mono);font-size:11px;line-height:1.8;color:var(--text)">`;
-      html += `<div style="margin-bottom:12px"><div style="font-size:16px;font-weight:700">${d.name||''}</div><div style="color:var(--accent)">${d.title||''}</div><div style="color:var(--muted);font-size:10px">${d.contact||''}</div></div>`;
-      if (d.summary) html += `<div style="margin-bottom:12px;color:#9898b4">${d.summary}</div>`;
-      if (d.experience) d.experience.forEach(e => {
-        html += `<div style="margin-bottom:10px"><div style="font-weight:600">${e.role} · ${e.company}</div><div style="color:var(--muted);font-size:10px">${e.period}</div>${(e.bullets||[]).map(b=>`<div style="color:#9898b4">• ${b}</div>`).join('')}</div>`;
-      });
-      if (d.skills) html += `<div style="margin-top:8px"><span style="color:var(--accent);font-weight:600">Skills: </span><span style="color:#9898b4">${d.skills.join(', ')}</span></div>`;
-      if (d.keywords_injected) html += `<div style="margin-top:8px;font-size:10px;color:var(--muted)">Keywords injected: ${d.keywords_injected.join(', ')}</div>`;
-      html += `</div>`;
-      document.getElementById('pdf-content').innerHTML = html;
-      document.getElementById('pdf-result').style.display = 'block';
-      window._cvData = d;
-    }
-  } catch (err) {
-    alert('Error: ' + err.message);
-    document.getElementById('pdf-placeholder').style.display = 'flex';
+function openPipelineModal(idx) {
+  const p = pipeline[idx];
+  if (!p) return;
+  document.getElementById('pipeline-modal-title').textContent = `${p.role || 'Role'} @ ${p.company || ''}`;
+  const modal = document.getElementById('pipeline-modal');
+  modal.classList.add('open');
+  if (p.fullData) {
+    document.getElementById('pipeline-modal-content').innerHTML = renderEvalBlocks(p.fullData);
+  } else {
+    document.getElementById('pipeline-modal-content').innerHTML = `<p style="color:var(--text-secondary);font-size:14px;">No detailed evaluation data saved for this entry.</p>`;
   }
-  btn.disabled = false; btn.textContent = 'Generate Tailored CV';
 }
 
-function downloadCV() {
-  if (!window._cvData) return;
-  const d = window._cvData;
-  let text = `${d.name}\n${d.title}\n${d.contact}\n\n${d.summary}\n\n`;
-  (d.experience||[]).forEach(e => { text += `${e.role} · ${e.company} · ${e.period}\n`; (e.bullets||[]).forEach(b => text += `• ${b}\n`); text += '\n'; });
-  text += `Skills: ${(d.skills||[]).join(', ')}\n`;
-  const blob = new Blob([text], { type: 'text/plain' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'tailored-cv.txt'; a.click();
+document.getElementById('pipeline-modal-close').addEventListener('click', () => {
+  document.getElementById('pipeline-modal').classList.remove('open');
+});
+document.getElementById('pipeline-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+// Grade legend toggle
+document.getElementById('grade-guide-btn').addEventListener('click', () => {
+  const panel = document.getElementById('grade-legend-panel');
+  panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+});
+
+// ===== GAUGE SVG =====
+function buildGauge(score, grade) {
+  const norm = Math.max(0, Math.min(1, (score - 1) / 4));
+  const angle = -180 + norm * 180;
+  const r = 75;
+  const cx = 90, cy = 90;
+  const toRad = a => a * Math.PI / 180;
+
+  function arcPoint(deg) {
+    return [cx + r * Math.cos(toRad(deg)), cy + r * Math.sin(toRad(deg))];
+  }
+
+  const startX = cx - r, startY = cy;
+  const endX = cx + r, endY = cy;
+
+  // Filled arc
+  const fillAngle = -180 + norm * 180;
+  const [fillX, fillY] = arcPoint(fillAngle);
+
+  let arcColour = 'var(--gauge-a)';
+  if (score < 3) arcColour = 'var(--gauge-c)';
+  else if (score < 4) arcColour = 'var(--gauge-b)';
+
+  let gradeColour = '#166534', gradeBg = '#dcfce7';
+  if (grade?.startsWith('B')) { gradeColour = '#92400e'; gradeBg = '#fef3c7'; }
+  if (grade?.startsWith('C') || grade?.startsWith('D')) { gradeColour = '#991b1b'; gradeBg = '#fee2e2'; }
+
+  // Needle
+  const needleAngle = toRad(-180 + norm * 180);
+  const nx = cx + r * 0.75 * Math.cos(needleAngle);
+  const ny = cy + r * 0.75 * Math.sin(needleAngle);
+
+  return `<svg class="gauge-svg" viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
+    <!-- track -->
+    <path d="M ${startX} ${cy} A ${r} ${r} 0 0 1 ${endX} ${cy}" fill="none" stroke="${arcColour}22" stroke-width="10" stroke-linecap="round"/>
+    <!-- filled arc -->
+    <path d="M ${startX} ${cy} A ${r} ${r} 0 0 1 ${fillX} ${fillY}" fill="none" stroke="${arcColour}" stroke-width="10" stroke-linecap="round"/>
+    <!-- needle -->
+    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${arcColour}" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="5" fill="${arcColour}"/>
+    <!-- score -->
+    <text x="${cx}" y="${cy - 8}" text-anchor="middle" dominant-baseline="auto" fill="#111827" font-family="Inter,sans-serif" font-size="22" font-weight="800">${score.toFixed(1)}</text>
+    <!-- scale labels -->
+    <text x="${startX}" y="${cy + 16}" text-anchor="middle" fill="#9ca3af" font-size="9" font-family="DM Mono,monospace">1</text>
+    <text x="${endX}" y="${cy + 16}" text-anchor="middle" fill="#9ca3af" font-size="9" font-family="DM Mono,monospace">5</text>
+  </svg>
+  <div class="gauge-grade-pill" style="background:${gradeBg};color:${gradeColour}">${grade || '—'}</div>`;
 }
 
-// ─── Outreach ─────────────────────────────────────────────────────────────────
-async function generateOutreach() {
-  const jd = document.getElementById('contacto-jd').value.trim();
-  const target = document.getElementById('contacto-target').value.trim();
-  if (!jd) { alert('Add some context first.'); return; }
-  const btn = document.getElementById('contacto-btn');
-  btn.disabled = true; btn.textContent = 'Generating...';
+// ===== DIMENSION BARS =====
+function buildDims(dims) {
+  const labels = {
+    roleImpact: 'Role Impact', cvMatch: 'CV Match', compensation: 'Compensation',
+    growthPath: 'Growth Path', teamCulture: 'Team & Culture', missionAlign: 'Mission Align'
+  };
+  const items = Object.entries(dims).map(([k, v]) => {
+    const pct = ((v - 1) / 4 * 100).toFixed(0);
+    const cls = v >= 4 ? 'strong' : v >= 3 ? 'review' : 'weak';
+    return `<div class="dim-row">
+      <span class="dim-label">${labels[k] || k}</span>
+      <div class="dim-bar-wrap"><div class="dim-bar ${cls}" style="width:${pct}%"></div></div>
+      <span class="dim-score">${v.toFixed(1)}</span>
+    </div>`;
+  }).join('');
+  return `<div class="dim-list">${items}</div>
+  <div class="dim-legend">
+    <div class="dim-legend-item"><div class="dim-legend-dot" style="background:var(--strong)"></div>≥4.0 Strong</div>
+    <div class="dim-legend-item"><div class="dim-legend-dot" style="background:var(--review)"></div>3.0–3.9 Review</div>
+    <div class="dim-legend-item"><div class="dim-legend-dot" style="background:var(--weak)"></div>&lt;3.0 Weak</div>
+  </div>`;
+}
 
-  const content = `Job/Role context: ${jd}\nReaching out to: ${target}`;
-  try {
-    const result = await callAPI('contacto', content);
-    if (result.success && result.data) {
-      const d = result.data;
-      document.getElementById('c-note').textContent = d.connectionNote || '';
-      document.getElementById('c-inmail-subject').textContent = d.inMailSubject || 'InMail';
-      document.getElementById('c-inmail-body').textContent = d.inMailBody || '';
-      document.getElementById('c-tips').innerHTML = (d.tips||[]).map(t => `<div class="eval-block-text">• ${t}</div>`).join('');
-      document.getElementById('contacto-result').style.display = 'block';
+// ===== EVAL BLOCKS =====
+function renderEvalBlocks(data) {
+  const blockTitles = {
+    roleSummary: 'Role Summary', cvMatch: 'CV Match', levelStrategy: 'Level Strategy',
+    compResearch: 'Compensation', personalizationHook: 'Why You', interviewPrep: 'Interview Prep',
+    gapsFraming: 'Gaps & How to Frame Them'
+  };
+  const blocks = data.blocks || {};
+  let html = '';
+  for (const [k, title] of Object.entries(blockTitles)) {
+    if (blocks[k]) {
+      html += `<div class="eval-block"><div class="eval-block-title">${title}</div><div class="eval-block-body">${blocks[k]}</div></div>`;
     }
-  } catch (err) { alert('Error: ' + err.message); }
-  btn.disabled = false; btn.textContent = 'Generate Messages';
+  }
+  if (data.starStories?.length) {
+    html += `<div class="eval-block"><div class="eval-block-title">STAR Story Starters</div>${data.starStories.map(s => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">❓ ${s.question}</div><div class="star-starter">💡 ${s.starter}</div></div>`).join('')}</div>`;
+  }
+  return html;
 }
 
-// ─── Profile ──────────────────────────────────────────────────────────────────
+// ===== API CALL WITH RETRY =====
+async function callAPI(payload, retries = 3) {
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const res = await fetch('/api/evaluate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.status === 429 || res.status === 529) {
+        if (attempt < retries - 1) {
+          await new Promise(r => setTimeout(r, Math.pow(2, attempt + 1) * 1000));
+          continue;
+        }
+        throw new Error('Rate limited — please try again in a moment.');
+      }
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      return await res.json();
+    } catch (e) {
+      if (attempt === retries - 1) throw e;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+  }
+}
+
+// ===== EVALUATE OFFER =====
+let evalMode = 'full';
+let evalTimerInterval = null;
+
+document.querySelectorAll('#eval-mode-chips .chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('#eval-mode-chips .chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    evalMode = chip.dataset.mode;
+    document.getElementById('eval-mode-desc').textContent = evalMode === 'full'
+      ? 'Evaluate & Track: score the role and auto-add to your pipeline.'
+      : 'Quick Evaluation: score without saving to pipeline.';
+  });
+});
+
+document.getElementById('eval-run-btn').addEventListener('click', async () => {
+  const jd = document.getElementById('eval-jd').value.trim();
+  if (!jd) { showToast('Please paste a job description.'); return; }
+  lastEvalJD = jd;
+
+  document.getElementById('eval-input-state').style.display = 'none';
+  document.getElementById('eval-loading-state').style.display = 'block';
+  document.getElementById('eval-result-state').style.display = 'none';
+
+  let secs = 0;
+  evalTimerInterval = setInterval(() => {
+    document.getElementById('eval-timer').textContent = ++secs + 's';
+  }, 1000);
+
+  try {
+    const p = LS.get('co_profile') || {};
+    const res = await callAPI({ mode: 'evaluate', content: jd, cv: p.cv, profile: p });
+    clearInterval(evalTimerInterval);
+    if (!res.success) throw new Error(res.error || 'Evaluation failed');
+    lastEvalResult = res.data;
+    renderEvalResult(res.data);
+    if (evalMode === 'full') addToPipeline(res.data, jd);
+  } catch (e) {
+    clearInterval(evalTimerInterval);
+    document.getElementById('eval-input-state').style.display = 'block';
+    document.getElementById('eval-loading-state').style.display = 'none';
+    showToast('Error: ' + e.message, 3500);
+  }
+});
+
+function renderEvalResult(data) {
+  document.getElementById('eval-loading-state').style.display = 'none';
+  document.getElementById('eval-result-state').style.display = 'block';
+
+  // Header
+  const matchPct = data.matchPercent || 0;
+  const recColour = data.finalScore >= 4 ? 'var(--strong)' : data.finalScore >= 3 ? 'var(--review)' : 'var(--weak)';
+  document.getElementById('eval-result-header').innerHTML = `
+    <div class="gauge-wrap" style="padding:0;">${buildGauge(data.finalScore || 0, data.grade)}</div>
+    <div>
+      <div class="eval-meta-title">${data.roleTitle || 'Role'}</div>
+      <div class="eval-meta-company">${data.company || ''} · ${data.jobLocation || ''}</div>
+      <div class="eval-meta-row">
+        <span class="eval-meta-chip" style="background:var(--surface);">📍 ${data.jobLocation || '—'}</span>
+        <span class="eval-meta-chip" style="background:var(--surface);">${data.archetype || '—'}</span>
+        <span class="eval-meta-chip" style="color:${recColour};background:${recColour}18;">${data.recommendation || '—'}</span>
+        <span class="eval-meta-chip" style="background:var(--surface);font-family:var(--font-mono);">Match: ${matchPct}%</span>
+      </div>
+    </div>`;
+
+  // Gauge already in header — hide separate wrap
+  document.getElementById('eval-gauge-wrap').style.display = 'none';
+
+  // Dimensions
+  if (data.dimensions) {
+    document.getElementById('eval-dims-wrap').innerHTML = buildDims(data.dimensions);
+  }
+
+  // Blocks
+  document.getElementById('eval-blocks-wrap').innerHTML = renderEvalBlocks(data);
+
+  // Show/hide add button
+  const addBtn = document.getElementById('eval-add-btn');
+  addBtn.style.display = evalMode === 'quick' ? 'inline-flex' : 'none';
+}
+
+document.getElementById('eval-add-btn').addEventListener('click', () => {
+  if (lastEvalResult) { addToPipeline(lastEvalResult, lastEvalJD); showToast('Added to pipeline ✓'); }
+});
+document.getElementById('eval-new-btn').addEventListener('click', () => {
+  document.getElementById('eval-input-state').style.display = 'block';
+  document.getElementById('eval-result-state').style.display = 'none';
+  document.getElementById('eval-jd').value = '';
+});
+
+function addToPipeline(data, jd) {
+  const entry = {
+    id: Date.now(),
+    role: data.roleTitle || 'Unknown Role',
+    company: data.company || 'Unknown Company',
+    score: data.finalScore,
+    grade: data.grade,
+    match: data.matchPercent,
+    archetype: data.archetype,
+    location: data.jobLocation,
+    status: 'researching',
+    date: new Date().toISOString(),
+    fullData: data,
+    jd: jd.substring(0, 500)
+  };
+  pipeline.unshift(entry);
+  savePipeline();
+}
+
+// ===== SCAN =====
+const defaultPortals = [
+  { company: 'Anthropic', meta: 'Ashby · AI Safety', url: 'https://boards.greenhouse.io/anthropic' },
+  { company: 'OpenAI', meta: 'Greenhouse · Research', url: 'https://openai.com/careers' },
+  { company: 'ElevenLabs', meta: 'Ashby · Voice AI', url: 'https://jobs.ashbyhq.com/elevenlabs' },
+  { company: 'Mistral AI', meta: 'Lever · Research', url: 'https://jobs.lever.co/mistralai' },
+  { company: 'Retool', meta: 'Greenhouse · Platform', url: 'https://retool.com/careers' },
+  { company: 'Vercel', meta: 'Greenhouse · Engineering', url: 'https://vercel.com/careers' },
+];
+
+function renderPortals() {
+  document.getElementById('scan-portal-list').innerHTML = defaultPortals.map(p =>
+    `<div class="portal-item">
+      <div><div style="font-weight:600;">${p.company}</div><div class="portal-meta">${p.meta}</div></div>
+      <span class="portal-status">Ready</span>
+    </div>`
+  ).join('');
+}
+renderPortals();
+
+document.getElementById('scan-run-btn').addEventListener('click', async () => {
+  const focus = document.getElementById('scan-focus').value.trim();
+  const btn = document.getElementById('scan-run-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Scanning…';
+  try {
+    const p = LS.get('co_profile') || {};
+    const res = await callAPI({ mode: 'scan', content: focus || 'Data analytics roles in Germany and Europe', profile: p });
+    btn.disabled = false; btn.innerHTML = '⟳ Rescan';
+    if (res.success && res.data?.results) {
+      const rows = res.data.results.map(r =>
+        `<tr><td style="font-weight:600;">${r.role}</td><td>${r.company}</td><td><span class="status-chip status-applied">${r.portal}</span></td><td><a href="${r.url}" target="_blank" class="btn btn-outline btn-sm">View →</a></td></tr>`
+      ).join('');
+      document.getElementById('scan-results-wrap').innerHTML = `<h2 class="card-title">Found Roles</h2><div style="overflow-x:auto;"><table class="pipeline-table"><thead><tr><th>Role</th><th>Company</th><th>Portal</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>${res.data.summary ? `<p style="font-size:13px;color:var(--text-secondary);margin-top:12px;">${res.data.summary}</p>` : ''}`;
+    }
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Retry Scan';
+    showToast('Scan failed: ' + e.message, 3000);
+  }
+});
+
+// ===== BATCH =====
+document.getElementById('batch-run-btn').addEventListener('click', async () => {
+  const raw = document.getElementById('batch-jds').value.trim();
+  if (!raw) { showToast('Paste job descriptions separated by ---'); return; }
+  const jds = raw.split(/\n?---\n?/).map(s => s.trim()).filter(Boolean);
+  if (jds.length === 0) { showToast('No descriptions found.'); return; }
+
+  const btn = document.getElementById('batch-run-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Evaluating…';
+
+  const results = [];
+  const p = LS.get('co_profile') || {};
+  for (const jd of jds) {
+    try {
+      const res = await callAPI({ mode: 'evaluate', content: jd, cv: p.cv, profile: p });
+      if (res.success) results.push({ jd, data: res.data });
+    } catch (_) {}
+  }
+
+  btn.disabled = false; btn.innerHTML = '⟳ Re-evaluate All';
+  const wrap = document.getElementById('batch-results-wrap');
+  wrap.style.display = 'block';
+  const rows = results.map(r => {
+    const d = r.data;
+    const sc = d.finalScore || 0;
+    const col = sc >= 4 ? 'var(--strong)' : sc >= 3 ? 'var(--review)' : 'var(--weak)';
+    return `<tr>
+      <td style="font-weight:600;">${d.roleTitle || '—'}</td>
+      <td>${d.company || '—'}</td>
+      <td><span style="font-family:var(--font-mono);font-weight:700;color:${col}">${sc.toFixed(1)}</span></td>
+      <td>${d.matchPercent || '—'}%</td>
+      <td><button class="btn btn-outline btn-sm" onclick="addBatchEntry(${results.indexOf(r)})">+ Track</button></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('batch-results-body').innerHTML = rows;
+  window.__batchResults = results;
+});
+window.addBatchEntry = function(idx) {
+  const r = window.__batchResults?.[idx];
+  if (r) { addToPipeline(r.data, r.jd); showToast('Added to pipeline ✓'); }
+};
+
+// ===== MY CV =====
+let lastCVData = null;
+
+document.getElementById('cv-gen-btn').addEventListener('click', async () => {
+  const jd = document.getElementById('cv-jd').value.trim();
+  if (!jd) { showToast('Paste a job description first.'); return; }
+  const btn = document.getElementById('cv-gen-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Generating…';
+  const p = LS.get('co_profile') || {};
+  try {
+    const res = await callAPI({ mode: 'pdf', content: jd, cv: p.cv, profile: p });
+    btn.disabled = false; btn.textContent = 'Regenerate CV';
+    if (res.success && res.data) {
+      lastCVData = res.data;
+      renderCVPreview(res.data);
+      document.getElementById('cv-result-wrap').style.display = 'block';
+    }
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Generate Tailored CV';
+    showToast('CV generation failed: ' + e.message, 3000);
+  }
+});
+
+// CV tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tabGroup = btn.closest('.tab-bar');
+    tabGroup.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const panelId = btn.dataset.tab;
+    const parentCard = btn.closest('.card');
+    parentCard.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    parentCard.querySelector('#cv-tab-' + panelId)?.classList.add('active');
+  });
+});
+
+function renderCVPreview(data) {
+  // Styled CV preview matching original design
+  const exp = (data.experience || []).map(e => `
+    <div style="margin-bottom:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;">
+        <strong style="font-size:13px;">${e.role}</strong>
+        <span style="font-size:11px;color:#666;">${e.period || ''}</span>
+      </div>
+      <div style="font-size:12px;color:#555;margin-bottom:6px;">${e.company}</div>
+      <ul style="margin:0;padding-left:16px;">${(e.bullets||[]).map(b=>`<li style="font-size:12px;margin-bottom:3px;">${b}</li>`).join('')}</ul>
+    </div>`).join('');
+
+  document.getElementById('cv-styled-preview').innerHTML = `
+    <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">
+      <div style="background:#f3f2ef;padding:18px 24px 14px;border-bottom:3px solid #175253;">
+        <h1 style="font-size:22px;font-weight:700;color:#175253;margin:0 0 2px;">${data.name || ''}</h1>
+        <div style="font-size:13px;color:#555;">${data.title || ''}</div>
+        <div style="font-size:12px;color:#777;margin-top:4px;">${data.contact || ''}</div>
+      </div>
+      <div style="padding:20px 24px;">
+        ${data.summary ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Profile</div><p style="font-size:13px;line-height:1.6;color:#333;">${data.summary}</p></div>` : ''}
+        ${exp ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:10px;">Experience</div>${exp}</div>` : ''}
+        ${data.skills?.length ? `<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Skills</div><div style="font-size:12px;line-height:1.8;">${data.skills.join(' · ')}</div></div>` : ''}
+      </div>
+    </div>`;
+
+  // Copy sections
+  const sections = { 'Profile Summary': data.summary, 'Skills': data.skills?.join(', ') };
+  (data.experience || []).forEach(e => { sections[e.role + ' @ ' + e.company] = e.bullets?.join('\n'); });
+  document.getElementById('cv-copy-sections').innerHTML = Object.entries(sections).filter(([,v])=>v).map(([k,v]) =>
+    `<button class="copy-section-btn" data-content="${encodeURIComponent(v)}"><span>${k}</span><span>Copy</span></button>`
+  ).join('');
+
+  document.querySelectorAll('.copy-section-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const text = decodeURIComponent(btn.dataset.content);
+      navigator.clipboard.writeText(text).then(() => {
+        btn.classList.add('copied'); btn.querySelector('span:last-child').textContent = '✓ Copied';
+        setTimeout(() => { btn.classList.remove('copied'); btn.querySelector('span:last-child').textContent = 'Copy'; }, 1800);
+      });
+    });
+  });
+}
+
+document.getElementById('cv-dl-btn').addEventListener('click', () => {
+  if (!lastCVData) return;
+  const printWin = window.open('', '_blank');
+  printWin.document.write('<html><head><style>@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");body{margin:0;padding:24px;font-family:"Source Sans Pro",sans-serif;}</style></head><body>');
+  printWin.document.write(document.getElementById('cv-styled-preview').innerHTML);
+  printWin.document.write('</body></html>');
+  printWin.document.close();
+  setTimeout(() => printWin.print(), 600);
+});
+
+// ===== INTERVIEW STORIES =====
+document.getElementById('story-gen-btn').addEventListener('click', async () => {
+  const q = document.getElementById('story-q').value.trim();
+  const ctx = document.getElementById('story-ctx').value.trim();
+  if (!q) { showToast('Enter a behavioural question.'); return; }
+  const btn = document.getElementById('story-gen-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Generating…';
+  const p = LS.get('co_profile') || {};
+  try {
+    const content = q + (ctx ? '\n\nContext: ' + ctx : '');
+    const res = await callAPI({ mode: 'story', content, cv: p.cv, profile: p });
+    btn.disabled = false; btn.textContent = 'Generate STAR+R Story';
+    if (res.success && res.data) {
+      stories.unshift({ id: Date.now(), ...res.data });
+      saveStories();
+      document.getElementById('story-q').value = '';
+      document.getElementById('story-ctx').value = '';
+    }
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Generate STAR+R Story';
+    showToast('Story generation failed: ' + e.message, 3000);
+  }
+});
+
+function renderStories() {
+  const empty = document.getElementById('stories-empty');
+  const list = document.getElementById('stories-list');
+  updateBadges();
+  if (stories.length === 0) { empty.style.display = 'block'; list.innerHTML = ''; return; }
+  empty.style.display = 'none';
+  list.innerHTML = stories.map((s, i) =>
+    `<div class="story-card" data-idx="${i}">
+      <div class="story-q">${s.question || 'Story'}</div>
+      <div class="story-tags">${(s.tags||[]).map(t=>`<span class="story-tag">${t}</span>`).join('')}</div>
+    </div>`
+  ).join('');
+  list.querySelectorAll('.story-card').forEach(card => {
+    card.addEventListener('click', () => openStoryModal(parseInt(card.dataset.idx)));
+  });
+}
+
+function openStoryModal(idx) {
+  const s = stories[idx];
+  document.getElementById('story-modal-title').textContent = s.question || 'Story';
+  document.getElementById('story-modal-content').innerHTML = `
+    ${s.fullStory ? `<div class="eval-block-body" style="margin-bottom:16px;font-style:italic;">${s.fullStory}</div>` : ''}
+    ${s.situation ? `<div class="eval-block"><div class="eval-block-title">Situation</div><div class="eval-block-body">${s.situation}</div></div>` : ''}
+    ${s.task ? `<div class="eval-block"><div class="eval-block-title">Task</div><div class="eval-block-body">${s.task}</div></div>` : ''}
+    ${s.action ? `<div class="eval-block"><div class="eval-block-title">Action</div><div class="eval-block-body">${s.action}</div></div>` : ''}
+    ${s.result ? `<div class="eval-block"><div class="eval-block-title">Result</div><div class="eval-block-body">${s.result}</div></div>` : ''}
+    ${s.reflection ? `<div class="eval-block"><div class="eval-block-title">Reflection</div><div class="eval-block-body">${s.reflection}</div></div>` : ''}
+    <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="deleteStory(${idx})">Delete Story</button>`;
+  document.getElementById('story-modal').classList.add('open');
+}
+window.deleteStory = function(idx) {
+  stories.splice(idx, 1); saveStories();
+  document.getElementById('story-modal').classList.remove('open');
+  showToast('Story deleted');
+};
+document.getElementById('story-modal-close').addEventListener('click', () => document.getElementById('story-modal').classList.remove('open'));
+document.getElementById('story-modal').addEventListener('click', e => { if (e.target === e.currentTarget) e.currentTarget.classList.remove('open'); });
+
+// ===== NEGOTIATION =====
+document.getElementById('neg-run-btn').addEventListener('click', async () => {
+  const btn = document.getElementById('neg-run-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Generating…';
+  const content = [
+    'Scenario: ' + document.getElementById('neg-scenario').value,
+    'Their offer: ' + document.getElementById('neg-offer').value,
+    'Target: ' + document.getElementById('neg-target').value,
+    'Competing offer: ' + document.getElementById('neg-competing').value,
+    'Context: ' + document.getElementById('neg-ctx').value,
+  ].join('\n');
+  const p = LS.get('co_profile') || {};
+  try {
+    const res = await callAPI({ mode: 'negotiate', content, cv: p.cv, profile: p });
+    btn.disabled = false; btn.textContent = 'Regenerate Script';
+    if (res.success && res.data) renderNegResult(res.data);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Generate Script';
+    showToast('Error: ' + e.message, 3000);
+  }
+});
+
+function renderNegResult(d) {
+  const wrap = document.getElementById('neg-result-wrap');
+  wrap.style.display = 'block';
+  document.getElementById('neg-result-content').innerHTML = `
+    ${['opening','anchor','fallback','close'].filter(k=>d[k]).map(k=>`<div class="neg-section"><div class="neg-label">${k.charAt(0).toUpperCase()+k.slice(1)}</div><div class="neg-body">${d[k]}</div></div>`).join('')}
+    ${d.crossBorderNotes ? `<div class="neg-section"><div class="neg-label">Cross-Border Notes</div><div class="neg-body">${d.crossBorderNotes}</div></div>` : ''}
+    ${d.emailSubject ? `<div class="neg-section"><div class="neg-label">Email Draft</div><div class="neg-email-wrap"><div class="neg-subject">Subject: ${d.emailSubject}</div><div>${d.emailBody || ''}</div></div></div>` : ''}
+    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${t}</div>`).join('')}</div>` : ''}`;
+}
+
+// ===== COMPANY RESEARCH =====
+document.getElementById('research-run-btn').addEventListener('click', async () => {
+  const company = document.getElementById('research-company').value.trim();
+  if (!company) { showToast('Enter a company name.'); return; }
+  const btn = document.getElementById('research-run-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Researching…';
+  try {
+    const res = await callAPI({ mode: 'research', content: 'Research: ' + company });
+    btn.disabled = false; btn.textContent = 'Research';
+    if (res.success && res.data) renderResearchResult(res.data);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Research';
+    showToast('Error: ' + e.message, 3000);
+  }
+});
+
+function renderResearchResult(d) {
+  const wrap = document.getElementById('research-result-wrap');
+  wrap.style.display = 'block';
+  document.getElementById('research-result-content').innerHTML = `
+    <div style="display:flex;gap:20px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+      <div><div style="font-size:20px;font-weight:800;">${d.company}</div><div style="font-size:13px;color:var(--text-secondary);">${d.stage || ''} · ${d.headcount || ''}</div></div>
+      ${d.aiScore ? `<div style="margin-left:auto;background:var(--nav-bg);color:var(--text-on-dark);border-radius:8px;padding:8px 16px;font-family:var(--font-mono);font-size:20px;font-weight:700;">${d.aiScore}</div>` : ''}
+    </div>
+    <div class="research-grid">
+      ${['overview','culture','techStack','interviewProcess','compensation','redFlags'].filter(k=>d[k]).map(k=>`<div class="research-block"><div class="research-block-label">${k.replace(/([A-Z])/g,' $1').trim()}</div><div class="research-block-val">${d[k]}</div></div>`).join('')}
+    </div>
+    ${d.verdict ? `<div style="margin-top:16px;background:var(--nav-bg);color:var(--text-on-dark);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;"><strong style="color:var(--accent);">Verdict</strong><br>${d.verdict}</div>` : ''}`;
+}
+
+// ===== OUTREACH =====
+document.getElementById('outreach-run-btn').addEventListener('click', async () => {
+  const jd = document.getElementById('outreach-jd').value.trim();
+  const target = document.getElementById('outreach-target').value.trim();
+  if (!jd) { showToast('Paste a job description or context.'); return; }
+  const btn = document.getElementById('outreach-run-btn');
+  btn.disabled = true; btn.innerHTML = '<div class="spinner"></div> Generating…';
+  const p = LS.get('co_profile') || {};
+  const content = jd + (target ? '\n\nReaching out to: ' + target : '');
+  try {
+    const res = await callAPI({ mode: 'contacto', content, cv: p.cv, profile: p });
+    btn.disabled = false; btn.textContent = 'Regenerate';
+    if (res.success && res.data) renderOutreachResult(res.data);
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Generate Messages';
+    showToast('Error: ' + e.message, 3000);
+  }
+});
+
+function renderOutreachResult(d) {
+  const wrap = document.getElementById('outreach-result-wrap');
+  wrap.style.display = 'block';
+  document.getElementById('outreach-result-content').innerHTML = `
+    ${d.connectionNote ? `<div class="neg-section"><div class="neg-label">Connection Note <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)">${d.connectionNote.length}/300</span></div><div class="outreach-note">${d.connectionNote}</div><button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="navigator.clipboard.writeText('${d.connectionNote.replace(/'/g,"\\'")}').then(()=>showToast('Copied ✓'))">Copy</button></div>` : ''}
+    ${d.inMailSubject ? `<div class="neg-section"><div class="neg-label">InMail Subject</div><div class="neg-body">${d.inMailSubject}</div></div>` : ''}
+    ${d.inMailBody ? `<div class="neg-section"><div class="neg-label">InMail Body</div><div class="neg-email-wrap">${d.inMailBody}</div></div>` : ''}
+    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${t}</div>`).join('')}</div>` : ''}`;
+}
+
+// ===== PROFILE =====
 function loadProfile() {
-  const p = state.profile;
-  ['name','title','location','story','cv'].forEach(k => { const el = document.getElementById('p-'+k); if(el) el.value = p[k]||''; });
+  const p = LS.get('co_profile') || {};
+  if (p.name) document.getElementById('p-name').value = p.name;
+  if (p.title) document.getElementById('p-title').value = p.title;
+  if (p.location) document.getElementById('p-location').value = p.location;
   if (p.target) document.getElementById('p-target').value = p.target;
   if (p.salary) document.getElementById('p-salary').value = p.salary;
   if (p.minscore) document.getElementById('p-minscore').value = p.minscore;
+  if (p.story) document.getElementById('p-story').value = p.story;
+  if (p.cv) { document.getElementById('p-cv').value = p.cv; document.getElementById('cv-upload-zone').classList.add('has-cv'); document.getElementById('cv-upload-prompt').innerHTML = `<div style="font-size:28px;margin-bottom:8px;">✅</div><div style="font-size:13px;font-weight:600;color:var(--strong);">CV loaded</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Click to replace</div>`; }
 }
 
-function saveProfile() {
-  state.profile = {
+document.getElementById('save-profile-btn').addEventListener('click', () => {
+  const p = {
     name: document.getElementById('p-name').value,
     title: document.getElementById('p-title').value,
     location: document.getElementById('p-location').value,
@@ -980,23 +1780,57 @@ function saveProfile() {
     salary: document.getElementById('p-salary').value,
     minscore: document.getElementById('p-minscore').value,
     story: document.getElementById('p-story').value,
-    cv: document.getElementById('p-cv').value
+    cv: document.getElementById('p-cv').value,
   };
-  saveState();
-  const saved = document.getElementById('profile-saved');
-  saved.style.display = 'block';
-  setTimeout(() => saved.style.display = 'none', 3000);
-}
+  LS.set('co_profile', p);
+  profile = p;
+  const msg = document.getElementById('profile-save-msg');
+  msg.style.display = 'inline'; setTimeout(() => msg.style.display = 'none', 2000);
+  showToast('Profile saved ✓');
+});
 
-// ─── Utils ────────────────────────────────────────────────────────────────────
-function copyText(id) {
-  const text = document.getElementById(id).textContent;
-  navigator.clipboard.writeText(text).then(() => alert('Copied!'));
-}
+// CV upload via PDF.js
+document.getElementById('cv-upload-zone').addEventListener('click', () => document.getElementById('cv-file-input').click());
+document.getElementById('cv-file-input').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  document.getElementById('cv-upload-prompt').style.display = 'none';
+  document.getElementById('cv-uploading').style.display = 'block';
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    let text = '';
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(item => item.str).join(' ') + '\n';
+    }
+    document.getElementById('p-cv').value = text.trim();
+    document.getElementById('cv-upload-zone').classList.add('has-cv');
+    document.getElementById('cv-upload-prompt').innerHTML = `<div style="font-size:28px;margin-bottom:8px;">✅</div><div style="font-size:13px;font-weight:600;color:var(--strong);">CV loaded</div><div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">Click to replace</div>`;
+    document.getElementById('cv-upload-prompt').style.display = 'block';
+    document.getElementById('cv-uploading').style.display = 'none';
+    showToast('CV extracted ✓');
+  } catch (err) {
+    document.getElementById('cv-uploading').style.display = 'none';
+    document.getElementById('cv-upload-prompt').style.display = 'block';
+    showToast('Failed to extract PDF text.', 3000);
+  }
+});
 
-// ─── Init ─────────────────────────────────────────────────────────────────────
+// ===== EVAL HEADER — also wire up CV + Stories nav buttons =====
+document.getElementById('eval-go-cv-btn').addEventListener('click', () => {
+  const jd = document.getElementById('eval-jd').value.trim();
+  if (jd) document.getElementById('cv-jd').value = jd;
+  navigateTo('cv');
+});
+document.getElementById('eval-go-stories-btn').addEventListener('click', () => navigateTo('stories'));
+
+// ===== INIT =====
+loadProfile();
+renderDashboard();
+renderStories();
 updateBadges();
-renderPipeline();
 </script>
 </body>
 </html>
