@@ -1560,9 +1560,21 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 });
 
 function renderCVPreview(data) {
-  // FIX 1: Normalize skills to array
-  if (data.skills && !Array.isArray(data.skills)) {
-    data.skills = String(data.skills).split(',').map(s => s.trim()).filter(Boolean);
+  // FIX: Normalize skills to array of strings (handles all formats)
+  if (data.skills) {
+    if (typeof data.skills === 'string') {
+      // Case 1: String → split into array
+      data.skills = data.skills.split(',').map(s => s.trim()).filter(Boolean);
+    } else if (Array.isArray(data.skills)) {
+      // Case 2: Array of objects → extract string values
+      data.skills = data.skills.map(skill => {
+        if (typeof skill === 'object' && skill !== null) {
+          // Extract first string property value
+          return Object.values(skill).find(v => typeof v === 'string') || String(skill);
+        }
+        return String(skill);
+      }).filter(Boolean);
+    }
   }
   
   // Styled CV preview matching original design
@@ -1575,6 +1587,22 @@ function renderCVPreview(data) {
       <div style="font-size:12px;color:#555;margin-bottom:6px;">${e.company}</div>
       <ul style="margin:0;padding-left:16px;">${(e.bullets||[]).map(b=>`<li style="font-size:12px;margin-bottom:3px;">${b}</li>`).join('')}</ul>
     </div>`).join('');
+
+  document.getElementById('cv-styled-preview').innerHTML = `
+    <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">
+      <div style="background:#f3f2ef;padding:18px 24px 14px;border-bottom:3px solid #175253;">
+        <h1 style="font-size:22px;font-weight:700;color:#175253;margin:0 0 2px;">${data.name || ''}</h1>
+        <div style="font-size:13px;color:#555;">${data.title || ''}</div>
+        <div style="font-size:12px;color:#777;margin-top:4px;">${data.contact || ''}</div>
+      </div>
+      <div style="padding:20px 24px;">
+        ${data.summary ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Profile</div><p style="font-size:13px;line-height:1.6;color:#333;">${data.summary}</p></div>` : ''}
+        ${exp ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:10px;">Experience</div>${exp}</div>` : ''}
+        ${data.skills?.length ? `<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Skills</div><div style="font-size:12px;line-height:1.8;">${data.skills.join(' · ')}</div></div>` : ''}
+      </div>
+    </div>`;
+
+  // ... rest of function stays the same
 
   document.getElementById('cv-styled-preview').innerHTML = `
     <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">
