@@ -181,15 +181,13 @@ PR #7 merged (closes #6), 62/62 tests, verified live by Bala.
 - Private advisory: set "patched version" to the v1.3.1 merge.
 
 ### Phase 0B — Guardrails (1 builder + test engineer)
-- Tag `pre-revamp` on current `main`.
+- Tag `pre-revamp`: Bala creates it once via GitHub → Releases (agents can't push tags through the proxy). Don't ask again after it exists.
 - Add `CLAUDE.md` (rules §1, commands, do-not-touch list), PR template (§5), issue template (§4) and `KNOWN-BUGS.md`.
 - **Characterization tests for every Working feature**, using the Auditor's fixtures. This includes the **skills-shape regression test**.
 - CI: keep `npm test`; add an `e2e` job (Playwright + axe, mocked API, static server). Upload screenshots as artifacts.
-- GitHub rulesets:
-  - `main`: require a PR and the `test` + `e2e` checks; block force-push and deletion; **no bypass**.
-  - Tags `pre-*` and `v*`: block deletion and updates.
+- ✅ DONE by Bala (2026-11-16): GitHub rulesets `main-protection` (PR + `test` check, no force-push/deletion, no bypass) and `release-tags` (`pre-*`, `v*`). **Only remaining action:** once the `e2e` check exists on main, Bala adds `e2e` to `main-protection`'s required checks. The agent tells him in its PR.
 - `.claude/settings.json` deny list (rule 13), committed to the repo so every agent session inherits it.
-- Vercel: a preview for every PR; make sure the preview cannot spend the production key (deployment protection on previews, or a separate low-limit key).
+- ✅ DONE (2026-11-16): Vercel previews per PR, with Vercel Authentication (Standard Protection) on. No separate key needed. Anthropic spend limit of $20/month set.
 - **GDPR fixes with no visual change:** self-host the fonts and PDF.js (worker included). Keep their licence files (the fonts are SIL OFL, PDF.js is Apache-2.0) in `THIRD_PARTY_NOTICES.md`. Add a privacy notice page listing Vercel and Anthropic. Check whether an Impressum is required.
 
 ### Phase 1 — Module split, zero visual change (1 builder)
