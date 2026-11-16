@@ -7,3 +7,4 @@ node_modules/
 Thumbs.db
 .commit-msg.tmp
 upstream-report.md
+.backup-pre-align/
