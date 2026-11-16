@@ -124,6 +124,10 @@ The model ID lives in one place — `MODEL` in `api/evaluate.js`. Anthropic reti
 
 This is a solo personal project; see [CHANGELOG.md](CHANGELOG.md) for what's changed and [SECURITY.md](SECURITY.md) for how API keys and request limits are handled. CI (`.github/workflows/ci.yml`) runs the test suite on every push and PR to `main`.
 
+## Credits
+
+Built on top of [career-ops](https://github.com/santifer/career-ops) by [Santiago Fernández de Valderrama](https://github.com/santifer), MIT licensed. This fork reworks it into a single Vercel-hosted web app (static frontend + one serverless function) rather than a CLI-driven tool, with its own UI, API contract, and test suite.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
