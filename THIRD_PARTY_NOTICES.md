@@ -32,6 +32,6 @@ SOFTWARE.
 | Asset | Version | Licence | Location |
 |---|---|---|---|
 | PDF.js (`pdfjs-dist`, library and worker) | 3.11.174 | Apache-2.0 | `public/vendor/pdfjs/` (licence: `LICENSE`) |
-| Inter (via Fontsource, latin subset) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-inter.txt`) |
-| DM Mono (via Fontsource, latin subset) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-dm-mono.txt`) |
-| Source Sans Pro (via Fontsource, latin subset; CV print window) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-source-sans-pro.txt`) |
+| Inter (via Fontsource, latin subset) | 5.3.0 | SIL OFL 1.1 | `public/fonts/` (`LICENSE-inter.txt`) |
+| DM Mono (via Fontsource, latin subset) | 5.3.0 | SIL OFL 1.1 | `public/fonts/` (`LICENSE-dm-mono.txt`) |
+| Source Sans Pro (via Fontsource, latin subset; CV print window) | 5.3.0 | SIL OFL 1.1 | `public/fonts/` (`LICENSE-source-sans-pro.txt`) |
