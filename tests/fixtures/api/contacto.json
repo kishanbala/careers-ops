@@ -1,0 +1,32 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:19:19.201Z",
+  "latencyMs": 7555,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "contacto",
+    "content": "<663 chars from tests/fixtures/synthetic-profile.json>",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "connectionNote": "Hi, I'm a Lead Data Analyst in Utrecht. I built a dbt + Snowflake semantic layer (42 metrics) and ran 14 A/B tests. Larkspur's churn and fleet-utilisation work caught my eye. Open to a 15-minute chat on how you model subscription data?",
+      "inMailSubject": "Modelling churn and fleet utilisation in dbt on Snowflake",
+      "inMailBody": "Hi, Larkspur owning both churn and fleet utilisation across 6 cities means the subscription models have to hold up under pricing tests and monthly leadership reviews. That is a hard modelling problem.\n\nAt Quokka Logistics I built a dbt + Snowflake semantic layer covering 42 core metrics, backed by 190 dbt tests. It cut weekly reporting from 3 days to 4 hours. Earlier, at Fjordline Retail, I ran 14 A/B tests and wrote the test-design checklist the company still uses.\n\nWould you be open to a 15-minute chat on how you structure subscription data in dbt so pricing experiments stay trustworthy? Happy to share what worked for us on metric definitions and testing.\n\nMira",
+      "tips": [
+        "Primary target: the Hiring Manager for the Data Platform team. They own the modelling layer and can judge the dbt and Snowflake proof directly. One flag: your brief names Brightquill Labs, but the JD is for Larkspur Mobility. Confirm the hiring manager's company before sending, and swap the company name in the hook if needed.",
+        "Alternate 1: a Senior Analytics Engineer or Data Engineer on the same team. A peer can speak candidly about how the team works with dbt and Snowflake, and may refer you internally. Lead with the 190 dbt tests and 42-metric semantic layer.",
+        "Alternate 2: the Recruiter or Talent Partner for the role. Use this if you cannot find or reach the hiring manager. Shorten the message to the role fit: dbt, Snowflake, 14 A/B tests, Power BI and Looker.",
+        "Fit check before you send: this JD is analyst-heavy (dashboards, A/B tests, monthly leadership readouts) and your target is Analytics Engineer with ownership of the modelling layer. The dbt on Snowflake work is the overlap. Salary EUR 70-80k sits below your EUR 85k target, so raise comp early or skip if the modelling scope is small.",
+        "The message names the dbt modelling angle on purpose. It signals you want the analytics-engineering part of the role, not just dashboards.",
+        "The connection note is under 300 characters. Check the count after you edit the company name.",
+        "Phone numbers are left out. Add a calendar link only if you are comfortable sharing one."
+      ]
+    },
+    "mode": "contacto"
+  }
+}

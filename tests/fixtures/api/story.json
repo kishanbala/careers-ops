@@ -1,0 +1,36 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:17:58.670Z",
+  "latencyMs": 9045,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "story",
+    "content": "Tell me about a time you had to convince stakeholders to change how a metric was defined.\n\nContext: Use the Quokka Logistics semantic layer work.",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "question": "Tell me about a time you had to convince stakeholders to change how a metric was defined.",
+      "situation": "At Quokka Logistics BV, I was Lead Data Analyst building a dbt + Snowflake semantic layer for 42 core metrics. Reporting took about 3 days a week. Part of the cause was that teams defined shared metrics in their own ways. A single metric could carry different definitions depending on who reported it. (Note: the CV does not name the specific metric or the teams involved, so I describe the pattern in general terms. Add the real example before using this story.)",
+      "task": "I had to get stakeholders to agree on one definition per metric, so the semantic layer could be the single source of truth. That meant asking some teams to give up the definition they already used.",
+      "action": "I mapped how each metric was currently defined and showed where the numbers disagreed. I proposed one definition per metric and encoded it once in dbt. I protected it with data tests (the team now runs 190 dbt tests) and introduced code review, so any later definition change had to be visible and agreed. I led a team of 3 analysts through this work. [Add from your memory: who you pitched, what objections came up, and how you resolved them. The CV does not record these details.]",
+      "result": "The semantic layer now covers 42 core metrics. Weekly reporting effort dropped from 3 days to 4 hours. Metric definitions are now governed by reviewed code and tests, not by individual spreadsheets or dashboards.",
+      "reflection": "A metric definition is a business agreement first and a code problem second. The dbt model only holds if the people who own the number have signed off on it. Next time I would involve the metric owners earlier, before building, and write the definition and its edge cases in the model docs. That would shorten the debate and make the change stick. (Confirm this matches what you actually learned. Edit it if it does not.)",
+      "fullStory": "At Quokka Logistics, I led the build of a dbt + Snowflake semantic layer covering 42 core metrics. Weekly reporting took about 3 days, partly because teams defined shared metrics in different ways. My task was to get stakeholders to agree on one definition per metric, even when that meant some teams changed what they used. I mapped the existing definitions and showed where the numbers disagreed. Then I proposed a single definition for each and encoded it once in dbt. I added code review and data tests so definitions could only change in the open. Today 190 dbt tests guard the layer. Weekly reporting effort fell from 3 days to 4 hours. The lesson: a metric definition is a business agreement before it is a code problem. I would now bring metric owners in before building, and document each definition and its edge cases in the model. [Fill in the specific metric, the stakeholders, and how you handled their pushback. The CV does not state them, and a real example will make this answer much stronger.]",
+      "tags": [
+        "stakeholder-management",
+        "metric-definition",
+        "semantic-layer",
+        "dbt",
+        "data-governance",
+        "influence-without-authority",
+        "analytics-engineering"
+      ]
+    },
+    "mode": "story"
+  }
+}

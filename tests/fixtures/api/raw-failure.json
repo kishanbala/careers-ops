@@ -1,0 +1,21 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "No real {raw} reply was observed; this is the mocked shape the audit injected (matches api/evaluate.js catch branch).",
+  "capturedAt": "2026-11-16T19:18:08.238Z",
+  "latencyMs": 0,
+  "httpStatus": 200,
+  "mocked": true,
+  "request": {
+    "mode": "story",
+    "content": "Mocked raw-reply check",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "raw": "SYNTHETIC mocked prose reply that is not JSON."
+    },
+    "mode": "story"
+  }
+}

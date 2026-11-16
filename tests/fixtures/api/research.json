@@ -1,0 +1,31 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:19:09.670Z",
+  "latencyMs": 9326,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "research",
+    "content": "Research: Brightquill Labs GmbH (fictional company, Berlin)",
+    "cv": null,
+    "profile": null
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "company": "Brightquill Labs GmbH",
+      "stage": "unknown",
+      "funding": "unknown",
+      "headcount": "unknown",
+      "aiScore": "C",
+      "overview": "I have no reliable information on Brightquill Labs GmbH. It is not a company I can place from general knowledge, so I will not invent a product, funding history, leadership team or recent launches. What I can say: the name and the GmbH form suggest a German-registered company, and you have told me it is based in Berlin. Everything else about its product, AI/data strategy, competitors and differentiation is unknown. To fill the gaps, check the company website and careers page, the Handelsregister entry (shareholders, registered capital, filing dates), LinkedIn headcount and hiring trends, Crunchbase or Dealroom for funding, and recent press or the team's engineering blog and GitHub if they exist. The aiScore of C is a placeholder for 'insufficient evidence', not a judgment on the company.",
+      "culture": "unknown. No verified information on engineering or data culture. Look for signals yourself: public engineering blog posts, open-source activity, tech stack named in job ads, Glassdoor or Kununu reviews (Kununu is the common one for German employers), and how the JD describes ownership, on-call and team structure.",
+      "interviewProcess": "unknown. I have no data on their hiring loop. Ask the recruiter for the number of rounds, who you will meet, whether there is a take-home or live technical exercise, and expected timeline. For a Berlin GmbH, a typical pattern is recruiter screen, one or two technical interviews, and a team or founder conversation, but treat that as a generic assumption, not knowledge of this company.",
+      "redFlags": "No red flags can be confirmed because there is no verifiable data. Process risks to check: whether the company can be verified at all (website, registry entry, named team), whether the JD states salary range or leaves it vague, whether funding runway is disclosed or evasive, and whether the role scope is clear. If you cannot verify the company exists as described, pause before sharing personal documents.",
+      "compensation": "unknown. I have no salary data for Brightquill Labs and will not guess. Ask for the band early. Berlin pay varies widely by stage and sector, so benchmark against comparable roles on Levels.fyi, Glassdoor and Kununu, and do not accept a number below the market for your level without a clear reason such as meaningful equity.",
+      "verdict": "Low-confidence brief: there is not enough verifiable information to recommend pursuing or skipping. Next step is a 20-minute verification pass (website, Handelsregister, LinkedIn, funding databases). If the company checks out, go into the first call with specific questions on funding runway, team size, product traction, the data and AI roadmap, and the salary band. If it cannot be verified, skip it. To tailor the angle for you, share the JD and I will map it against your CV."
+    },
+    "mode": "research"
+  }
+}

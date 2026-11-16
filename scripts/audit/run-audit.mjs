@@ -436,7 +436,7 @@ async function responsive(browser) {
       const overflow = {};
       for (const p of pages) { await go(page, p); overflow[p] = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth); }
       await go(page, 'evaluate');
-      await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('co_pipeline') || '[]')[0]?.fullData; if (d) { evalMode = 'quick'; renderEvalResult(d); } });
+      await page.evaluate(() => { const d = JSON.parse(localStorage.getItem('co_pipeline') || '[]').find((e) => e.fullData?.finalScore)?.fullData; if (d) { evalMode = 'quick'; renderEvalResult(d); } });
       await shot(page, 'XC-EVAL-RESULT');
       await go(page, 'dashboard');
       await page.click('#grade-guide-btn'); await shot(page, 'XC-GRADE');
