@@ -26,3 +26,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Self-hosted assets
+
+| Asset | Version | Licence | Location |
+|---|---|---|---|
+| PDF.js (`pdfjs-dist`, library and worker) | 3.11.174 | Apache-2.0 | `public/vendor/pdfjs/` (licence: `LICENSE`) |
+| Inter (via Fontsource, latin subset) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-inter.txt`) |
+| DM Mono (via Fontsource, latin subset) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-dm-mono.txt`) |
+| Source Sans Pro (via Fontsource, latin subset; CV print window) | 5.x | SIL OFL 1.1 | `public/fonts/` (`LICENSE-source-sans-pro.txt`) |
