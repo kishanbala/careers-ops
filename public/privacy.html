@@ -19,7 +19,7 @@ h1{font-size:24px}h2{font-size:17px;margin-top:28px}a{color:#1d4ed8}
 <p>Your profile, CV, saved roles and stories are kept in this browser's local storage (keys starting with <code>co_</code>). Kairo has no accounts, no database, no cookies and no analytics or trackers.</p>
 
 <h2>When you run a tool</h2>
-<p>The text needed for that tool (for example the job description, and your CV or profile where the tool uses it) is sent through our server to Anthropic's AI to produce the result. We don't store it: our server does not log or save the content of requests. To limit abuse, the server keeps your IP address in memory for up to 10 minutes to count requests. Anthropic handles the text under its own terms and retention rules.</p>
+<p>The text needed for that tool (for example the job description, and your CV or profile where the tool uses it) is sent through our server to Anthropic's AI to produce the result. We don't store it: our server does not log or save the content of requests. To limit abuse, the server counts requests per IP address in a ten-minute window. The IP is held only in the server's memory (not written to disk or a database) and disappears when that server instance restarts. Anthropic handles the text under its own terms and retention rules.</p>
 
 <h2>Who processes data</h2>
 <ul>
