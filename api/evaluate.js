@@ -1,5 +1,8 @@
 const Anthropic = require("@anthropic-ai/sdk");
 
+// Single place to bump when a model is retired (see platform.claude.com/docs/en/about-claude/model-deprecations)
+const MODEL = "claude-sonnet-5-5";
+
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -58,13 +61,14 @@ Return ONLY valid JSON, no markdown fences:
   try {
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const message = await client.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 3000,
+      model: MODEL,
+      max_tokens: 6000,
+      thinking: { type: "between_tools" }, // no tools => no thinking tokens billed
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }],
     });
 
-    const rawText = message.content[0].text;
+    const rawText = message.content.filter((b) => b.type === "text").map((b) => b.text).join("");
     const cleaned = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 
     try {
