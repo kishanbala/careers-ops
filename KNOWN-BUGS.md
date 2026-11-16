@@ -169,3 +169,16 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Evidence:** `docs/audit/v1/SCAN-01-1440.png`, `tests/fixtures/api/scan.json`.
 - **Suspected cause (unconfirmed):** the `scan` mode has no browsing or tool access, and the UI drops `verified`.
 - **Status:** Open.
+
+### BUG-16 · P3 · v2 · medal chip B+ (found in review, PR #24)
+- **Environment:** any viewport, Light and Dark, Chromium.
+- **Steps:**
+  1. Render a B+ grade with `gradeChip('B+')` (`public/js/render/grade-chip.js`).
+  2. Measure the text contrast against the bronze gradient (`--medal-bronze`, design-decisions §4).
+- **Expected:** text contrast of at least 4.5:1 (WCAG AA) across the whole chip.
+- **Actual:**
+  - Black text (`#000000`) on the darkest gradient stop `#8A5229` is 3.32:1. Contrast is higher towards the mid stop `#A8693A` and the light stop `#E2A777`.
+  - The gradient stops are fixed by design §4, so the chip text colour alone cannot reach 4.5:1 at the dark end.
+- **Evidence:** computed from the §4 hex values; chip markup in `tests/grade-chip.test.js`.
+- **Suspected cause (unconfirmed):** the §4 bronze gradient is too dark at its end stop for any single text colour. Decision for Bala: lighten the end stop, drop the gradient behind text, or accept the limit for a 13 px mono label.
+- **Status:** Open.

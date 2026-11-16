@@ -4,6 +4,11 @@
 //  - Local: e2e/baseline/ (captured in a dev container from main@c48b9ee), or run the capture script yourself.
 // Compare: at most MAX_DIFF_PIXELS differing pixels per shot (decoded on a canvas in the browser, no extra deps).
 // SPLIT_SKIP=1 skips (push to main: no pre-split base to compare against).
+// SPLIT_ALLOW (comma list of PR labels, set by CI) makes intentional pixel changes explicit (Phase 2 spec §7):
+//  - `visual:all` allows every shot; `visual:<prefix>` (e.g. `visual:dashboard`) allows shots whose name starts with <prefix>.
+//  - Allowed shots are still captured on both sides and written to e2e-results/split-before|after/ (the PR's before/after
+//    screenshots) but are not size/pixel-asserted. All other shots keep the MAX_DIFF_PIXELS rule.
+//  - Host, error and API-call assertions stay on for every shot.
 const fs = require("node:fs");
 const path = require("node:path");
 const { test, expect, profile, fx } = require("./helpers");
@@ -17,6 +22,8 @@ const MAX_DIFF_PIXELS = 30;
 const BASE_URL = process.env.SPLIT_BASE_URL || "http://127.0.0.1:4173";
 const HOST = new URL(BASE_URL).host;
 const UPDATE = process.env.UPDATE_BASELINE === "1";
+const ALLOW = (process.env.SPLIT_ALLOW || "").split(",").map((l) => l.trim()).filter((l) => l.startsWith("visual:")).map((l) => l.slice("visual:".length));
+const allowed = (name) => ALLOW.some((p) => p === "all" || (p !== "" && name.startsWith(p)));
 const VIEWPORTS = [[390, 844], [820, 1180], [1440, 900]];
 const PAGES = ["dashboard", "evaluate", "scan", "batch", "cv", "stories", "negotiate", "research", "outreach", "strategy", "profile"];
 const SYN = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "tests", "fixtures", "synthetic-profile.json"), "utf8"));
@@ -86,6 +93,13 @@ async function check(browser, name, buf) {
   const file = path.join(BASE, `${name}.png`);
   if (UPDATE) { fs.mkdirSync(BASE, { recursive: true }); fs.writeFileSync(file, buf); return; }
   expect(fs.existsSync(file), `missing baseline ${name}.png`).toBe(true);
+  if (allowed(name)) {
+    for (const [dir, data] of [["split-before", fs.readFileSync(file)], ["split-after", buf]]) {
+      fs.mkdirSync(`e2e-results/${dir}`, { recursive: true });
+      fs.writeFileSync(`e2e-results/${dir}/${name}.png`, data);
+    }
+    return;
+  }
   const r = await diffPixels(browser, fs.readFileSync(file), buf);
   if (r.diff !== 0) { fs.mkdirSync("e2e-results/split-actual", { recursive: true }); fs.writeFileSync(`e2e-results/split-actual/${name}.png`, buf); }
   expect(r.size, `${name}: screenshot size vs baseline`).toBeUndefined();
@@ -100,7 +114,8 @@ function watch(page) {
   return { hosts, bad };
 }
 
-const nav = (page, id) => page.evaluate((i) => document.querySelector(`.nav-item[data-page="${i}"]`).click(), id);
+// Returns false when the nav item no longer exists (tolerated only when that page's shots are allowed to change).
+const nav = (page, id) => page.evaluate((i) => { const el = document.querySelector(`.nav-item[data-page="${i}"]`); if (!el) return false; el.click(); return true; }, id);
 
 for (const [w, h] of VIEWPORTS) {
   test.describe(`split ${w}px`, () => {
@@ -113,7 +128,10 @@ for (const [w, h] of VIEWPORTS) {
       await page.goto("/");
       await page.waitForLoadState("networkidle");
       for (const id of PAGES) {
-        await nav(page, id);
+        if (!(await nav(page, id))) {
+          expect(allowed(id), `nav item for "${id}" is gone and visual:${id} / visual:all is not set`).toBe(true);
+          continue;
+        }
         await expect(page.locator(`#page-${id}`)).toBeVisible();
         await check(browser, `${id}-${w}`, await shot(page));
       }
