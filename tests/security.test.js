@@ -5,7 +5,13 @@ const fs = require("node:fs");
 const path = require("node:path");
 const vm = require("node:vm");
 
-const HTML = fs.readFileSync(path.join(__dirname, "..", "public", "index.html"), "utf8");
+// Phase 1 (#20): the app is split into a markup shell + ES modules; read the shell plus every public/js/**/*.js, concatenated.
+const appSource = () => {
+  const dir = path.join(__dirname, "..", "public", "js");
+  const files = fs.readdirSync(dir, { recursive: true }).filter((f) => f.endsWith(".js")).sort();
+  return [fs.readFileSync(path.join(__dirname, "..", "public", "index.html"), "utf8"), ...files.map((f) => fs.readFileSync(path.join(dir, f), "utf8"))].join("\n");
+};
+const HTML = appSource();
 const PAYLOAD = '<img src=x onerror=alert(1)><script>x</script>"\'';
 
 // Pull a top-level function's source out of the page script by brace matching.

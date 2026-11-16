@@ -27,12 +27,27 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx playwright install --with-deps chromium
+      # Pixel-diff baselines (e2e/split.spec.js): render the PR base in this same runner, then compare the PR build to it.
+      # Not under e2e-results/: Playwright empties its outputDir at the start of every run.
+      - uses: actions/checkout@v7
+        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: pre-split
+      - run: node e2e/capture-baseline.mjs pre-split/public baseline-ci
+        if: github.event_name == 'pull_request'
+        env:
+          CI: "true"
       - run: npx playwright test --trace off
         env:
           CI: "true"
+          BASELINE_DIR: ${{ github.event_name == 'pull_request' && 'baseline-ci' || '' }}
+          SPLIT_SKIP: ${{ github.event_name == 'pull_request' && '0' || '1' }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: e2e-screenshots-and-axe
-          path: e2e-results/
+          path: |
+            e2e-results/
+            baseline-ci/
           if-no-files-found: ignore
