@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 ## [Unreleased]
 
 ### Changed
+- Bronze medal chip (B+) meets AA: darkest gradient stop lightened from `#8A5229` to `#A96432` (black text 4.56:1; light and mid stops unchanged). Fixes BUG-16; per Bala's decision A on #22.
 - Phase 2A (#22): Gunmetal + Brass design tokens in Light and Dark (`public/css/tokens.css`, design-decisions §4 hex values), keyed on `[data-theme]` and following `prefers-color-scheme` without JS. Legacy token names stay as aliases, so every existing screen is re-skinned, not rebuilt. Fonts are now Familjen Grotesk, Figtree and IBM Plex Mono, self-hosted woff2 (Inter and DM Mono removed). `e2e/split.spec.js` and `ci.yml` take PR labels (`visual:all`, `visual:<screen>`) to allow intentional pixel changes.
 - `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: at most 30 differing pixels per screenshot (CI renderer noise; 0 px locally) against pre-split baselines (`e2e/split.spec.js`; in CI the baselines are rendered from the PR base in the same runner by `e2e/capture-baseline.mjs`, locally `e2e/baseline/`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
 

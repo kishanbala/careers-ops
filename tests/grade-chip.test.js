@@ -38,3 +38,15 @@ test("gradeChip escapes model output", async () => {
   assert.match(out, /&quot;/);
   assert.match(gradeChip("A", { size: '"><script>' }), /&quot;&gt;&lt;script&gt;/);
 });
+
+test("bronze medal: black chip text reaches AA (4.5:1) on every gradient stop (BUG-16)", () => {
+  const css = require("node:fs").readFileSync(path.join(__dirname, "..", "public", "css", "tokens.css"), "utf8");
+  const m = css.match(/--medal-bronze:\s*linear-gradient\(([^)]*)\)/);
+  assert.ok(m, "--medal-bronze not found");
+  const stops = [...m[1].matchAll(/#([0-9A-Fa-f]{6})/g)].map((x) => x[1]);
+  assert.equal(stops.length, 3);
+  assert.deepEqual(stops.slice(0, 2).map((s) => s.toUpperCase()), ["E2A777", "A8693A"], "light and mid stops are fixed by design");
+  const lin = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
+  const lum = (h) => 0.2126 * lin(parseInt(h.slice(0, 2), 16)) + 0.7152 * lin(parseInt(h.slice(2, 4), 16)) + 0.0722 * lin(parseInt(h.slice(4, 6), 16));
+  for (const s of stops) assert.ok((lum(s) + 0.05) / 0.05 >= 4.5, `black on #${s}`);
+});
