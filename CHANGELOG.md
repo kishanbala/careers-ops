@@ -6,12 +6,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 ## [Unreleased]
 
 ### Changed
+- App shell (Phase 2B, #23): header with logo and theme-toggle slot, left nav (≥768 px; menu drawer on phones), phone bottom nav (Today · Pipeline · + · Stories · Profile) shown only once a role exists. The v1 top nav, sidebar and tab bar are replaced; every v1 page is still reachable under a collapsed "Tools" group (`.nav-item[data-page]`), Career Strategy hidden until built. Legacy page sections are unchanged.
+- Evaluate & Track stores the full job description (was cut at 500 characters) and a v2 role (`makeRole`).
 - `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: at most 30 differing pixels per screenshot (CI renderer noise; 0 px locally) against pre-split baselines (`e2e/split.spec.js`; in CI the baselines are rendered from the PR base in the same runner by `e2e/capture-baseline.mjs`, locally `e2e/baseline/`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
 
 ### Fixed
 - Privacy link is visible at every screen width; privacy notice wording corrected.
 
 ### Added
+- Hash router (`public/js/router.js`): `#/home`, `#/today`, `#/pipeline[/:id]`, `#/role/:id/:tab`, `#/stories`, `#/profile`, `#/add[/several|/scan]`, `#/legacy/:page`; first-run state (`home` / `today-empty` / `today`, design §3) picks the start screen. Phase 2 view stubs in `public/js/views/` (one purpose line + one action, or the matching legacy page).
+- Storage schema v2 (`public/js/store.js`, build-plan §3a): additive, idempotent migration on load (`co_schema = 2`; roles gain `appliedAt`, `interviewAt`, `nextAction`, `nextActionAt`, `stageHistory[]`, `jdComplete`; stories gain `roleIds[]`), one-time `co_backup_v1` snapshot before the first write, quota-safe (no partial writes). Helpers for Phase 3: `updateRole`, `setStage`, `linkStory`, `onChange`, `exportAll` / `importAll` (backup), `storageUsage` (warns at 80%). A test loads v2 data into the v1 build (`e2e/rollback.spec.js`).
+- Per-action feature flags (`public/js/features.js`) for paused actions ("Being rebuilt. Back soon.").
 - Fonts (Inter, DM Mono, Source Sans Pro for the CV print window) and PDF.js are self-hosted: no third-party requests on page load. Privacy notice at `/privacy.html`; licences in `THIRD_PARTY_NOTICES.md`.
 - CI `e2e` job: Playwright + axe against a static server with a mocked API (`e2e/`, `playwright.config.js`); screenshots and axe results are uploaded as artifacts.
 - Agent guardrails: `CLAUDE.md`, PR and issue templates, `.claude/settings.json` deny list, and regression tests for the protected fixes (`tests/protected-fixes.test.js`).

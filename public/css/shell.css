@@ -1,0 +1,117 @@
+/* ===== APP SHELL (Phase 2B) =====
+   Header (logo + theme toggle) · left nav ≥768px (menu drawer on phones) · main#app-main ·
+   phone bottom nav (<768px, only once a role exists: data-has-roles="true").
+   Colours come from tokens.css (legacy names, re-skinned by 2A); layout vars live here. */
+:root {
+  --shell-header-h: var(--top-nav-h);
+  --shell-nav-w: var(--nav-width);
+  --shell-bottom-h: 60px;
+  --shell-tap: 44px;
+}
+
+/* ===== HEADER ===== */
+.shell-header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: var(--shell-header-h);
+  display: flex; align-items: center; gap: 8px;
+  padding: 0 16px;
+  background: var(--nav-bg); color: var(--text-on-dark);
+}
+.shell-header .logo {
+  display: flex; align-items: center; gap: 10px;
+  min-height: var(--shell-tap);
+  color: var(--text-on-dark); font-weight: 800; font-size: 16px; white-space: nowrap;
+}
+.shell-header-end { margin-left: auto; display: flex; align-items: center; }
+.shell-menu-btn {
+  display: none;
+  width: var(--shell-tap); height: var(--shell-tap);
+  align-items: center; justify-content: center;
+  background: transparent; border: 0; border-radius: var(--radius);
+  color: var(--text-on-dark);
+}
+.shell-menu-btn svg { width: 20px; height: 20px; }
+
+/* ===== LEFT NAV ===== */
+.shell-nav {
+  position: fixed; top: var(--shell-header-h); left: 0; bottom: 0; z-index: 90;
+  width: var(--shell-nav-w);
+  display: flex; flex-direction: column;
+  padding: 12px 0 16px;
+  overflow-y: auto;
+  background: var(--nav-bg);
+}
+.shell-link,
+.shell-tools > summary,
+.shell-tools .nav-item {
+  display: flex; align-items: center; gap: 10px;
+  min-height: var(--shell-tap);
+  padding: 0 16px; margin: 1px 8px;
+  border-radius: var(--radius);
+  color: var(--text-on-dark-muted); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: color 0.15s, background 0.15s;
+}
+.shell-link:hover,
+.shell-tools > summary:hover,
+.shell-tools .nav-item:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.07); }
+.shell-link[aria-current="page"],
+.shell-tools .nav-item.active { color: var(--text-on-dark); background: rgba(255,255,255,0.1); }
+.shell-link[aria-current="page"] .nav-icon { opacity: 1; }
+.shell-tools { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
+.shell-tools > summary { list-style: none; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.shell-tools > summary::-webkit-details-marker { display: none; }
+.shell-tools > summary::after { content: "+"; margin-left: auto; font-size: 14px; }
+.shell-tools[open] > summary::after { content: "\2212"; }
+.shell-tools .nav-item {
+  width: calc(100% - 16px);
+  background: transparent; border: 0; text-align: left; font-family: inherit;
+}
+.shell-tools .nav-item[hidden] { display: none; }
+
+.shell-header a:focus-visible,
+.shell-header button:focus-visible,
+.shell-nav a:focus-visible,
+.shell-nav button:focus-visible,
+.shell-nav summary:focus-visible,
+.shell-bottom-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ===== MAIN ===== */
+.main-content { margin-top: var(--shell-header-h); }
+
+/* ===== PHONE BOTTOM NAV ===== */
+.shell-bottom-nav { display: none; }
+.shell-tab {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; min-height: var(--shell-tap); padding: 6px 4px;
+  color: var(--text-on-dark-muted); font-size: 10px; font-weight: 500;
+  transition: color 0.15s;
+}
+.shell-tab svg { width: 20px; height: 20px; }
+.shell-tab[aria-current="page"] { color: var(--accent); }
+.shell-tab-add svg {
+  width: 36px; height: 36px; padding: 8px; border-radius: 50%;
+  background: var(--accent); color: var(--text-on-dark);
+}
+
+/* ===== TABLET + DESKTOP (≥768px): left nav ===== */
+@media (min-width: 768px) {
+  .main-content { margin-left: var(--shell-nav-w); padding: 28px; }
+}
+@media (min-width: 1024px) {
+  .main-content { padding: 32px 40px; max-width: 1200px; }
+}
+
+/* ===== PHONE (<768px) ===== */
+@media (max-width: 767px) {
+  .shell-menu-btn { display: inline-flex; }
+  .shell-nav { display: none; width: min(280px, 85vw); box-shadow: var(--shadow-md); }
+  .app-shell.nav-open .shell-nav { display: flex; }
+  .main-content { padding: 16px 16px 24px; }
+  .app-shell[data-has-roles="true"] .main-content { padding-bottom: calc(var(--shell-bottom-h) + 20px); }
+  .app-shell[data-has-roles="true"] .shell-bottom-nav {
+    display: flex; align-items: stretch;
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+    height: var(--shell-bottom-h);
+    background: var(--nav-bg); border-top: 1px solid rgba(255,255,255,0.1);
+  }
+}

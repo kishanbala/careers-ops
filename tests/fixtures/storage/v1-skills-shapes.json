@@ -1,0 +1,134 @@
+{
+  "_label": "SYNTHETIC - fictional data for Kairo storage-migration tests (issue #23). No real person, CV or company.",
+  "_note": "v1 roles whose fullData carries the three skills shapes (string, string[], object) that flattenSkills handles; migration must leave fullData untouched.",
+  "storage": {
+    "co_profile": {
+      "name": "Mira Testwell (SYNTHETIC)",
+      "title": "Senior Data Analyst",
+      "location": "Utrecht, Netherlands",
+      "target": "Analytics Engineer",
+      "salary": "EUR 85,000",
+      "minscore": "4.0",
+      "story": "SYNTHETIC - not a real person.",
+      "cv": "MIRA TESTWELL (SYNTHETIC - not a real person)\nSKILLS: SQL, dbt, Snowflake"
+    },
+    "co_pipeline": [
+      {
+        "id": 1700000000010,
+        "role": "Analytics Engineer (string skills)",
+        "company": "Saltmarsh Energy (fictional)",
+        "score": 3.8,
+        "grade": "B+",
+        "match": 75,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "researching",
+        "date": "2026-11-01T12:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Analytics Engineer (string skills)",
+          "company": "Saltmarsh Energy (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 3.8,
+          "grade": "B+",
+          "matchPercent": 75,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          },
+          "skills": "SQL, dbt, Snowflake ,",
+          "cvSections": {
+            "skills": "SQL, dbt, Snowflake ,"
+          }
+        },
+        "jd": "SYNTHETIC JD - skills shape string"
+      },
+      {
+        "id": 1700000000011,
+        "role": "Analytics Engineer (array skills)",
+        "company": "Saltmarsh Energy (fictional)",
+        "score": 3.8,
+        "grade": "B+",
+        "match": 75,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "researching",
+        "date": "2026-11-01T12:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Analytics Engineer (array skills)",
+          "company": "Saltmarsh Energy (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 3.8,
+          "grade": "B+",
+          "matchPercent": 75,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          },
+          "skills": [
+            "SQL",
+            "dbt",
+            "Snowflake"
+          ],
+          "cvSections": {
+            "skills": [
+              "SQL",
+              "dbt",
+              "Snowflake"
+            ]
+          }
+        },
+        "jd": "SYNTHETIC JD - skills shape array"
+      },
+      {
+        "id": 1700000000012,
+        "role": "Analytics Engineer (object skills)",
+        "company": "Saltmarsh Energy (fictional)",
+        "score": 3.8,
+        "grade": "B+",
+        "match": 75,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "researching",
+        "date": "2026-11-01T12:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Analytics Engineer (object skills)",
+          "company": "Saltmarsh Energy (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 3.8,
+          "grade": "B+",
+          "matchPercent": 75,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          },
+          "skills": {
+            "proficient": [
+              "SQL",
+              "dbt"
+            ],
+            "intermediate": "Python, Go",
+            "nested": {
+              "tools": "Looker"
+            }
+          },
+          "cvSections": {
+            "skills": {
+              "proficient": [
+                "SQL",
+                "dbt"
+              ],
+              "intermediate": "Python, Go",
+              "nested": {
+                "tools": "Looker"
+              }
+            }
+          }
+        },
+        "jd": "SYNTHETIC JD - skills shape object"
+      }
+    ]
+  }
+}

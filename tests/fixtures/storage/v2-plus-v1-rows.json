@@ -1,0 +1,212 @@
+{
+  "_label": "SYNTHETIC - fictional data for Kairo storage-migration tests (issue #23). No real person, CV or company.",
+  "_note": "v2 data after a rollback to v1: the v1 build added one v1-shaped role and one v1-shaped story at the front while co_schema was already 2.",
+  "storage": {
+    "co_schema": 2,
+    "co_backup_v1": {
+      "takenAt": "2026-11-12T08:00:00.000Z",
+      "keys": {
+        "co_profile": "{\"name\":\"Mira Testwell (SYNTHETIC)\",\"title\":\"Senior Data Analyst\",\"location\":\"Utrecht, Netherlands\",\"target\":\"Analytics Engineer\",\"salary\":\"EUR 85,000\",\"minscore\":\"4.0\",\"story\":\"SYNTHETIC - not a real person.\",\"cv\":\"MIRA TESTWELL (SYNTHETIC - not a real person)\\nSKILLS: SQL, dbt, Snowflake\"}",
+        "co_pipeline": "[{\"id\":1700000000001,\"role\":\"Senior Data Analyst\",\"company\":\"Larkspur Mobility BV (fictional)\",\"score\":4.1,\"grade\":\"A-\",\"match\":82,\"archetype\":\"Analytics Engineer\",\"location\":\"Amsterdam (fictional)\",\"status\":\"applied\",\"date\":\"2026-11-10T12:00:00.000Z\",\"fullData\":{\"roleTitle\":\"Senior Data Analyst\",\"company\":\"Larkspur Mobility BV (fictional)\",\"jobLocation\":\"Amsterdam (fictional)\",\"finalScore\":4.1,\"grade\":\"A-\",\"matchPercent\":82,\"archetype\":\"Analytics Engineer\",\"recommendation\":\"Synthetic recommendation\",\"blocks\":{\"roleSummary\":\"SYNTHETIC role summary.\"}},\"jd\":\"SYNTHETIC JD - Senior Data Analyst, Larkspur Mobility BV (fictional). SQL, dbt, Power BI.\"},{\"id\":1700000000002,\"role\":\"Senior Analytics Engineer\",\"company\":\"Brightquill Labs GmbH (fictional)\",\"score\":4.6,\"grade\":\"A\",\"match\":91,\"archetype\":\"Analytics Engineer\",\"location\":\"Amsterdam (fictional)\",\"status\":\"interviewing\",\"date\":\"2026-11-05T12:00:00.000Z\",\"fullData\":{\"roleTitle\":\"Senior Analytics Engineer\",\"company\":\"Brightquill Labs GmbH (fictional)\",\"jobLocation\":\"Amsterdam (fictional)\",\"finalScore\":4.6,\"grade\":\"A\",\"matchPercent\":91,\"archetype\":\"Analytics Engineer\",\"recommendation\":\"Synthetic recommendation\",\"blocks\":{\"roleSummary\":\"SYNTHETIC role summary.\"}},\"jd\":\"SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional)\"},{\"id\":1700000000003,\"role\":\"Data Analyst (Marketing)\",\"company\":\"Pebblecrest Foods GmbH (fictional)\",\"score\":2.1,\"grade\":\"D\",\"match\":40,\"archetype\":\"Analytics Engineer\",\"location\":\"Amsterdam (fictional)\",\"status\":\"rejected\",\"date\":\"2026-10-28T12:00:00.000Z\",\"jd\":\"SYNTHETIC JD - Data Analyst (Marketing).\",\"customNote\":\"unknown field kept as is\"}]",
+        "co_stories": "[{\"id\":1700000000100,\"question\":\"Tell me about a time you changed a metric definition. (SYNTHETIC)\",\"situation\":\"SYNTHETIC situation.\",\"task\":\"SYNTHETIC task.\",\"action\":\"SYNTHETIC action.\",\"result\":\"SYNTHETIC result.\",\"reflection\":\"SYNTHETIC reflection.\"}]"
+      }
+    },
+    "co_profile": {
+      "name": "Mira Testwell (SYNTHETIC)",
+      "title": "Senior Data Analyst",
+      "location": "Utrecht, Netherlands",
+      "target": "Analytics Engineer",
+      "salary": "EUR 85,000",
+      "minscore": "4.0",
+      "story": "SYNTHETIC - not a real person.",
+      "cv": "MIRA TESTWELL (SYNTHETIC - not a real person)\nSKILLS: SQL, dbt, Snowflake"
+    },
+    "co_pipeline": [
+      {
+        "id": 1700000000005,
+        "role": "BI Developer",
+        "company": "Saltmarsh Energy (fictional)",
+        "score": 3.6,
+        "grade": "B+",
+        "match": 70,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "researching",
+        "date": "2026-11-16T09:00:00.000Z",
+        "fullData": {
+          "roleTitle": "BI Developer",
+          "company": "Saltmarsh Energy (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 3.6,
+          "grade": "B+",
+          "matchPercent": 70,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          }
+        },
+        "jd": "SYNTHETIC JD - BI Developer, Saltmarsh Energy (fictional). Power BI, DAX."
+      },
+      {
+        "id": 1700000000004,
+        "role": "Product Analyst",
+        "company": "Hollowpine Games (fictional)",
+        "score": 4.3,
+        "grade": "A-",
+        "match": 88,
+        "archetype": "Product Analyst",
+        "location": "Remote EU (fictional)",
+        "status": "applied",
+        "date": "2026-11-14T09:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Product Analyst",
+          "company": "Hollowpine Games (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 4.3,
+          "grade": "A-",
+          "matchPercent": 88,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          }
+        },
+        "jd": "SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. SYNTHETIC full JD - Product Analyst, Hollowpine Games (fictional), Remote EU. ",
+        "appliedAt": "2026-11-15T10:00:00.000Z",
+        "interviewAt": "2026-11-20T14:00:00.000Z",
+        "nextAction": "Prepare SQL exercise (SYNTHETIC)",
+        "nextActionAt": "2026-11-19T09:00:00.000Z",
+        "stageHistory": [
+          {
+            "status": "researching",
+            "at": "2026-11-14T09:00:00.000Z"
+          },
+          {
+            "status": "applied",
+            "at": "2026-11-15T10:00:00.000Z"
+          }
+        ],
+        "jdComplete": true
+      },
+      {
+        "id": 1700000000001,
+        "role": "Senior Data Analyst",
+        "company": "Larkspur Mobility BV (fictional)",
+        "score": 4.1,
+        "grade": "A-",
+        "match": 82,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "applied",
+        "date": "2026-11-10T12:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Senior Data Analyst",
+          "company": "Larkspur Mobility BV (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 4.1,
+          "grade": "A-",
+          "matchPercent": 82,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          }
+        },
+        "jd": "SYNTHETIC JD - Senior Data Analyst, Larkspur Mobility BV (fictional). SQL, dbt, Power BI.",
+        "appliedAt": null,
+        "interviewAt": null,
+        "nextAction": null,
+        "nextActionAt": null,
+        "stageHistory": [],
+        "jdComplete": true
+      },
+      {
+        "id": 1700000000002,
+        "role": "Senior Analytics Engineer",
+        "company": "Brightquill Labs GmbH (fictional)",
+        "score": 4.6,
+        "grade": "A",
+        "match": 91,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "interviewing",
+        "date": "2026-11-05T12:00:00.000Z",
+        "fullData": {
+          "roleTitle": "Senior Analytics Engineer",
+          "company": "Brightquill Labs GmbH (fictional)",
+          "jobLocation": "Amsterdam (fictional)",
+          "finalScore": 4.6,
+          "grade": "A",
+          "matchPercent": 91,
+          "archetype": "Analytics Engineer",
+          "recommendation": "Synthetic recommendation",
+          "blocks": {
+            "roleSummary": "SYNTHETIC role summary."
+          }
+        },
+        "jd": "SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional), Berlin. SYNTHETIC JD - Senior Analytics Engineer, Brightquill Labs GmbH (fictional)",
+        "appliedAt": null,
+        "interviewAt": null,
+        "nextAction": null,
+        "nextActionAt": null,
+        "stageHistory": [],
+        "jdComplete": false
+      },
+      {
+        "id": 1700000000003,
+        "role": "Data Analyst (Marketing)",
+        "company": "Pebblecrest Foods GmbH (fictional)",
+        "score": 2.1,
+        "grade": "D",
+        "match": 40,
+        "archetype": "Analytics Engineer",
+        "location": "Amsterdam (fictional)",
+        "status": "rejected",
+        "date": "2026-10-28T12:00:00.000Z",
+        "jd": "SYNTHETIC JD - Data Analyst (Marketing).",
+        "customNote": "unknown field kept as is",
+        "appliedAt": null,
+        "interviewAt": null,
+        "nextAction": null,
+        "nextActionAt": null,
+        "stageHistory": [],
+        "jdComplete": true
+      }
+    ],
+    "co_stories": [
+      {
+        "id": 1700000000102,
+        "question": "SYNTHETIC story added by the v1 build.",
+        "situation": "S.",
+        "task": "T.",
+        "action": "A.",
+        "result": "R.",
+        "reflection": "R."
+      },
+      {
+        "id": 1700000000100,
+        "question": "Tell me about a time you changed a metric definition. (SYNTHETIC)",
+        "situation": "SYNTHETIC situation.",
+        "task": "SYNTHETIC task.",
+        "action": "SYNTHETIC action.",
+        "result": "SYNTHETIC result.",
+        "reflection": "SYNTHETIC reflection.",
+        "roleIds": [
+          1700000000004
+        ]
+      },
+      {
+        "id": 1700000000101,
+        "question": "Describe a project you led end to end. (SYNTHETIC)",
+        "situation": "SYNTHETIC.",
+        "task": "SYNTHETIC.",
+        "action": "SYNTHETIC.",
+        "result": "SYNTHETIC.",
+        "reflection": "SYNTHETIC.",
+        "roleIds": []
+      }
+    ],
+    "co_theme": "light"
+  }
+}

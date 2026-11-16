@@ -1,4 +1,4 @@
-import { LS, pipeline } from '../store.js';
+import { LS, pipeline, makeRole } from '../store.js';
 import { navigateTo } from '../router.js';
 import { callAPI } from '../api.js';
 import { esc } from '../render/escape.js';
@@ -102,20 +102,7 @@ document.getElementById('eval-new-btn').addEventListener('click', () => {
 });
 
 export function addToPipeline(data, jd) {
-  const entry = {
-    id: Date.now(),
-    role: data.roleTitle || 'Unknown Role',
-    company: data.company || 'Unknown Company',
-    score: data.finalScore,
-    grade: data.grade,
-    match: data.matchPercent,
-    archetype: data.archetype,
-    location: data.jobLocation,
-    status: 'researching',
-    date: new Date().toISOString(),
-    fullData: data,
-    jd: jd.substring(0, 500)
-  };
+  const entry = makeRole(data, jd); // schema v2: full JD + timeline fields (build-plan §3a)
   pipeline.unshift(entry);
   savePipeline();
 }
