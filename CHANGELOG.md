@@ -5,6 +5,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-16
+
+### Changed
+- Renamed the product to Kairo: UI title and logo, prompt persona, package metadata. New domain https://www.kairoapp.eu, repo kishanbala/kairo. Upstream career-ops attribution unchanged.
+
 ### Added
 - `docs/COMPARISON.md`: side-by-side with upstream career-ops (baseline 1.40.0), derived vs original, known divergences, not-ported list, licence/naming notes.
 - Prompt-injection guardrail: pasted job descriptions are treated as data (`prompts/_shared.md`).

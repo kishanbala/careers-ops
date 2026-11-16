@@ -1,12 +1,12 @@
-# Career Ops
+# Kairo
 
-[![CI](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/github/license/kishanbala/careers-ops?cacheSeconds=3600)](LICENSE)
+[![CI](https://github.com/kishanbala/kairo/actions/workflows/ci.yml/badge.svg)](https://github.com/kishanbala/kairo/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/kishanbala/kairo?cacheSeconds=3600)](LICENSE)
 
 A personal, AI-powered job-search and career-management tool. Paste a job description and your CV, and get an offer evaluation, a tailored CV rewrite, company research, a negotiation script, STAR interview stories, LinkedIn outreach copy, and a role scanner — all from one Claude-backed API.
 
-**Live:** https://careers-ops-ui.vercel.app/
-**Repo:** https://github.com/kishanbala/careers-ops
+**Live:** https://www.kairoapp.eu/
+**Repo:** https://github.com/kishanbala/kairo
 
 <!--
   TODO: add 2-3 screenshots or a short GIF here before linking this repo from a
@@ -47,8 +47,8 @@ All seven modes are driven by **one serverless function** (`api/evaluate.js`); t
 ### Local development
 
 ```bash
-git clone https://github.com/kishanbala/careers-ops.git
-cd careers-ops
+git clone https://github.com/kishanbala/kairo.git
+cd kairo
 npm install
 cp .env.example .env.local   # fill in ANTHROPIC_API_KEY
 vercel dev                   # serves on http://localhost:3000

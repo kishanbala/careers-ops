@@ -1,5 +1,5 @@
 // Tests for api/evaluate.js — the single serverless endpoint behind every
-// Career Ops feature (evaluate, pdf, research, negotiate, story, scan, contacto).
+// Kairo feature (evaluate, pdf, research, negotiate, story, scan, contacto).
 //
 // Run: node --test
 //
