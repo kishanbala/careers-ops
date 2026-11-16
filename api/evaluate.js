@@ -2,6 +2,8 @@ const Anthropic = require("@anthropic-ai/sdk");
 
 // Single place to bump when a model is retired (see platform.claude.com/docs/en/about-claude/model-deprecations)
 const MODEL = "claude-sonnet-5-5";
+// Guards against runaway prompt size / cost from a single request
+const MAX_CONTENT_LENGTH = 50000;
 
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -15,8 +17,13 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
   }
 
-  const { mode, content, cv, profile } = req.body;
-  if (!content) return res.status(400).json({ error: "No content provided" });
+  const { mode, content, cv, profile } = req.body || {};
+  if (!content || typeof content !== "string") {
+    return res.status(400).json({ error: "No content provided" });
+  }
+  if (content.length > MAX_CONTENT_LENGTH || (cv && cv.length > MAX_CONTENT_LENGTH)) {
+    return res.status(413).json({ error: "Content too large" });
+  }
 
   const systemPrompts = {
     evaluate: `You are Career-Ops. Evaluate this job offer against the CV.
