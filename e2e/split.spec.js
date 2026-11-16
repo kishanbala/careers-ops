@@ -2,13 +2,17 @@
 // Baselines come from the pre-split build rendered in the SAME environment as the comparison:
 //  - CI: e2e/capture-baseline.mjs renders the PR base (pre-split main) into BASELINE_DIR first.
 //  - Local: e2e/baseline/ (captured in a dev container from main@c48b9ee), or run the capture script yourself.
-// Compare: 0 differing pixels (decoded on a canvas in the browser, no extra deps).
+// Compare: at most MAX_DIFF_PIXELS differing pixels per shot (decoded on a canvas in the browser, no extra deps).
 // SPLIT_SKIP=1 skips (push to main: no pre-split base to compare against).
 const fs = require("node:fs");
 const path = require("node:path");
 const { test, expect, profile, fx } = require("./helpers");
 
 const BASE = process.env.BASELINE_DIR ? path.resolve(process.env.BASELINE_DIR) : path.join(__dirname, "baseline");
+// Bala's decision C on issue #20 (relayed by the Orchestrator): accept a small tolerance. GitHub's runner shows
+// 1 px renderer noise on one random 390 px shot per run (cv-390, then stories-390); locally every run is 0 px.
+// More than this per screenshot, or any size change, still fails.
+const MAX_DIFF_PIXELS = 5;
 const BASE_URL = process.env.SPLIT_BASE_URL || "http://127.0.0.1:4173";
 const HOST = new URL(BASE_URL).host;
 const UPDATE = process.env.UPDATE_BASELINE === "1";
@@ -39,7 +43,7 @@ const seed = (page, populated) =>
 
 // Same procedure for capture and compare. Removes transient render noise (seen once in CI: 1 px on cv-390):
 // no focus, fonts loaded, transitions settled, two rAFs, then shoot until two consecutive shots are identical
-// (what toHaveScreenshot does internally). The 0-pixel threshold itself is unchanged.
+// (what toHaveScreenshot does internally).
 async function shot(page) {
   await page.evaluate(() => document.activeElement?.blur?.());
   await page.mouse.move(0, 0);
@@ -83,7 +87,8 @@ async function check(browser, name, buf) {
   expect(fs.existsSync(file), `missing baseline ${name}.png`).toBe(true);
   const r = await diffPixels(browser, fs.readFileSync(file), buf);
   if (r.diff !== 0) { fs.mkdirSync("e2e-results/split-actual", { recursive: true }); fs.writeFileSync(`e2e-results/split-actual/${name}.png`, buf); }
-  expect(r, `${name}: pixel diff vs baseline`).toEqual({ diff: 0 });
+  expect(r.size, `${name}: screenshot size vs baseline`).toBeUndefined();
+  expect(r.diff, `${name}: differing pixels vs baseline (max ${MAX_DIFF_PIXELS})`).toBeLessThanOrEqual(MAX_DIFF_PIXELS);
 }
 
 function watch(page) {

@@ -6,7 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 ## [Unreleased]
 
 ### Changed
-- `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: pixel diff 0 against pre-split baselines (`e2e/split.spec.js`; in CI the baselines are rendered from the PR base in the same runner by `e2e/capture-baseline.mjs`, locally `e2e/baseline/`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
+- `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: at most 5 differing pixels per screenshot (CI renderer noise; 0 px locally) against pre-split baselines (`e2e/split.spec.js`; in CI the baselines are rendered from the PR base in the same runner by `e2e/capture-baseline.mjs`, locally `e2e/baseline/`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
 
 ### Fixed
 - Privacy link is visible at every screen width; privacy notice wording corrected.

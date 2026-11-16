@@ -6,4 +6,4 @@ date,phase,issue_pr,agent_role,runtime,model,session_usage,api_calls,api_spend_u
 2026-11-16,0B-3,#14,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,self-hosted fonts + PDF.js; privacy notice; no real API calls
 2026-11-16,0B-3b,#16,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,review fixes for #15 landed after merge
 2026-11-16,0B-3c,#18,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,review fix for #17 landed after merge
-2026-11-16,1,#20,Builder,Claude Code (cloud session),claude-opus-5-5,,0,0,0,0,module split (shell + css + ES modules); pixel-diff 0 vs pre-split baselines; mocked API only
+2026-11-16,1,#20,Builder,Claude Code (cloud session),claude-opus-5-5,,0,0,0,0,module split (shell + css + ES modules); pixel diff vs pre-split baselines (0 px locally; max 5 px/shot in CI per Bala decision C); 2 CI fix attempts (CI-rendered baselines, shot stabilisation); mocked API only
