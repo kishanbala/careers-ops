@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+### Fixed
+- Privacy link is visible at every screen width; privacy notice wording corrected.
+
 ### Added
 - Fonts (Inter, DM Mono, Source Sans Pro for the CV print window) and PDF.js are self-hosted: no third-party requests on page load. Privacy notice at `/privacy.html`; licences in `THIRD_PARTY_NOTICES.md`.
 - CI `e2e` job: Playwright + axe against a static server with a mocked API (`e2e/`, `playwright.config.js`); screenshots and axe results are uploaded as artifacts.
