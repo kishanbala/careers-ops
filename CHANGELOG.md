@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+### Added
+- Agent guardrails: `CLAUDE.md`, PR and issue templates, `.claude/settings.json` deny list, and regression tests for the protected fixes (`tests/protected-fixes.test.js`).
+
 ### Security
 - Harden output escaping for all model-derived text in the UI; Find Jobs links accept https: URLs only; Outreach Copy no longer uses inline handlers.
 - `api/evaluate.js`: origin allowlist (403) and per-IP in-memory rate limit (429).
