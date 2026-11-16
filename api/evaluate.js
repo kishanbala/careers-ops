@@ -25,13 +25,46 @@ function extractJson(text) {
   return text.slice(start);
 }
 
+// Browser-origin allowlist: production site, this project's Vercel previews, localhost.
+// NOTE: Origin/Referer can be forged by non-browser clients; the Anthropic spend limit is the real backstop.
+const PROD_ORIGIN = "https://www.kairoapp.eu";
+const PREVIEW_HOST = /^kairo-[a-z0-9-]+-kishanbalas-projects\.vercel\.app$/;
+function originAllowed(value) {
+  if (!value) return false;
+  let u;
+  try { u = new URL(value); } catch { return false; }
+  if (u.origin === PROD_ORIGIN) return true;
+  if (u.protocol === "https:" && PREVIEW_HOST.test(u.hostname)) return true;
+  return u.protocol === "http:" && (u.hostname === "localhost" || u.hostname === "127.0.0.1");
+}
+
+// Simple per-IP in-memory limiter (per warm instance; best-effort)
+const RATE_LIMIT = 20;
+const RATE_WINDOW_MS = 10 * 60 * 1000;
+const hits = new Map();
+function rateLimited(ip, now = Date.now()) {
+  if (hits.size > 5000) for (const [k, v] of hits) if (now - v.start > RATE_WINDOW_MS) hits.delete(k);
+  const h = hits.get(ip);
+  if (!h || now - h.start > RATE_WINDOW_MS) { hits.set(ip, { start: now, n: 1 }); return false; }
+  return ++h.n > RATE_LIMIT;
+}
+
 module.exports = async function handler(req, res) {
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const origin = req.headers?.origin;
+  const source = origin || req.headers?.referer;
+  // Browsers always send Origin (or Referer) on cross-site POSTs; requests with neither are non-browser clients,
+  // which an Origin check cannot stop anyway, so they fall through to the rate limit.
+  if (source && !originAllowed(source)) return res.status(403).json({ error: "Forbidden" });
+  res.setHeader("Access-Control-Allow-Origin", origin || "*");
+  res.setHeader("Vary", "Origin");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") return res.status(200).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
+
+  const ip = String(req.headers?.["x-forwarded-for"] || req.socket?.remoteAddress || "unknown").split(",")[0].trim();
+  if (rateLimited(ip)) return res.status(429).json({ error: "Too many requests" });
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return res.status(500).json({ error: "ANTHROPIC_API_KEY not configured" });
