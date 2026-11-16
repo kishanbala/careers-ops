@@ -181,4 +181,4 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
   - The gradient stops are fixed by design §4, so the chip text colour alone cannot reach 4.5:1 at the dark end.
 - **Evidence:** computed from the §4 hex values; chip markup in `tests/grade-chip.test.js`.
 - **Suspected cause (unconfirmed):** the §4 bronze gradient is too dark at its end stop for any single text colour. Decision for Bala: lighten the end stop, drop the gradient behind text, or accept the limit for a 13 px mono label.
-- **Status:** Open.
+- **Status:** fixed in PR #25 (end stop lightened from `#8A5229` to `#A96432`; black text 4.56:1 on it, 4.75:1 on the mid stop).

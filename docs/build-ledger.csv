@@ -8,3 +8,4 @@ date,phase,issue_pr,agent_role,runtime,model,session_usage,api_calls,api_spend_u
 2026-11-16,0B-3c,#18,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,review fix for #17 landed after merge
 2026-11-16,1,#20,Builder,Claude Code (cloud session),claude-opus-5-5,,0,0,0,0,module split (shell + css + ES modules); pixel diff vs pre-split baselines (0 px locally; max 30 px/shot in CI per Bala decisions C then A on #20); 2 CI fix attempts (CI-rendered baselines, shot stabilisation); mocked API only
 2026-11-16,2A,#22,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,theme tokens + fonts + theme boot/toggle + medal chips; split.spec/ci.yml visual label (visual:all); mocked API only
+2026-11-16,2A,#22 (comment 6930755070),Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,BUG-16 bronze chip contrast fix (Bala decision A); mocked API only
