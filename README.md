@@ -1,9 +1,20 @@
 # Career Ops
 
+[![CI](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/kishanbala/careers-ops)](LICENSE)
+
 A personal, AI-powered job-search and career-management tool. Paste a job description and your CV, and get an offer evaluation, a tailored CV rewrite, company research, a negotiation script, STAR interview stories, LinkedIn outreach copy, and a role scanner — all from one Claude-backed API.
 
 **Live:** https://careers-ops-ui.vercel.app/
 **Repo:** https://github.com/kishanbala/careers-ops
+
+<!--
+  TODO: add 2-3 screenshots or a short GIF here before linking this repo from a
+  resume/LinkedIn — e.g.:
+  ![Dashboard](docs/screenshot-dashboard.png)
+  ![Offer evaluation](docs/screenshot-evaluate.png)
+  A reviewer who can't run the app will judge it on this section alone.
+-->
 
 ## Features
 
@@ -108,6 +119,10 @@ The model ID lives in one place — `MODEL` in `api/evaluate.js`. Anthropic reti
 
 - Phase 2: remaining CV/UX polish
 - Phase 3: migrate `localStorage` to Supabase (deferred until it's a real blocker)
+
+## Contributing / history
+
+This is a solo personal project; see [CHANGELOG.md](CHANGELOG.md) for what's changed and [SECURITY.md](SECURITY.md) for how API keys and request limits are handled. CI (`.github/workflows/ci.yml`) runs the test suite on every push and PR to `main`.
 
 ## License
 
