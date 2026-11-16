@@ -3,3 +3,4 @@ date,phase,issue_pr,agent_role,runtime,model,session_usage,api_calls,api_spend_u
 2026-11-16,0S,#6,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,security hardening (SEC-01..04); no real API calls; mocked tests only
 2026-11-16,0B-1,#9,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,guardrails + protected-fix tests; no real API calls
 2026-11-16,0B-2,#12,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,e2e CI job; mocked API only
+2026-11-16,0B-3,#14,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,self-hosted fonts + PDF.js; privacy notice; no real API calls
