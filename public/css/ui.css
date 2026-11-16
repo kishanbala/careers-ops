@@ -1,0 +1,90 @@
+/* ===== PHASE 3 SHARED KIT (spec §2, §5) =====
+   Every selector here uses a .k- class (lint: tests/ui-css-scope.test.js), so legacy pages stay pixel-identical.
+   Canonical tokens only (tokens.css), no colour literals. Breakpoints as shell.css: <768 phone, 768-1023 tablet, >=1024 desktop. */
+
+/* Weighted score strip: segment width = weight, fill height = score / 5, line = apply line */
+.k-strip {
+  position: relative; display: flex; align-items: stretch; gap: 3px;
+  height: 56px; margin: 12px 0;
+}
+.k-strip-seg {
+  position: relative; flex: 1 1 0; min-width: 4px; overflow: hidden;
+  background: var(--strip-track); border-radius: 4px;
+}
+.k-strip-fill { position: absolute; left: 0; right: 0; bottom: 0; }
+.k-strip-fill--strong { background: var(--strip-strong); }
+.k-strip-fill--mid { background: var(--strip-mid); }
+.k-strip-line {
+  position: absolute; left: -4px; right: -4px; height: 0;
+  border-top: 2px dashed var(--apply-border); pointer-events: none;
+}
+
+/* Band pill */
+.k-band {
+  display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px;
+  border: 1px solid var(--border); border-radius: var(--radius-pill);
+  background: var(--surface); color: var(--muted);
+  font-family: var(--font-body); font-size: 13px; font-weight: 600; line-height: 1;
+}
+.k-band--apply { border-color: var(--apply-border); color: var(--apply-text); }
+.k-band--look { background: var(--chip-bg); color: var(--chip-text); }
+
+/* Running state (EVAL-03) */
+.k-running { display: flex; align-items: center; gap: 8px; padding: 12px 0; color: var(--muted); font-size: 14px; }
+.k-running-dot {
+  width: 10px; height: 10px; border-radius: var(--radius-pill); background: var(--primary);
+  animation: k-pulse 1.2s ease-in-out infinite;
+}
+.k-running-secs { font-family: var(--font-mono); }
+@keyframes k-pulse { 50% { opacity: 0.3; } }
+@media (prefers-reduced-motion: reduce) { .k-running-dot { animation: none; } }
+
+/* Tool error */
+.k-tool-error {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px;
+  padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background: var(--surface-sub); color: var(--text);
+}
+.k-tool-error-text { margin: 0; flex: 1 1 240px; font-size: 14px; }
+.k-tool-error-action { min-height: var(--tap-min); }
+
+/* Modal (native dialog) */
+.k-modal {
+  width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0;
+  border: 1px solid var(--border); border-radius: var(--radius-card);
+  background: var(--surface); color: var(--text); box-shadow: var(--shadow-md);
+}
+.k-modal::backdrop { background: var(--ink); opacity: 0.6; }
+.k-modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px 0; }
+.k-modal-title { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+.k-modal-close {
+  min-width: var(--tap-min); min-height: var(--tap-min); border: none; border-radius: var(--radius-pill);
+  background: transparent; color: var(--muted); font-size: 22px; cursor: pointer;
+}
+.k-modal-body { padding: 12px 20px; overflow-wrap: anywhere; }
+.k-modal-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; padding: 0 20px 20px; }
+.k-modal-action { min-height: var(--tap-min); }
+
+/* Fit (minimal; 3B owns ui/fit.js after P3-0 and may extend these rules in role.css under #view-role) */
+.k-fit { color: var(--text); }
+.k-fit-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.k-fit-score { font-family: var(--font-mono); }
+.k-fit-num { font-size: 28px; font-weight: 600; }
+.k-fit-of { color: var(--muted); font-size: 14px; }
+.k-fit-role { margin: 8px 0 0; color: var(--muted); font-size: 14px; }
+.k-fit-dims { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+.k-fit-dim {
+  display: grid; grid-template-columns: 1fr auto 3.5em; gap: 12px; align-items: baseline;
+  padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 14px;
+}
+.k-fit-dim-weight { color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+.k-fit-dim-score { font-family: var(--font-mono); text-align: right; }
+.k-fit-subhead { margin: 16px 0 4px; font-family: var(--font-display); font-size: 16px; font-weight: 600; }
+.k-fit-gaps { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.k-fit-gap-title { margin: 0; font-weight: 600; }
+.k-fit-gap-sev { color: var(--muted); font-weight: 400; }
+.k-fit-gap-why, .k-fit-gap-bridge { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+
+@media (min-width: 768px) {
+  .k-fit-dims { grid-template-columns: 1fr 1fr; column-gap: 24px; }
+}

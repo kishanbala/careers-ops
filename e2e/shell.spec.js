@@ -1,5 +1,8 @@
-// Phase 2B: shell, hash router, first-run states, storage v2 in the browser.
-// Layout and routes only: no colour or font assertions (spec §8).
+// Phase 2B shell, hash router, first-run states, storage v2 in the browser.
+// Rewritten for Phase 3 (issue #27, spec §9): view-agnostic. It checks the hash, which #view-<name> is the active
+// view, aria-current, the bottom nav and the spec §6 data-action hooks, so the Phase 2 stubs can be replaced by the
+// Phase 3 screens without editing this file. Legacy pages are still asserted only through #/legacy/:page.
+// Layout and routes only: no colour or font assertions (Phase 2 spec §8).
 const fs = require("node:fs");
 const path = require("node:path");
 const { test, expect, seedProfile } = require("./helpers");
@@ -16,59 +19,76 @@ const hash = (page) => page.evaluate(() => location.hash);
 const PHONE = { width: 390, height: 844 };
 const DESKTOP = { width: 1440, height: 900 };
 
-test("no profile: #/ opens Home (purpose line + Start with your CV), no bottom nav on phone", async ({ page }) => {
+// The route rendered #view-<name> as the one active view (whatever the screen draws inside it).
+async function expectView(page, name) {
+  await expect(page.locator(`#view-${name}`)).toHaveClass(/(^|\s)active(\s|$)/);
+  await expect(page.locator(".view.active")).toHaveCount(1);
+}
+
+test("no profile: #/ opens Home with Start with your CV, no bottom nav on phone", async ({ page }) => {
   await page.setViewportSize(PHONE);
   await page.goto("/");
   await expect(shell(page)).toHaveAttribute("data-state", "home");
   await expect(shell(page)).toHaveAttribute("data-has-roles", "false");
   expect(await hash(page)).toBe("#/home");
+  await expectView(page, "home");
   await expect(page.locator("#view-home")).toBeVisible();
-  await expect(page.locator("#view-home .view-purpose")).toHaveCount(1);
-  await expect(page.locator("#view-home .view-action")).toHaveText("Start with your CV");
+  const start = page.locator('#view-home [data-action="start-cv"]');
+  await expect(start).toHaveCount(1);
+  await expect(start).toHaveText("Start with your CV");
   await expect(page.locator(".shell-bottom-nav")).toBeHidden();
   await expect(page.locator(".page-section.active")).toHaveCount(0);
-  await page.click("#view-home .view-action");
+  await start.click();
   expect(await hash(page)).toBe("#/profile");
-  await expect(page.locator("#page-profile")).toBeVisible();
+  await expectView(page, "profile");
+  await expect(page.locator('.shell-nav [data-dest="profile"]')).toHaveAttribute("aria-current", "page");
   expect(page.errors).toEqual([]);
 });
 
 test("no profile: #/today redirects to #/home", async ({ page }) => {
   await page.goto("/#/today");
+  await expectView(page, "home");
   await expect(page.locator("#view-home")).toBeVisible();
   expect(await hash(page)).toBe("#/home");
 });
 
-test("profile, no roles: Today shows the first-job action, which opens Evaluate", async ({ page }) => {
+test("profile, no roles: Today shows the first-job hook; Add role opens #/add", async ({ page }) => {
   await seedProfile(page);
   await page.goto("/");
   await expect(shell(page)).toHaveAttribute("data-state", "today-empty");
   expect(await hash(page)).toBe("#/today");
-  await expect(page.locator("#view-today .view-action")).toHaveText("Evaluate your first job");
-  await page.click("#view-today .view-action");
+  await expectView(page, "today");
+  await expect(page.locator('#view-today [data-action="first-job"]')).toHaveCount(1);
+  await expect(page.locator('#view-today [data-action="first-job"]')).toBeVisible();
+  await expect(page.locator('.shell-nav [data-dest="today"]')).toHaveAttribute("aria-current", "page");
+  await page.setViewportSize(DESKTOP);
+  await page.locator('.shell-nav a[href="#/add"]').click();
   expect(await hash(page)).toBe("#/add");
-  await expect(page.locator("#page-evaluate")).toBeVisible();
-  await expect(page.locator("#eval-jd")).toBeVisible();
+  await expectView(page, "add");
+  await expect(page.locator('.shell-nav [data-dest="add"]')).toHaveAttribute("aria-current", "page");
   expect(page.errors).toEqual([]);
 });
 
-test("roles exist: Today shows the pipeline; bottom nav on phone only; left nav on desktop", async ({ page }) => {
+test("roles exist: Today is the start screen; bottom nav on phone only; left nav on desktop", async ({ page }) => {
   await seedStorage(page, fixture("v2-basic.json"));
   await page.setViewportSize(PHONE);
   await page.goto("/");
   await expect(shell(page)).toHaveAttribute("data-state", "today");
   await expect(shell(page)).toHaveAttribute("data-has-roles", "true");
-  await expect(page.locator("#page-dashboard")).toBeVisible();
+  expect(await hash(page)).toBe("#/today");
+  await expectView(page, "today");
   await expect(page.locator("#sb-badge")).toHaveText("4");
   const bottom = page.locator(".shell-bottom-nav");
   await expect(bottom).toBeVisible();
   await expect(bottom.locator("a")).toHaveText(["Today", "Pipeline", "", "Stories", "Profile"]);
   await expect(bottom.locator('a[aria-label="Add role"]')).toHaveCount(1);
+  await expect(bottom.locator('a[href="#/today"]')).toHaveAttribute("aria-current", "page");
   await expect(page.locator(".shell-nav")).toBeHidden();
   const tabs = await bottom.locator("a").evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height));
   expect(Math.min(...tabs)).toBeGreaterThanOrEqual(44);
   await bottom.locator('a[href="#/stories"]').click();
-  await expect(page.locator("#page-stories")).toBeVisible();
+  expect(await hash(page)).toBe("#/stories");
+  await expectView(page, "stories");
   await expect(bottom.locator('a[href="#/stories"]')).toHaveAttribute("aria-current", "page");
 
   await page.setViewportSize(DESKTOP);
@@ -76,7 +96,8 @@ test("roles exist: Today shows the pipeline; bottom nav on phone only; left nav 
   await expect(page.locator(".shell-nav")).toBeVisible();
   await page.locator('.shell-nav a[href="#/pipeline"]').click();
   expect(await hash(page)).toBe("#/pipeline");
-  await expect(page.locator("#page-dashboard")).toBeVisible();
+  await expectView(page, "pipeline");
+  await expect(page.locator('.shell-nav [data-dest="pipeline"]')).toHaveAttribute("aria-current", "page");
   expect(page.errors).toEqual([]);
 });
 
@@ -117,20 +138,26 @@ test("legacy nav items route through #/legacy/:page; back and forward work", asy
   expect(page.errors).toEqual([]);
 });
 
-test("deep links: add modes, role stub, unknown hash", async ({ page }) => {
+test("deep links: add modes, role workspace, unknown role, unknown hash", async ({ page }) => {
   await seedStorage(page, fixture("v2-basic.json"));
   await page.goto("/#/add/several");
-  await expect(page.locator("#page-batch")).toBeVisible();
+  await expectView(page, "add");
+  await expect(page.locator('[data-dest="add"]').first()).toHaveAttribute("aria-current", "page");
   await page.goto("/#/add/scan");
-  await expect(page.locator("#page-scan")).toBeVisible();
+  expect(await hash(page)).toBe("#/add/scan");
+  await expectView(page, "add");
   await page.goto("/#/role/1700000000004/cv");
-  await expect(page.locator("#view-role .page-title")).toHaveText("Product Analyst at Hollowpine Games (fictional)");
-  await expect(page.locator("#view-role .view-action")).toHaveAttribute("href", "#/pipeline");
+  expect(await hash(page)).toBe("#/role/1700000000004/cv");
+  await expectView(page, "role");
+  await expect(page.locator("#view-role")).toContainText("Product Analyst");
+  await expect(page.locator("#view-role")).toContainText("Hollowpine Games (fictional)");
   await page.goto("/#/role/999");
-  await expect(page.locator("#view-role .page-title")).toHaveText("Role not found");
+  await expectView(page, "role");
+  await expect(page.locator("#view-role")).toContainText("Role not found");
+  await expect(page.locator('#view-role a[href="#/pipeline"]').first()).toBeVisible();
   await page.goto("/#/definitely-not-a-route");
-  await expect(page.locator("#page-dashboard")).toBeVisible();
   expect(await hash(page)).toBe("#/today");
+  await expectView(page, "today");
   expect(page.errors).toEqual([]);
 });
 
@@ -155,9 +182,10 @@ test("v1 data is migrated on load: co_schema 2, co_backup_v1 snapshot, v2 fields
   expect(page.errors).toEqual([]);
 });
 
+// Legacy Evaluate & Track (#/legacy/evaluate; #/add becomes the 3D screen). Stores the full JD with a v2 role.
 test("Evaluate & Track stores the full JD with a v2 role", async ({ page }) => {
   await seedProfile(page);
-  await page.goto("/#/add");
+  await page.goto("/#/legacy/evaluate");
   await expect(page.locator("#page-evaluate")).toBeVisible();
   const jd = "SYNTHETIC JD for a fictional company. ".repeat(40);
   await page.fill("#eval-jd", jd);

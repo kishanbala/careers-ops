@@ -9,4 +9,5 @@ export function mount(el) {
     action: 'Start with your CV',
     href: href('profile'),
   });
+  el.querySelector('.view-action')?.setAttribute('data-action', 'start-cv'); // spec §6 hook (shell.spec.js)
 }

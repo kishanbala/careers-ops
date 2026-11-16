@@ -160,3 +160,70 @@ for (const [w, h] of VIEWPORTS) {
     });
   });
 }
+
+// ===== Phase 3 view shots (spec §9, issue #27; additive) =====
+// view-<screen>-<variant>-<w>-<theme> at 390/820/1440 x light/dark, from tests/fixtures/views/seed-v2.json,
+// clock fixed at 2026-11-20T09:00Z, no API calls (tabs show pre-filled inputs, not results).
+// Baselines are rendered from the PR base like every other shot, so each Phase 3 screen PR changes only its own
+// view-<screen>-* shots (allowed by its visual:view-<screen> label); every other shot must stay within MAX_DIFF_PIXELS.
+const VIEW_SEED = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "tests", "fixtures", "views", "seed-v2.json"), "utf8"));
+const VIEW_ROLE_ID = VIEW_SEED.storage.co_pipeline[0].id;
+const VIEW_GROUPS = [
+  { seed: "empty", shots: [["home-default", "home", "#/home"]] },
+  { seed: "profile", shots: [["today-empty", "today", "#/today"]] },
+  {
+    seed: "populated",
+    shots: [
+      ["today-roles", "today", "#/today"],
+      ["pipeline-list", "pipeline", "#/pipeline"],
+      ["pipeline-detail", "pipeline", `#/pipeline/${VIEW_ROLE_ID}`],
+      ...["fit", "cv", "research", "outreach", "interview", "negotiate"].map((t) => [`role-${t}`, "role", `#/role/${VIEW_ROLE_ID}/${t}`]),
+      ["profile-default", "profile", "#/profile"],
+      ["add-one", "add", "#/add"],
+      ["add-several", "add", "#/add/several"],
+      ["add-scan", "add", "#/add/scan"],
+      ["stories-list", "stories", "#/stories"],
+    ],
+  },
+];
+
+const seedView = (page, group, theme) => {
+  const s = VIEW_SEED.storage;
+  const data = { co_theme: theme };
+  if (group !== "empty") Object.assign(data, { co_schema: s.co_schema, co_profile: s.co_profile });
+  if (group === "populated") Object.assign(data, { co_pipeline: s.co_pipeline, co_stories: s.co_stories });
+  return page.addInitScript((d) => {
+    if (sessionStorage.getItem("__viewseeded")) return;
+    sessionStorage.setItem("__viewseeded", "1");
+    for (const [k, v] of Object.entries(d)) localStorage.setItem(k, JSON.stringify(v));
+  }, data);
+};
+
+for (const [w, h] of VIEWPORTS) {
+  for (const theme of ["light", "dark"]) {
+    test.describe(`views ${w}px ${theme}`, () => {
+      test.skip(process.env.SPLIT_SKIP === "1", "no pre-split base to compare against");
+      test.use({ viewport: { width: w, height: h }, timezoneId: "UTC", locale: "en-GB", baseURL: BASE_URL });
+
+      for (const group of VIEW_GROUPS) {
+        test(`view shots, ${group.seed}`, async ({ page, browser }) => {
+          const net = watch(page);
+          await page.clock.setFixedTime(new Date(VIEW_SEED.clock));
+          await seedView(page, group.seed, theme);
+          for (const [variant, screen, hash] of group.shots) {
+            await page.goto("/" + hash);
+            await page.waitForLoadState("networkidle");
+            expect(await page.evaluate(() => location.hash), `${variant}: route`).toBe(hash);
+            await expect(page.locator(`#view-${screen}`)).toHaveClass(/(^|\s)active(\s|$)/);
+            await page.waitForFunction((s) => document.getElementById(`view-${s}`).childElementCount > 0 || !!document.querySelector(".page-section.active"), screen);
+            await check(browser, `view-${variant}-${w}-${theme}`, await shot(page));
+          }
+          expect(page.apiCalls).toEqual([]);
+          expect(page.errors).toEqual([]);
+          expect(net.bad).toEqual([]);
+          expect([...net.hosts]).toEqual([HOST]);
+        });
+      }
+    });
+  }
+}
