@@ -1,11 +1,16 @@
 // Phase 1 (#20): the module split must be pixel-identical to the pre-split single-file app.
-// Baselines in e2e/baseline/ were captured from main (pre-split) with UPDATE_BASELINE=1.
+// Baselines come from the pre-split build rendered in the SAME environment as the comparison:
+//  - CI: e2e/capture-baseline.mjs renders the PR base (pre-split main) into BASELINE_DIR first.
+//  - Local: e2e/baseline/ (captured in a dev container from main@c48b9ee), or run the capture script yourself.
 // Compare: 0 differing pixels (decoded on a canvas in the browser, no extra deps).
+// SPLIT_SKIP=1 skips (push to main: no pre-split base to compare against).
 const fs = require("node:fs");
 const path = require("node:path");
 const { test, expect, profile, fx } = require("./helpers");
 
-const BASE = path.join(__dirname, "baseline");
+const BASE = process.env.BASELINE_DIR ? path.resolve(process.env.BASELINE_DIR) : path.join(__dirname, "baseline");
+const BASE_URL = process.env.SPLIT_BASE_URL || "http://127.0.0.1:4173";
+const HOST = new URL(BASE_URL).host;
 const UPDATE = process.env.UPDATE_BASELINE === "1";
 const VIEWPORTS = [[390, 844], [820, 1180], [1440, 900]];
 const PAGES = ["dashboard", "evaluate", "scan", "batch", "cv", "stories", "negotiate", "research", "outreach", "strategy", "profile"];
@@ -78,7 +83,8 @@ const nav = (page, id) => page.evaluate((i) => document.querySelector(`.nav-item
 
 for (const [w, h] of VIEWPORTS) {
   test.describe(`split ${w}px`, () => {
-    test.use({ viewport: { width: w, height: h }, timezoneId: "UTC", locale: "en-GB" });
+    test.skip(process.env.SPLIT_SKIP === "1", "no pre-split base to compare against");
+    test.use({ viewport: { width: w, height: h }, timezoneId: "UTC", locale: "en-GB", baseURL: BASE_URL });
 
     test("every page matches the pre-split baseline", async ({ page, browser }) => {
       const net = watch(page);
@@ -92,7 +98,7 @@ for (const [w, h] of VIEWPORTS) {
       }
       expect(page.errors).toEqual([]);
       expect(net.bad).toEqual([]);
-      expect([...net.hosts]).toEqual(["127.0.0.1:4173"]);
+      expect([...net.hosts]).toEqual([HOST]);
     });
 
     test("populated dashboard, stories and evaluate result match the baseline", async ({ page, browser }) => {
@@ -111,7 +117,7 @@ for (const [w, h] of VIEWPORTS) {
       expect(page.apiCalls).toEqual(["evaluate"]);
       expect(page.errors).toEqual([]);
       expect(net.bad).toEqual([]);
-      expect([...net.hosts]).toEqual(["127.0.0.1:4173"]);
+      expect([...net.hosts]).toEqual([HOST]);
     });
   });
 }
