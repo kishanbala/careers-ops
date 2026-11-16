@@ -8,3 +8,5 @@ Thumbs.db
 .commit-msg.tmp
 upstream-report.md
 .backup-pre-align/
+e2e-results/
+playwright-report/
