@@ -1,35 +1,154 @@
-/* ===== CSS VARIABLES ===== */
-:root {
-  --nav-bg: #1f2937;
-  --page-bg: #ffffff;
-  --surface: #f9fafb;
-  --border: #e5e7eb;
-  --accent: #22c55e;
-  --accent-dark: #16a34a;
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-on-dark: #e5e7eb;
-  --text-on-dark-muted: #9ca3af;
-  --btn-primary-bg: #1f2937;
-  --btn-primary-text: #ffffff;
+/* ===== DESIGN TOKENS: Gunmetal + Brass (design-decisions §4) =====
+   Light is the default; dark is keyed on [data-theme="dark"], and follows the OS
+   when no data-theme is set (no-JS case). Keep the two dark blocks identical. */
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ECEEF0;
+  --surface: #FFFFFF;
+  --surface-sub: #F6F7F8;
+  --border: #D5D9DE;
+  --text: #1E2227;
+  --muted: #545B64;
 
-  /* Traffic light */
-  --strong: #16a34a;
-  --review: #d97706;
-  --weak: #e24b4a;
-  --neutral-num: #374151;
+  --primary: #B08D57;
+  --primary-sheen: linear-gradient(180deg, #D4B47A 0%, #B08D57 50%, #9A7743 100%);
+  --primary-border: #8F6F3C;
+  --on-primary: #1E2227;
 
-  /* Gauge colours */
-  --gauge-a: #16a34a;
-  --gauge-b: #d97706;
-  --gauge-c: #e24b4a;
+  --ink: #2B3036;
+  --ink-sheen: linear-gradient(135deg, #3A4048 0%, #2B3036 50%, #1E2227 100%);
+  --on-ink: #FFFFFF;
+  --ink-muted: #C3C8CF;
 
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'DM Mono', 'Fira Mono', monospace;
-  --radius: 8px;
-  --radius-lg: 12px;
+  --chip-bg: #E4E7EA;
+  --chip-text: #1E2227;
+
+  --strip-strong: #A6834E;
+  --strip-mid: #9AA1AA;
+  --strip-track: #E4E7EA;
+
+  --apply-text: #7A5C2E;
+  --apply-border: #B08D57;
+
+  /* Traffic light and gauges: legacy names, tuned for AA on --surface */
+  --strong: #15803d;
+  --review: #b45309;
+  --weak: #b91c1c;
+  --gauge-a: #15803d;
+  --gauge-b: #b45309;
+  --gauge-c: #b91c1c;
+
   --shadow-sm: 0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04);
   --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111316;
+  --surface: #1A1D21;
+  --surface-sub: #15181B;
+  --border: #2C3137;
+  --text: #E8EAED;
+  --muted: #A2A9B2;
+
+  --primary: #C9A66B;
+  --primary-sheen: linear-gradient(180deg, #E3C68E 0%, #C9A66B 50%, #A88548 100%);
+  --primary-border: #A88548;
+  --on-primary: #111316;
+
+  --ink: #2A2F35;
+  --ink-sheen: linear-gradient(135deg, #3A4047 0%, #262A30 50%, #1D2025 100%);
+  --on-ink: #F4F5F7;
+  --ink-muted: #B4BAC2;
+
+  --chip-bg: #262B31;
+  --chip-text: #D9DDE2;
+
+  --strip-strong: #C9A66B;
+  --strip-mid: #5C646E;
+  --strip-track: #24282E;
+
+  --apply-text: #D9BC85;
+  --apply-border: #C9A66B;
+
+  --strong: #4ade80;
+  --review: #fbbf24;
+  --weak: #f87171;
+  --gauge-a: #4ade80;
+  --gauge-b: #fbbf24;
+  --gauge-c: #f87171;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #111316;
+    --surface: #1A1D21;
+    --surface-sub: #15181B;
+    --border: #2C3137;
+    --text: #E8EAED;
+    --muted: #A2A9B2;
+    --primary: #C9A66B;
+    --primary-sheen: linear-gradient(180deg, #E3C68E 0%, #C9A66B 50%, #A88548 100%);
+    --primary-border: #A88548;
+    --on-primary: #111316;
+    --ink: #2A2F35;
+    --ink-sheen: linear-gradient(135deg, #3A4047 0%, #262A30 50%, #1D2025 100%);
+    --on-ink: #F4F5F7;
+    --ink-muted: #B4BAC2;
+    --chip-bg: #262B31;
+    --chip-text: #D9DDE2;
+    --strip-strong: #C9A66B;
+    --strip-mid: #5C646E;
+    --strip-track: #24282E;
+    --apply-text: #D9BC85;
+    --apply-border: #C9A66B;
+    --strong: #4ade80;
+    --review: #fbbf24;
+    --weak: #f87171;
+    --gauge-a: #4ade80;
+    --gauge-b: #fbbf24;
+    --gauge-c: #f87171;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.4), 0 1px 2px rgba(0,0,0,0.3);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.45), 0 2px 4px -1px rgba(0,0,0,0.3);
+  }
+}
+
+/* Theme-independent tokens */
+:root {
+  /* Medals (design §4); same in both themes */
+  --medal-gold: linear-gradient(135deg, #F3D98A 0%, #C9A227 50%, #A8841A 100%);
+  --medal-silver: linear-gradient(135deg, #F4F5F7 0%, #B9BEC6 50%, #9AA0A9 100%);
+  --medal-bronze: linear-gradient(135deg, #E2A777 0%, #A8693A 50%, #8A5229 100%);
+
+  --font-display: 'Familjen Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --radius-card: 22px;
+  --radius-pill: 999px;
+  --tap-min: 44px;
+  --theme-dur: 220ms;
+
+  /* Legacy names kept as aliases (never delete in Phase 2) */
+  --page-bg: var(--bg);
+  --text-primary: var(--text);
+  --text-secondary: var(--muted);
+  --nav-bg: var(--ink);
+  --text-on-dark: var(--on-ink);
+  --text-on-dark-muted: var(--ink-muted);
+  --accent: var(--primary);
+  --accent-dark: var(--primary-border);
+  --btn-primary-bg: var(--primary);
+  --btn-primary-text: var(--on-primary);
+  --neutral-num: var(--text);
+
+  --radius: 8px;
+  --radius-lg: 12px;
   --nav-width: 224px;
   --top-nav-h: 56px;
 }

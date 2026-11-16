@@ -6,12 +6,14 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 ## [Unreleased]
 
 ### Changed
+- Phase 2A (#22): Gunmetal + Brass design tokens in Light and Dark (`public/css/tokens.css`, design-decisions §4 hex values), keyed on `[data-theme]` and following `prefers-color-scheme` without JS. Legacy token names stay as aliases, so every existing screen is re-skinned, not rebuilt. Fonts are now Familjen Grotesk, Figtree and IBM Plex Mono, self-hosted woff2 (Inter and DM Mono removed). `e2e/split.spec.js` and `ci.yml` take PR labels (`visual:all`, `visual:<screen>`) to allow intentional pixel changes.
 - `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: at most 30 differing pixels per screenshot (CI renderer noise; 0 px locally) against pre-split baselines (`e2e/split.spec.js`; in CI the baselines are rendered from the PR base in the same runner by `e2e/capture-baseline.mjs`, locally `e2e/baseline/`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
 
 ### Fixed
 - Privacy link is visible at every screen width; privacy notice wording corrected.
 
 ### Added
+- Theme switching: blocking `theme-boot.js` (no flash, no inline script), `theme.js` (`setTheme`, `toggleTheme`, destination-icon toggle, Light | Dark segmented control, choice saved in `co_theme`), and medal grade chips (`render/grade-chip.js`: A gold, A- silver, B+ bronze, rest steel). Tests: `tests/theme.test.js`, `tests/grade-chip.test.js`, `e2e/theme.spec.js`. The toggle is mounted by the Phase 2B shell.
 - Fonts (Inter, DM Mono, Source Sans Pro for the CV print window) and PDF.js are self-hosted: no third-party requests on page load. Privacy notice at `/privacy.html`; licences in `THIRD_PARTY_NOTICES.md`.
 - CI `e2e` job: Playwright + axe against a static server with a mocked API (`e2e/`, `playwright.config.js`); screenshots and axe results are uploaded as artifacts.
 - Agent guardrails: `CLAUDE.md`, PR and issue templates, `.claude/settings.json` deny list, and regression tests for the protected fixes (`tests/protected-fixes.test.js`).

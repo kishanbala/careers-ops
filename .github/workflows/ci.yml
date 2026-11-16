@@ -5,6 +5,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
 
 jobs:
   test:
@@ -38,9 +39,17 @@ jobs:
         if: github.event_name == 'pull_request'
         env:
           CI: "true"
+      # Last v1 build, for the rollback spec (until a v1.4.0 tag exists). Specs skip when V1_BUILD_DIR is unset.
+      - uses: actions/checkout@v7
+        with:
+          ref: 0241f136073d036007d6617ea309f44ff3766e30
+          path: v1-build
       - run: npx playwright test --trace off
         env:
           CI: "true"
+          V1_BUILD_DIR: v1-build/public
+          # PR labels, e.g. "visual:all" or "visual:dashboard": intentional pixel changes (e2e/split.spec.js)
+          SPLIT_ALLOW: ${{ join(github.event.pull_request.labels.*.name, ',') }}
           BASELINE_DIR: ${{ github.event_name == 'pull_request' && 'baseline-ci' || '' }}
           SPLIT_SKIP: ${{ github.event_name == 'pull_request' && '0' || '1' }}
       - uses: actions/upload-artifact@v4
