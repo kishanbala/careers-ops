@@ -7,6 +7,24 @@ const MODEL = "claude-sonnet-5-5";
 // Guards against runaway prompt size / cost from a single request
 const MAX_CONTENT_LENGTH = 50000;
 
+// The model sometimes appends a prose note after the JSON object; take only the first balanced {...}.
+function extractJson(text) {
+  const start = text.indexOf("{");
+  if (start === -1) return text;
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === "\\") esc = true;
+      else if (c === '"') inStr = false;
+    } else if (c === '"') inStr = true;
+    else if (c === "{") depth++;
+    else if (c === "}" && --depth === 0) return text.slice(start, i + 1);
+  }
+  return text.slice(start);
+}
+
 module.exports = async function handler(req, res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
@@ -48,7 +66,7 @@ module.exports = async function handler(req, res) {
     const cleaned = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
 
     try {
-      const parsed = JSON.parse(cleaned);
+      const parsed = JSON.parse(extractJson(cleaned));
       const data = effectiveMode === "evaluate" ? applyScoring(parsed) : parsed;
       return res.status(200).json({ success: true, data, mode });
     } catch {
