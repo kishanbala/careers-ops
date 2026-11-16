@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+### Changed
+- `public/index.html` split into a markup shell, `public/css/{tokens,base,components,pages}.css` and native ES modules under `public/js/` (`main`, `store`, `router`, `api`, `pdf`, `render/*`, `pages/*`), loaded with `<script type="module">`. No visual or behavioural change: pixel diff 0 against pre-split baselines (`e2e/baseline/`, `e2e/split.spec.js`). Inline `onclick` handlers and `window.*` helpers replaced with `addEventListener`.
+
 ### Fixed
 - Privacy link is visible at every screen width; privacy notice wording corrected.
 

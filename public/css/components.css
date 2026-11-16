@@ -1,0 +1,209 @@
+/* ===== PAGE HEADER ===== */
+.page-header { margin-bottom: 28px; }
+.page-title { font-size: 22px; font-weight: 800; color: var(--text-primary); line-height: 1.2; }
+.page-subtitle { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--page-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px;
+  box-shadow: var(--shadow-sm);
+}
+.card + .card { margin-top: 16px; }
+.card-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 16px; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: var(--radius); border: none;
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: scale(0.98); }
+.btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
+.btn-accent { background: var(--accent); color: #fff; }
+.btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-primary); }
+.btn-ghost { background: transparent; color: var(--text-secondary); padding: 7px 12px; }
+.btn-ghost:hover { background: var(--surface); color: var(--text-primary); }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-full { width: 100%; justify-content: center; }
+.btn:disabled { opacity: 0.45; pointer-events: none; }
+
+/* ===== FORM ELEMENTS ===== */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 9px 12px; border: 1.5px solid var(--border);
+  border-radius: var(--radius); font-size: 14px; line-height: 1.5;
+  background: var(--page-bg); color: var(--text-primary);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(34,197,94,0.12);
+}
+.form-textarea { resize: vertical; min-height: 120px; }
+
+/* ===== TOGGLE CHIPS ===== */
+.chip-group { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.chip {
+  padding: 6px 14px; border-radius: 20px; border: 1.5px solid var(--border);
+  font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  color: var(--text-secondary); background: var(--page-bg);
+}
+.chip.active {
+  background: var(--btn-primary-bg); color: #fff; border-color: var(--btn-primary-bg);
+}
+
+/* ===== STATUS CHIPS ===== */
+.status-chip {
+  display: inline-flex; align-items: center; padding: 3px 10px;
+  border-radius: 20px; font-size: 11px; font-weight: 600;
+}
+.status-applied { background: #dbeafe; color: #1d4ed8; }
+.status-interview { background: #fef3c7; color: #92400e; }
+.status-offer { background: #dcfce7; color: #166534; }
+.status-rejected { background: #fee2e2; color: #991b1b; }
+.status-researching { background: #f3f4f6; color: #374151; }
+.status-saved { background: #ede9fe; color: #5b21b6; }
+
+/* ===== GRADE BADGE ===== */
+.grade-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 13px;
+}
+.grade-a { background: #dcfce7; color: #166534; }
+.grade-b { background: #fef3c7; color: #92400e; }
+.grade-c { background: #fee2e2; color: #991b1b; }
+.grade-d { background: #f3f4f6; color: #374151; }
+
+/* ===== SCORE GAUGE ===== */
+.gauge-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 20px 0 8px;
+}
+.gauge-svg { width: 180px; height: 100px; overflow: visible; }
+.gauge-grade-pill {
+  margin-top: 8px; padding: 4px 16px; border-radius: 20px;
+  font-weight: 700; font-size: 13px; letter-spacing: 0.05em;
+}
+.gauge-recommendation {
+  font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-weight: 500;
+}
+
+/* ===== DIMENSION BARS ===== */
+.dim-list { display: flex; flex-direction: column; gap: 10px; }
+.dim-row { display: flex; align-items: center; gap: 12px; }
+.dim-label { font-size: 12px; font-weight: 500; color: var(--text-secondary); width: 110px; flex-shrink: 0; }
+.dim-bar-wrap { flex: 1; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.dim-bar { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.dim-bar.strong { background: var(--strong); }
+.dim-bar.review { background: var(--review); }
+.dim-bar.weak { background: var(--weak); }
+.dim-score { font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--neutral-num); width: 28px; text-align: right; }
+.dim-legend { display: flex; gap: 16px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.dim-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text-secondary); }
+.dim-legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+/* ===== EVAL RESULT BLOCKS ===== */
+.eval-block { margin-bottom: 16px; }
+.eval-block-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-secondary); margin-bottom: 6px; }
+.eval-block-body { font-size: 14px; line-height: 1.7; color: var(--text-primary); background: var(--surface); border-radius: var(--radius); padding: 14px 16px; }
+
+/* STAR story block */
+.star-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+.star-item { background: var(--surface); border-radius: var(--radius); padding: 12px 14px; }
+.star-q { font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px; }
+.star-starter { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ===== PIPELINE TABLE ===== */
+.pipeline-table { width: 100%; border-collapse: collapse; }
+.pipeline-table th {
+  font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-secondary); padding: 8px 12px; text-align: left;
+  border-bottom: 1.5px solid var(--border); background: var(--surface);
+}
+.pipeline-table td {
+  padding: 12px 12px; border-bottom: 1px solid var(--border);
+  font-size: 13px; vertical-align: middle;
+}
+.pipeline-table tr:last-child td { border-bottom: none; }
+.pipeline-table tbody tr { cursor: pointer; transition: background 0.1s; }
+.pipeline-table tbody tr:hover { background: var(--surface); }
+.score-num { font-family: var(--font-mono); font-weight: 600; font-size: 14px; color: var(--neutral-num); }
+
+/* ===== STATS GRID ===== */
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 24px; }
+@media (max-width: 767px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+.stat-card {
+  background: var(--page-bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.stat-value { font-family: var(--font-mono); font-size: 28px; font-weight: 500; color: var(--text-primary); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+
+/* ===== GRADE LEGEND ===== */
+.grade-legend { border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.grade-legend-row {
+  display: grid; grid-template-columns: 48px 60px 1fr;
+  align-items: center; gap: 12px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.grade-legend-row:last-child { border-bottom: none; }
+.grade-legend-row:hover { background: var(--surface); }
+
+/* ===== EMPTY STATE ===== */
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text-secondary); }
+.empty-icon { font-size: 36px; margin-bottom: 12px; }
+.empty-title { font-size: 15px; font-weight: 600; color: var(--text-primary); margin-bottom: 6px; }
+.empty-text { font-size: 13px; }
+
+/* ===== MODAL / DRAWER ===== */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--page-bg); border-radius: var(--radius-lg);
+  padding: 28px; max-width: 700px; width: 100%; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+.modal-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 20px; }
+.modal-title { font-size: 18px; font-weight: 800; }
+.modal-close { background: none; border: none; font-size: 20px; cursor: pointer; color: var(--text-secondary); padding: 0 4px; line-height: 1; }
+
+/* ===== LOADING ===== */
+.spinner {
+  display: inline-block; width: 16px; height: 16px;
+  border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading-bar {
+  height: 3px; background: var(--border); border-radius: 2px;
+  overflow: hidden; margin-top: 16px;
+}
+.loading-bar-fill {
+  height: 100%; background: var(--accent); border-radius: 2px;
+  animation: fill 2s ease-in-out infinite;
+}
+@keyframes fill { 0% { width: 0; } 70% { width: 80%; } 100% { width: 95%; } }
+.loading-msg { font-size: 13px; color: var(--text-secondary); margin-top: 10px; }
+.timer-text { font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); }
+
+/* ===== TABS ===== */
+.tab-bar { display: flex; gap: 2px; border-bottom: 2px solid var(--border); margin-bottom: 20px; }
+.tab-btn {
+  padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: none; background: none; color: var(--text-secondary);
+  border-bottom: 2.5px solid transparent; margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab-btn.active { color: var(--text-primary); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
