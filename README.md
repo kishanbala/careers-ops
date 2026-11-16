@@ -51,7 +51,9 @@ git clone https://github.com/kishanbala/careers-ops.git
 cd careers-ops
 npm install
 cp .env.example .env.local   # fill in ANTHROPIC_API_KEY
-npm run dev                  # runs `vercel dev`, serves on http://localhost:3000
+vercel dev                   # serves on http://localhost:3000
+# Run `vercel dev` directly, not via an npm script — Vercel CLI auto-detects a
+# package.json "dev" script and would try to run itself recursively.
 ```
 
 ### Deploy

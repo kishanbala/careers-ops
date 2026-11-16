@@ -14,7 +14,6 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "vercel dev",
     "deploy": "vercel --prod",
     "test": "node --test tests/evaluate.test.js"
   },
