@@ -1,0 +1,77 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:16:35.176Z",
+  "latencyMs": 5202,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "scan",
+    "content": "Analytics Engineer, Netherlands or Germany, hybrid",
+    "cv": null,
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "results": [
+        {
+          "company": "Picnic",
+          "role": "Analytics Engineer",
+          "url": "https://jobs.picnic.app",
+          "portal": "Company careers page",
+          "category": "Grocery logistics / e-commerce",
+          "isNew": true,
+          "verified": false
+        },
+        {
+          "company": "Adyen",
+          "role": "Analytics Engineer",
+          "url": "https://careers.adyen.com",
+          "portal": "Company careers page",
+          "category": "Fintech / payments",
+          "isNew": true,
+          "verified": false
+        },
+        {
+          "company": "Bol",
+          "role": "Analytics Engineer",
+          "url": "https://banen.bol.com",
+          "portal": "Company careers page",
+          "category": "E-commerce / marketplace",
+          "isNew": true,
+          "verified": false
+        },
+        {
+          "company": "Flix",
+          "role": "Analytics Engineer",
+          "url": "https://www.flixbus.com/company/jobs",
+          "portal": "Company careers page",
+          "category": "Mobility / logistics",
+          "isNew": true,
+          "verified": false
+        },
+        {
+          "company": "HelloFresh",
+          "role": "Analytics Engineer",
+          "url": "https://www.hellofreshgroup.com/en/careers",
+          "portal": "Company careers page",
+          "category": "Food delivery / supply chain",
+          "isNew": true,
+          "verified": false
+        },
+        {
+          "company": "Zalando",
+          "role": "Analytics Engineer",
+          "url": "https://jobs.zalando.com",
+          "portal": "Company careers page",
+          "category": "E-commerce / fashion",
+          "isNew": true,
+          "verified": false
+        }
+      ],
+      "summary": "I cannot browse, so none of these openings are confirmed. The roles are plausible titles, not live postings, and every result is marked unverified. Check each careers page for current listings before you apply. I picked companies for fit with your move from retail dashboards to a dbt semantic layer in logistics: Picnic, Flix and HelloFresh have logistics and supply-chain data; Bol and Zalando have large e-commerce modelling layers; Adyen is a strong data-platform employer. Picnic, Adyen and Bol are in the Netherlands, within reach of Utrecht. Flix, HelloFresh and Zalando are Germany-based, so check each posting for hybrid terms and relocation or commuting needs. Salary data is unknown to me. Compare each posted range against your EUR 85,000 target before you spend time on an application."
+    },
+    "mode": "scan"
+  }
+}

@@ -1,0 +1,141 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:14:42.149Z",
+  "latencyMs": 30314,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "evaluate",
+    "content": "<578 chars from tests/fixtures/synthetic-profile.json>",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "archetype": "Senior Data/BI Analyst",
+      "archetypeSecondary": "Analytics Engineer / BI Developer",
+      "roleTitle": "Senior Data Analyst",
+      "company": "Larkspur Mobility BV",
+      "jobLocation": "Amsterdam, Netherlands",
+      "finalScore": 3.3,
+      "grade": "B",
+      "recommendation": "Consider",
+      "matchPercent": 82,
+      "dimensions": {
+        "roleImpact": 3,
+        "cvMatch": 4.5,
+        "compensation": 2.5,
+        "growthPath": 3,
+        "teamCulture": 3,
+        "missionAlign": 2.5
+      },
+      "scoring": {
+        "northStar": 3,
+        "cvMatch": 4.5,
+        "level": 3.5,
+        "comp": 2.5,
+        "growth": 3,
+        "remote": 3,
+        "companyReputation": 2.5,
+        "techStack": 4.5,
+        "speedToOffer": 3,
+        "cultureSignals": 3
+      },
+      "blocks": {
+        "roleSummary": "Archetype: Senior Data/BI Analyst, with a dbt/Snowflake modelling component that leans toward Analytics Engineer. Domain: e-bike subscriptions (mobility), 6 Dutch cities. Function: churn and fleet-utilisation analytics, pricing experimentation, dashboards, monthly leadership reporting. Seniority: senior individual contributor; no team lead scope is stated. Remote: hybrid, 3 days a week in the Amsterdam office. Team size: not stated. TL;DR: an analyst-first role with some dbt modelling and strong experimentation work. It is a good skills fit but below Mira's salary target and not clearly an ownership-of-the-model-layer role.",
+        "cvMatch": "Requirement to CV mapping. 4+ years analytics: 'Lead Data Analyst, Quokka Logistics, 2021-present', 'Data Analyst, Fjordline Retail, 2018-2021', plus 'Junior Analyst, Tidewater Insurance, 2016-2018'. That is about 8-9 years in total, well above the bar. Strong SQL: 'Automated claims reporting in SQL and Excel VBA' (Tidewater) and SQL listed first in Skills. dbt: 'Built a dbt + Snowflake semantic layer covering 42 core metrics; cut weekly reporting effort from 3 days to 4 hours' and 'introduced code review and data tests (190 dbt tests)'. This matches the JD's dbt-on-Snowflake stack exactly. Experimentation: 'Ran 14 A/B tests on promotions; documented a test-design checklist used company-wide' (Fjordline). Power BI: 'Owned Power BI dashboards for 60 store managers; adoption rose from 15 to 52 weekly users'. Looker is listed in Skills only, with no CV bullet showing delivery. Python (plus): 'Designed a delivery-delay forecast (Python, LightGBM) that reduced late-delivery penalties by 11%'. Dutch (plus): Dutch B2 in Languages, which counts as working Dutch but is below fluent. Leadership reporting: the CV has no explicit bullet on monthly presentations to a leadership team; stakeholder management appears only in Skills.",
+        "levelStrategy": "JD level: Senior Data Analyst. Mira's natural level for the Senior BI Analyst archetype is senior to lead; her current title is Lead Data Analyst with 3 direct reports. This is a lateral move on title and probably a step down in scope. Sell senior without lying: (1) lead with the Quokka semantic layer, 'covering 42 core metrics' and the cut from '3 days to 4 hours', as proof she builds reliable reporting foundations; (2) use the 14 A/B tests and the company-wide test-design checklist to show she can own the pricing experimentation function, not just run tests; (3) pitch her as the person who can raise data quality (190 dbt tests, code review) in a team that needs analytics hygiene. If they downlevel to mid-senior: accept only if base salary is at or above the top of the stated band, since EUR 70-80k is already below her target. Negotiate a 6-month review with written promotion criteria toward Lead or Analytics Engineer. Ask what the path to ownership of the dbt layer looks like and who currently owns it. Do not accept a downlevel at the bottom of the band.",
+        "compResearch": "Location: Amsterdam, Netherlands, currency EUR. The JD states EUR 70,000-80,000. Static reference range for a Senior Data Analyst in the Netherlands is EUR 55,000-80,000; this is an estimate, not live market data. The offer sits at the upper end of that reference, so it is not below market for a pure Senior Analyst role. Gap to Mira's target: her target is EUR 85,000, so even the top of the band (EUR 80,000) is EUR 5,000 short, and the midpoint (EUR 75,000) is EUR 10,000 short. Her target already reflects Analytics Engineer positioning, and this role is analyst-titled. Equity, bonus, 13th month, holiday allowance and pension are all unknown. Negotiation angle: ask for the top of the band plus a sign-on or a 6-month comp review tied to taking ownership of the dbt layer, citing the dbt/Snowflake/experimentation combination as scarce. Do not accept below EUR 75,000.",
+        "personalizationHook": "Hook 1: Larkspur wants dbt models on Snowflake for subscription data. Mira has already built a dbt + Snowflake semantic layer with 42 core metrics and 190 tests, so she can start on churn and fleet-utilisation models without a ramp-up. Hook 2: the JD asks for pricing A/B tests; Mira ran 14 A/B tests and wrote a test-design checklist adopted company-wide, so she can standardise how Larkspur designs and reads pricing experiments. Hook 3: leadership reporting each month; her Fjordline dashboards grew from 15 to 52 weekly users, evidence she builds reporting people actually use. CV changes: (1) Summary: reframe as 'Analyst and analytics engineer: dbt/Snowflake modelling, experimentation, BI delivery'. (2) Quokka bullet: add a line on subscription-style or recurring metrics if true ('add your number'). (3) Fjordline A/B bullet: add the metric the tests moved if known; add your number. (4) Add a bullet that shows Looker delivery, since it is only in Skills. (5) Add or move up evidence of presenting to leadership, if any exists in Mira's history [confirm]."
+      },
+      "starStories": [
+        {
+          "question": "Tell me about a time you built analytics foundations that scaled reporting (dbt, Snowflake).",
+          "starter": "Situation: weekly reporting at Quokka Logistics took 3 days. Task: replace manual metric work with a reliable shared layer. Action: built a dbt + Snowflake semantic layer covering 42 core metrics and introduced 190 dbt tests with code review. Result: weekly reporting effort fell from 3 days to 4 hours.",
+          "reflection": "Add what you would do differently, for example documenting metric definitions earlier or involving stakeholders sooner in agreeing definitions [confirm]."
+        },
+        {
+          "question": "Describe how you designed and ran experiments (pricing A/B tests).",
+          "starter": "Situation: Fjordline Retail ran promotions without a consistent test approach. Task: run valid promotion tests. Action: ran 14 A/B tests on promotions and documented a test-design checklist. Result: the checklist is used company-wide. Add the business outcome of the tests: add your number.",
+          "reflection": "State what test-design mistake the checklist was built to prevent, and what you would add now (for example sequential testing or guardrail metrics) [confirm]."
+        },
+        {
+          "question": "Tell me about driving adoption of a dashboard among non-technical stakeholders.",
+          "starter": "Situation: Fjordline store managers had low dashboard usage. Task: make Power BI dashboards useful to 60 store managers. Action: owned the dashboards for the managers. Result: adoption rose from 15 to 52 weekly users. Add the specific actions you took: [confirm].",
+          "reflection": "Say what drove adoption and what you would measure beyond weekly users [confirm]."
+        },
+        {
+          "question": "Give an example of using data science to affect a business outcome with Python.",
+          "starter": "Situation: late deliveries at Quokka Logistics triggered penalties. Task: forecast delay risk. Action: designed a delivery-delay forecast in Python with LightGBM. Result: late-delivery penalties fell by 11%.",
+          "reflection": "Cover how the forecast was handed to operations, what accuracy limits you saw, and what you would change [confirm]."
+        },
+        {
+          "question": "Tell me about leading analysts and raising quality standards.",
+          "starter": "Situation: Quokka's analytics team lacked review and testing discipline. Task: raise data quality. Action: led 3 analysts, introduced code review, and added 190 dbt tests. Result: add your number (for example fewer data incidents) [confirm].",
+          "reflection": "Reflect on what pushback you met and what you would sequence differently [confirm]."
+        }
+      ],
+      "gaps": [
+        {
+          "gap": "Looker delivery is not evidenced on the CV",
+          "why": "The JD asks for Power BI and Looker dashboards. Looker appears only in the Skills list with no supporting bullet. This is a nice-to-have gap, since Mira has strong Power BI delivery.",
+          "bridge": "Cover-letter phrase: 'I have built and shipped Power BI dashboards to 60 store managers and work with Looker; I would apply the same adoption approach.' Only claim specific Looker work if it is real [confirm]. A quick project: rebuild one Quokka dashboard in Looker.",
+          "severity": "nice-to-have"
+        },
+        {
+          "gap": "No evidence of monthly leadership presentations or churn/subscription domain work",
+          "why": "The role centres on churn and fleet utilisation for a subscription business, with monthly leadership presentations. The CV shows logistics and retail, and stakeholder management only as a skill.",
+          "bridge": "Frame churn as a retention-modelling problem using the dbt metrics and forecasting experience. Prepare a short example of presenting results to senior stakeholders [confirm]. Quick project: sketch a churn cohort model in dbt.",
+          "severity": "nice-to-have"
+        },
+        {
+          "gap": "Role scope and salary are below Mira's target",
+          "why": "EUR 70-80k against a EUR 85k target, and the role is analyst-titled with unclear ownership of the modelling layer, which is her stated career goal.",
+          "bridge": "Ask directly who owns the dbt layer and whether the role can grow into it. Negotiate toward the top of the band with a 6-month review.",
+          "severity": "nice-to-have"
+        }
+      ],
+      "keywords": [
+        "Senior Data Analyst",
+        "churn analytics",
+        "fleet utilisation",
+        "subscription analytics",
+        "Power BI",
+        "Looker",
+        "dashboards",
+        "A/B testing",
+        "experimentation",
+        "pricing experiments",
+        "dbt",
+        "Snowflake",
+        "SQL",
+        "data modelling",
+        "Python",
+        "stakeholder reporting",
+        "leadership reporting",
+        "KPI design",
+        "Dutch",
+        "e-bike"
+      ],
+      "redFlagQuestions": [
+        {
+          "question": "Who owns the dbt models today, and will I be able to shape the modelling layer?",
+          "answer": "Asking this checks whether the role is analyst-only or has real ownership of the data models. Mira's target is an Analytics Engineer role, so a vague answer here is a reason to deprioritise the offer."
+        },
+        {
+          "question": "Is the EUR 70-80k band flexible, and what is the review cycle?",
+          "answer": "The band tops out EUR 5k below Mira's EUR 85k target. Ask about bonus, 13th month and review timing, and push for the top of the band or a 6-month review linked to taking over the dbt layer."
+        },
+        {
+          "question": "What does the data team look like, and who would I report to?",
+          "answer": "The JD gives no team size or reporting line. Knowing whether Mira would be the only analyst, or one of a team, shows how much scope and support she would have."
+        }
+      ],
+      "draftAnswers": [],
+      "scoreSource": "server-weighted"
+    },
+    "mode": "evaluate"
+  }
+}

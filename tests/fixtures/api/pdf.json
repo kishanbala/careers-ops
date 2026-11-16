@@ -1,0 +1,117 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:17:43.024Z",
+  "latencyMs": 5555,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "pdf",
+    "content": "<578 chars from tests/fixtures/synthetic-profile.json>",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "name": "Mira Testwell",
+      "title": "Senior Data Analyst | Churn, Experimentation & dbt/Snowflake Modelling",
+      "email": "mira.testwell@example.invalid",
+      "phone": "",
+      "location": "Utrecht, Netherlands",
+      "nationality": "",
+      "linkedin": "",
+      "summary": "Senior Data Analyst with 8+ years in analytics (SQL, dbt, Snowflake, Power BI, Looker). Built a dbt + Snowflake semantic layer covering 42 core metrics and ran 14 A/B tests on promotions. Now applying experimentation, subscription-style KPI modelling and leadership reporting to churn and fleet-utilisation analytics. Led a team of 3 analysts; Python (pandas, LightGBM), Dutch B2.",
+      "experience": [
+        {
+          "company": "Quokka Logistics BV (fictional)",
+          "role": "Lead Data Analyst",
+          "period": "2021–present",
+          "location": "Utrecht",
+          "bullets": [
+            "Built a dbt + Snowflake semantic layer covering 42 core metrics; cut weekly reporting effort from 3 days to 4 hours.",
+            "Led a team of 3 analysts; introduced code review and data tests (190 dbt tests).",
+            "Designed a delivery-delay forecast (Python, LightGBM) that reduced late-delivery penalties by 11%."
+          ]
+        },
+        {
+          "company": "Fjordline Retail AS (fictional)",
+          "role": "Data Analyst",
+          "period": "2018–2021",
+          "location": "Oslo",
+          "bullets": [
+            "Ran 14 A/B tests on promotions; documented a test-design checklist used company-wide.",
+            "Owned Power BI dashboards for 60 store managers; adoption rose from 15 to 52 weekly users."
+          ]
+        },
+        {
+          "company": "Tidewater Insurance (fictional)",
+          "role": "Junior Analyst",
+          "period": "2016–2018",
+          "location": "Rotterdam",
+          "bullets": [
+            "Automated claims reporting in SQL and Excel VBA."
+          ]
+        }
+      ],
+      "skills": {
+        "proficient": [
+          "SQL",
+          "dbt",
+          "Snowflake",
+          "Power BI",
+          "Looker",
+          "A/B testing",
+          "Stakeholder management"
+        ],
+        "intermediate": [
+          "Python (pandas, LightGBM)"
+        ]
+      },
+      "languages": [
+        {
+          "lang": "English",
+          "level": "C2"
+        },
+        {
+          "lang": "Dutch",
+          "level": "B2"
+        },
+        {
+          "lang": "German",
+          "level": "B1"
+        }
+      ],
+      "education": [
+        {
+          "institution": "Fictional University of Utrecht",
+          "degree": "MSc Applied Statistics",
+          "period": "2016",
+          "location": "Utrecht"
+        }
+      ],
+      "interests": [],
+      "keywords_injected": [
+        "Senior Data Analyst",
+        "churn analytics",
+        "fleet utilisation",
+        "Power BI",
+        "Looker",
+        "A/B testing",
+        "experimentation",
+        "dbt",
+        "Snowflake",
+        "SQL",
+        "Python",
+        "dashboards",
+        "KPI",
+        "semantic layer",
+        "stakeholder management",
+        "leadership reporting",
+        "data modelling",
+        "Dutch"
+      ]
+    },
+    "mode": "pdf"
+  }
+}

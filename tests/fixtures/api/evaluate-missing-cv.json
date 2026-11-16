@@ -1,0 +1,65 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "evaluate with no CV/profile (fresh browser). Model refuses and returns {error,message,jdReadSoFar} inside success:true; UI renders an empty 0.0 result.",
+  "capturedAt": "2026-11-16T19:19:42.555Z",
+  "latencyMs": 7023,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "evaluate",
+    "content": "<jds.standard from tests/fixtures/synthetic-profile.json>",
+    "cv": null,
+    "profile": {}
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "error": "missing_candidate_data",
+      "message": "No CANDIDATE CV or CANDIDATE CONTEXT was provided, so I cannot evaluate fit, score the role, map CV lines to requirements, identify gaps or draft interview stories without inventing experience. Please resend with your CV and context (target roles, location, work authorisation, and whether you are open to hybrid in Amsterdam).",
+      "jdReadSoFar": {
+        "roleTitle": "Senior Data Analyst",
+        "company": "Larkspur Mobility BV",
+        "jobLocation": "Amsterdam, Netherlands",
+        "archetypeLikely": "Senior Data/BI Analyst",
+        "archetypeSecondary": "Analytics Engineer / BI Developer",
+        "remote": "hybrid, 3 days in office",
+        "jdStatedSalary": "EUR 70,000-80,000",
+        "compNote": "Estimate only, not live market data: my static reference for a Senior Data Analyst in the Netherlands is EUR 55k-80k, so the JD range sits in the upper half of that band and is reasonable, not below market. If you hold a Dutch work permit or reside elsewhere, tell me so I can factor in relocation and permit sponsorship, which the JD does not mention (unknown).",
+        "requirementsToMapOnceCvArrives": [
+          "4+ years analytics",
+          "strong SQL",
+          "dbt",
+          "experimentation (pricing A/B tests)",
+          "Python (plus)",
+          "Dutch (plus)",
+          "Power BI and Looker",
+          "Snowflake",
+          "monthly leadership presentations",
+          "churn and fleet-utilisation analytics"
+        ],
+        "keywordsPreview": [
+          "Senior Data Analyst",
+          "SQL",
+          "dbt",
+          "Snowflake",
+          "Power BI",
+          "Looker",
+          "A/B testing",
+          "experimentation",
+          "pricing",
+          "churn analytics",
+          "subscription data",
+          "fleet utilisation",
+          "data modelling",
+          "dashboards",
+          "stakeholder presentations",
+          "Python",
+          "Dutch",
+          "KPI design"
+        ],
+        "posting_notes": "No instructions addressed to an AI were found in the posting. The JD does not state team size, process speed or reporting line (all unknown)."
+      }
+    },
+    "mode": "evaluate"
+  }
+}

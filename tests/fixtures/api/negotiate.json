@@ -1,0 +1,35 @@
+{
+  "_label": "SYNTHETIC — sanitised response captured from the live app during the v1 behaviour audit",
+  "_note": "First successful parsed reply.",
+  "capturedAt": "2026-11-16T19:18:09.071Z",
+  "latencyMs": 11219,
+  "httpStatus": 200,
+  "mocked": false,
+  "request": {
+    "mode": "negotiate",
+    "content": "Scenario: Counter initial offer\nTheir offer: EUR 78,000 base\nTarget: EUR 88,000 base\nCompeting offer: EUR 84,000 from another fictional company\nContext: Offer from Brightquill Labs (fictional) for Senior Analytics Engineer, Berlin.",
+    "cv": "<synthetic CV from tests/fixtures/synthetic-profile.json>",
+    "profile": "<synthetic profile from tests/fixtures/synthetic-profile.json>"
+  },
+  "response": {
+    "success": true,
+    "data": {
+      "opening": "Thank you for the offer. I'm excited about the Senior Analytics Engineer role at Brightquill Labs, and I want to make this work. I'd like to talk about the base salary.",
+      "anchor": "Based on market data for this role in Berlin, I'm targeting EUR 88,000 base. My estimate for Senior Analytics Engineer roles in Germany is EUR 65k-85k, so EUR 88k sits at the top of that range. I think it is justified here. The role centers on owning the modelling layer, and I've done that work: I built a dbt + Snowflake semantic layer covering 42 core metrics and cut weekly reporting effort from 3 days to 4 hours. I also led a team of 3 analysts and introduced code review and 190 dbt tests. I'm also weighing another offer at EUR 84,000 base. I'm drawn to Brightquill because of the ownership of the modelling layer, and I'd like to close the gap. Can we explore EUR 88,000?",
+      "fallback": "If EUR 88,000 is not possible, I'm flexible on structure, since the total package and the opportunity matter. I could accept EUR 85,000 base if we also agree a six-month salary review tied to clear goals for the modelling layer. I'd also be open to a signing bonus, a relocation or visa-free setup contribution, or extra equity, if those can bridge the base gap. I would not go below EUR 84,000 base, because that is what I already have on the table elsewhere.",
+      "close": "I'm keen to join Brightquill. If we can land on EUR 88,000 base, or close to it with the structure above, I'm ready to move quickly and can confirm within a few days. Can you check what is possible and let me know?",
+      "emailSubject": "Re: Senior Analytics Engineer offer, Brightquill Labs",
+      "emailBody": "Hi [Name],\n\nThank you for the offer for the Senior Analytics Engineer role. I'm excited about owning the modelling layer at Brightquill, and I'd like to move forward.\n\nI'd like to discuss the base salary. I'm targeting EUR 88,000, based on market data for this role in Berlin and my experience building a dbt + Snowflake semantic layer (42 core metrics) and leading a team of 3 analysts with 190 dbt tests. I'm also weighing another offer at EUR 84,000 base, and I'd prefer to join Brightquill.\n\nCan we explore EUR 88,000 base? I'm flexible on structure, the total package and the opportunity matter. If the base has limited room, I'm happy to look at a signing bonus or an early salary review.\n\nI'm ready to decide quickly once we align. Thank you for your time.\n\nBest,\nMira Testwell",
+      "tips": [
+        "The JD's own range is unknown here. The Germany reference (EUR 65k-85k) is a static estimate, not live market data. Check Brightquill's posted range or ask the recruiter for the band before you counter.",
+        "The offer of EUR 78,000 is inside the estimated range but below your own target of EUR 85,000. Your EUR 88,000 ask is above the estimated range, so back it with the competing EUR 84,000 offer and your modelling-layer ownership. Be ready to explain why.",
+        "Be honest about the competing offer. Share the number, but do not name the company, and do not invent details. If asked for proof, offer to confirm the figure in writing only if the offer letter allows it.",
+        "Counter once with a specific number and a reason. Do not raise the number again after they reply. Make your fallback your last move.",
+        "Ask about the full package before you close: bonus, equity, holiday days, pension, remote or hybrid terms, and learning budget. A lower base can be offset, but only if you know the total.",
+        "Do not accept on the call. Say you will confirm in writing within 24 to 48 hours. Get the final terms in the written offer before you resign.",
+        "Your EUR 85,000 target is your walk-away floor for base, and the competing EUR 84,000 sets your leverage. If Brightquill ends below EUR 84,000 base with no offsetting terms, the competing offer is the stronger choice."
+      ]
+    },
+    "mode": "negotiate"
+  }
+}

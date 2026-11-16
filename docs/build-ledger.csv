@@ -1,0 +1,2 @@
+date,phase,issue_pr,agent_role,runtime,model,session_usage,api_calls,api_spend_usd,ci_minutes,bala_hours,notes
+2026-11-16,0A,#4 / #5,Auditor,Claude Code (cloud session),,,19,,0,0,19 real /api/evaluate calls (budget 40); failure paths mocked at zero cost; model column left for Orchestrator
