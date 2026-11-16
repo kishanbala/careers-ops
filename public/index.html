@@ -1159,14 +1159,14 @@ function renderDashboard() {
     const cls = statusClassMap[sc] || 'status-researching';
     const date = p.date ? new Date(p.date).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '—';
     return `<tr data-idx="${i}">
-      <td><div style="font-weight:600;font-size:13px;">${p.role || '—'}</div><div style="font-size:12px;color:var(--text-secondary)">${p.company || ''}</div></td>
-      <td><span class="grade-badge ${gradeClass(p.grade)}" style="font-size:11px;width:28px;height:28px;">${p.grade || '—'}</span></td>
+      <td><div style="font-weight:600;font-size:13px;">${esc(p.role || '—')}</div><div style="font-size:12px;color:var(--text-secondary)">${esc(p.company || '')}</div></td>
+      <td><span class="grade-badge ${gradeClass(p.grade)}" style="font-size:11px;width:28px;height:28px;">${esc(p.grade || '—')}</span></td>
       <td>${date}</td>
-      <td><span class="score-num">${p.score?.toFixed(1) || '—'}</span></td>
-      <td><span class="match-pct" style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">${p.match ? p.match+'%' : '—'}</span></td>
+      <td><span class="score-num">${esc(p.score?.toFixed?.(1) || '—')}</span></td>
+      <td><span class="match-pct" style="font-family:var(--font-mono);font-size:12px;color:var(--text-secondary)">${p.match ? esc(p.match)+'%' : '—'}</span></td>
       <td>
         <select class="status-sel" data-idx="${i}" style="font-size:12px;border:1px solid var(--border);border-radius:6px;padding:3px 6px;background:var(--page-bg);" onclick="event.stopPropagation()">
-          ${statusLabels.map(s => `<option ${s.toLowerCase() === sc ? 'selected' : ''}>${s}</option>`).join('')}
+          ${statusLabels.map(s => `<option ${s.toLowerCase() === sc ? 'selected' : ''}>${esc(s)}</option>`).join('')}
         </select>
       </td>
     </tr>`;
@@ -1292,6 +1292,11 @@ function esc(v) {
   return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
+// Only https: URLs become links; anything else renders no link
+function safeUrl(u) {
+  try { const x = new URL(String(u)); return x.protocol === 'https:' ? x.href : ''; } catch { return ''; }
+}
+
 // ===== EVAL BLOCKS =====
 function renderEvalBlocks(data) {
   const blockTitles = {
@@ -1303,7 +1308,7 @@ function renderEvalBlocks(data) {
   let html = '';
   for (const [k, title] of Object.entries(blockTitles)) {
     if (blocks[k]) {
-      html += `<div class="eval-block"><div class="eval-block-title">${title}</div><div class="eval-block-body">${blocks[k]}</div></div>`;
+      html += `<div class="eval-block"><div class="eval-block-title">${title}</div><div class="eval-block-body">${esc(blocks[k])}</div></div>`;
     }
   }
   if (data.gaps?.length) {
@@ -1403,13 +1408,13 @@ function renderEvalResult(data) {
   document.getElementById('eval-result-header').innerHTML = `
     <div class="gauge-wrap" style="padding:0;">${buildGauge(data.finalScore || 0, data.grade)}</div>
     <div>
-      <div class="eval-meta-title">${data.roleTitle || 'Role'}</div>
-      <div class="eval-meta-company">${data.company || ''} · ${data.jobLocation || ''}</div>
+      <div class="eval-meta-title">${esc(data.roleTitle || 'Role')}</div>
+      <div class="eval-meta-company">${esc(data.company || '')} · ${esc(data.jobLocation || '')}</div>
       <div class="eval-meta-row">
-        <span class="eval-meta-chip" style="background:var(--surface);">📍 ${data.jobLocation || '—'}</span>
-        <span class="eval-meta-chip" style="background:var(--surface);">${data.archetype || '—'}</span>
-        <span class="eval-meta-chip" style="color:${recColour};background:${recColour}18;">${data.recommendation || '—'}</span>
-        <span class="eval-meta-chip" style="background:var(--surface);font-family:var(--font-mono);">Match: ${matchPct}%</span>
+        <span class="eval-meta-chip" style="background:var(--surface);">📍 ${esc(data.jobLocation || '—')}</span>
+        <span class="eval-meta-chip" style="background:var(--surface);">${esc(data.archetype || '—')}</span>
+        <span class="eval-meta-chip" style="color:${recColour};background:${recColour}18;">${esc(data.recommendation || '—')}</span>
+        <span class="eval-meta-chip" style="background:var(--surface);font-family:var(--font-mono);">Match: ${esc(matchPct)}%</span>
       </div>
     </div>`;
 
@@ -1488,9 +1493,9 @@ document.getElementById('scan-run-btn').addEventListener('click', async () => {
     btn.disabled = false; btn.innerHTML = '⟳ Rescan';
     if (res.success && res.data?.results) {
       const rows = res.data.results.map(r =>
-        `<tr><td style="font-weight:600;">${r.role}</td><td>${r.company}</td><td><span class="status-chip status-applied">${r.portal}</span></td><td><a href="${r.url}" target="_blank" class="btn btn-outline btn-sm">View →</a></td></tr>`
+        `<tr><td style="font-weight:600;">${esc(r.role)}</td><td>${esc(r.company)}</td><td><span class="status-chip status-applied">${esc(r.portal)}</span></td><td>${safeUrl(r.url) ? `<a href="${esc(safeUrl(r.url))}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">View →</a>` : ''}</td></tr>`
       ).join('');
-      document.getElementById('scan-results-wrap').innerHTML = `<h2 class="card-title">Found Roles</h2><div style="overflow-x:auto;"><table class="pipeline-table"><thead><tr><th>Role</th><th>Company</th><th>Portal</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>${res.data.summary ? `<p style="font-size:13px;color:var(--text-secondary);margin-top:12px;">${res.data.summary}</p>` : ''}`;
+      document.getElementById('scan-results-wrap').innerHTML = `<h2 class="card-title">Found Roles</h2><div style="overflow-x:auto;"><table class="pipeline-table"><thead><tr><th>Role</th><th>Company</th><th>Portal</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>${res.data.summary ? `<p style="font-size:13px;color:var(--text-secondary);margin-top:12px;">${esc(res.data.summary)}</p>` : ''}`;
     }
   } catch (e) {
     btn.disabled = false; btn.textContent = 'Retry Scan';
@@ -1525,10 +1530,10 @@ document.getElementById('batch-run-btn').addEventListener('click', async () => {
     const sc = d.finalScore || 0;
     const col = sc >= 4 ? 'var(--strong)' : sc >= 3 ? 'var(--review)' : 'var(--weak)';
     return `<tr>
-      <td style="font-weight:600;">${d.roleTitle || '—'}</td>
-      <td>${d.company || '—'}</td>
+      <td style="font-weight:600;">${esc(d.roleTitle || '—')}</td>
+      <td>${esc(d.company || '—')}</td>
       <td><span style="font-family:var(--font-mono);font-weight:700;color:${col}">${sc.toFixed(1)}</span></td>
-      <td>${d.matchPercent || '—'}%</td>
+      <td>${esc(d.matchPercent || '—')}%</td>
       <td><button class="btn btn-outline btn-sm" onclick="addBatchEntry(${results.indexOf(r)})">+ Track</button></td>
     </tr>`;
   }).join('');
@@ -1591,24 +1596,24 @@ function renderCVPreview(data) {
   const exp = (data.experience || []).map(e => `
     <div style="margin-bottom:14px;">
       <div style="display:flex;justify-content:space-between;align-items:baseline;">
-        <strong style="font-size:13px;">${e.role}</strong>
-        <span style="font-size:11px;color:#666;">${e.period || ''}</span>
+        <strong style="font-size:13px;">${esc(e.role)}</strong>
+        <span style="font-size:11px;color:#666;">${esc(e.period || '')}</span>
       </div>
-      <div style="font-size:12px;color:#555;margin-bottom:6px;">${e.company}</div>
-      <ul style="margin:0;padding-left:16px;">${(e.bullets||[]).map(b=>`<li style="font-size:12px;margin-bottom:3px;">${b}</li>`).join('')}</ul>
+      <div style="font-size:12px;color:#555;margin-bottom:6px;">${esc(e.company)}</div>
+      <ul style="margin:0;padding-left:16px;">${(e.bullets||[]).map(b=>`<li style="font-size:12px;margin-bottom:3px;">${esc(b)}</li>`).join('')}</ul>
     </div>`).join('');
 
   document.getElementById('cv-styled-preview').innerHTML = `
     <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">
       <div style="background:#f3f2ef;padding:18px 24px 14px;border-bottom:3px solid #175253;">
-        <h1 style="font-size:22px;font-weight:700;color:#175253;margin:0 0 2px;">${data.name || ''}</h1>
-        <div style="font-size:13px;color:#555;">${data.title || ''}</div>
-        <div style="font-size:12px;color:#777;margin-top:4px;">${data.contact || ''}</div>
+        <h1 style="font-size:22px;font-weight:700;color:#175253;margin:0 0 2px;">${esc(data.name || '')}</h1>
+        <div style="font-size:13px;color:#555;">${esc(data.title || '')}</div>
+        <div style="font-size:12px;color:#777;margin-top:4px;">${esc(data.contact || '')}</div>
       </div>
       <div style="padding:20px 24px;">
-        ${data.summary ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Profile</div><p style="font-size:13px;line-height:1.6;color:#333;">${data.summary}</p></div>` : ''}
+        ${data.summary ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Profile</div><p style="font-size:13px;line-height:1.6;color:#333;">${esc(data.summary)}</p></div>` : ''}
         ${exp ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:10px;">Experience</div>${exp}</div>` : ''}
-        ${data.skills?.length ? `<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Skills</div><div style="font-size:12px;line-height:1.8;">${data.skills.join(' · ')}</div></div>` : ''}
+        ${data.skills?.length ? `<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Skills</div><div style="font-size:12px;line-height:1.8;">${data.skills.map(esc).join(' · ')}</div></div>` : ''}
       </div>
     </div>`;
 
@@ -1616,7 +1621,7 @@ function renderCVPreview(data) {
   const sections = { 'Profile Summary': data.summary, 'Skills': data.skills?.join(', ') };
   (data.experience || []).forEach(e => { sections[e.role + ' @ ' + e.company] = e.bullets?.join('\n'); });
   document.getElementById('cv-copy-sections').innerHTML = Object.entries(sections).filter(([,v])=>v).map(([k,v]) =>
-    `<button class="copy-section-btn" data-content="${encodeURIComponent(v)}"><span>${k}</span><span>Copy</span></button>`
+    `<button class="copy-section-btn" data-content="${encodeURIComponent(v)}"><span>${esc(k)}</span><span>Copy</span></button>`
   ).join('');
 
   document.querySelectorAll('.copy-section-btn').forEach(btn => {
@@ -1672,8 +1677,8 @@ function renderStories() {
   empty.style.display = 'none';
   list.innerHTML = stories.map((s, i) =>
     `<div class="story-card" data-idx="${i}">
-      <div class="story-q">${s.question || 'Story'}</div>
-      <div class="story-tags">${(s.tags||[]).map(t=>`<span class="story-tag">${t}</span>`).join('')}</div>
+      <div class="story-q">${esc(s.question || 'Story')}</div>
+      <div class="story-tags">${(s.tags||[]).map(t=>`<span class="story-tag">${esc(t)}</span>`).join('')}</div>
     </div>`
   ).join('');
   list.querySelectorAll('.story-card').forEach(card => {
@@ -1685,12 +1690,12 @@ function openStoryModal(idx) {
   const s = stories[idx];
   document.getElementById('story-modal-title').textContent = s.question || 'Story';
   document.getElementById('story-modal-content').innerHTML = `
-    ${s.fullStory ? `<div class="eval-block-body" style="margin-bottom:16px;font-style:italic;">${s.fullStory}</div>` : ''}
-    ${s.situation ? `<div class="eval-block"><div class="eval-block-title">Situation</div><div class="eval-block-body">${s.situation}</div></div>` : ''}
-    ${s.task ? `<div class="eval-block"><div class="eval-block-title">Task</div><div class="eval-block-body">${s.task}</div></div>` : ''}
-    ${s.action ? `<div class="eval-block"><div class="eval-block-title">Action</div><div class="eval-block-body">${s.action}</div></div>` : ''}
-    ${s.result ? `<div class="eval-block"><div class="eval-block-title">Result</div><div class="eval-block-body">${s.result}</div></div>` : ''}
-    ${s.reflection ? `<div class="eval-block"><div class="eval-block-title">Reflection</div><div class="eval-block-body">${s.reflection}</div></div>` : ''}
+    ${s.fullStory ? `<div class="eval-block-body" style="margin-bottom:16px;font-style:italic;">${esc(s.fullStory)}</div>` : ''}
+    ${s.situation ? `<div class="eval-block"><div class="eval-block-title">Situation</div><div class="eval-block-body">${esc(s.situation)}</div></div>` : ''}
+    ${s.task ? `<div class="eval-block"><div class="eval-block-title">Task</div><div class="eval-block-body">${esc(s.task)}</div></div>` : ''}
+    ${s.action ? `<div class="eval-block"><div class="eval-block-title">Action</div><div class="eval-block-body">${esc(s.action)}</div></div>` : ''}
+    ${s.result ? `<div class="eval-block"><div class="eval-block-title">Result</div><div class="eval-block-body">${esc(s.result)}</div></div>` : ''}
+    ${s.reflection ? `<div class="eval-block"><div class="eval-block-title">Reflection</div><div class="eval-block-body">${esc(s.reflection)}</div></div>` : ''}
     <button class="btn btn-outline btn-sm" style="margin-top:8px;" onclick="deleteStory(${idx})">Delete Story</button>`;
   document.getElementById('story-modal').classList.add('open');
 }
@@ -1728,10 +1733,10 @@ function renderNegResult(d) {
   const wrap = document.getElementById('neg-result-wrap');
   wrap.style.display = 'block';
   document.getElementById('neg-result-content').innerHTML = `
-    ${['opening','anchor','fallback','close'].filter(k=>d[k]).map(k=>`<div class="neg-section"><div class="neg-label">${k.charAt(0).toUpperCase()+k.slice(1)}</div><div class="neg-body">${d[k]}</div></div>`).join('')}
-    ${d.crossBorderNotes ? `<div class="neg-section"><div class="neg-label">Cross-Border Notes</div><div class="neg-body">${d.crossBorderNotes}</div></div>` : ''}
-    ${d.emailSubject ? `<div class="neg-section"><div class="neg-label">Email Draft</div><div class="neg-email-wrap"><div class="neg-subject">Subject: ${d.emailSubject}</div><div>${d.emailBody || ''}</div></div></div>` : ''}
-    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${t}</div>`).join('')}</div>` : ''}`;
+    ${['opening','anchor','fallback','close'].filter(k=>d[k]).map(k=>`<div class="neg-section"><div class="neg-label">${k.charAt(0).toUpperCase()+k.slice(1)}</div><div class="neg-body">${esc(d[k])}</div></div>`).join('')}
+    ${d.crossBorderNotes ? `<div class="neg-section"><div class="neg-label">Cross-Border Notes</div><div class="neg-body">${esc(d.crossBorderNotes)}</div></div>` : ''}
+    ${d.emailSubject ? `<div class="neg-section"><div class="neg-label">Email Draft</div><div class="neg-email-wrap"><div class="neg-subject">Subject: ${esc(d.emailSubject)}</div><div>${esc(d.emailBody || '')}</div></div></div>` : ''}
+    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${esc(t)}</div>`).join('')}</div>` : ''}`;
 }
 
 // ===== COMPANY RESEARCH =====
@@ -1755,13 +1760,13 @@ function renderResearchResult(d) {
   wrap.style.display = 'block';
   document.getElementById('research-result-content').innerHTML = `
     <div style="display:flex;gap:20px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-      <div><div style="font-size:20px;font-weight:800;">${d.company}</div><div style="font-size:13px;color:var(--text-secondary);">${d.stage || ''} · ${d.headcount || ''}</div></div>
-      ${d.aiScore ? `<div style="margin-left:auto;background:var(--nav-bg);color:var(--text-on-dark);border-radius:8px;padding:8px 16px;font-family:var(--font-mono);font-size:20px;font-weight:700;">${d.aiScore}</div>` : ''}
+      <div><div style="font-size:20px;font-weight:800;">${esc(d.company)}</div><div style="font-size:13px;color:var(--text-secondary);">${esc(d.stage || '')} · ${esc(d.headcount || '')}</div></div>
+      ${d.aiScore ? `<div style="margin-left:auto;background:var(--nav-bg);color:var(--text-on-dark);border-radius:8px;padding:8px 16px;font-family:var(--font-mono);font-size:20px;font-weight:700;">${esc(d.aiScore)}</div>` : ''}
     </div>
     <div class="research-grid">
-      ${['overview','culture','techStack','interviewProcess','compensation','redFlags'].filter(k=>d[k]).map(k=>`<div class="research-block"><div class="research-block-label">${k.replace(/([A-Z])/g,' $1').trim()}</div><div class="research-block-val">${d[k]}</div></div>`).join('')}
+      ${['overview','culture','techStack','interviewProcess','compensation','redFlags'].filter(k=>d[k]).map(k=>`<div class="research-block"><div class="research-block-label">${k.replace(/([A-Z])/g,' $1').trim()}</div><div class="research-block-val">${esc(d[k])}</div></div>`).join('')}
     </div>
-    ${d.verdict ? `<div style="margin-top:16px;background:var(--nav-bg);color:var(--text-on-dark);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;"><strong style="color:var(--accent);">Verdict</strong><br>${d.verdict}</div>` : ''}`;
+    ${d.verdict ? `<div style="margin-top:16px;background:var(--nav-bg);color:var(--text-on-dark);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;"><strong style="color:var(--accent);">Verdict</strong><br>${esc(d.verdict)}</div>` : ''}`;
 }
 
 // ===== OUTREACH =====
@@ -1787,10 +1792,14 @@ function renderOutreachResult(d) {
   const wrap = document.getElementById('outreach-result-wrap');
   wrap.style.display = 'block';
   document.getElementById('outreach-result-content').innerHTML = `
-    ${d.connectionNote ? `<div class="neg-section"><div class="neg-label">Connection Note <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)">${d.connectionNote.length}/300</span></div><div class="outreach-note">${d.connectionNote}</div><button class="btn btn-outline btn-sm" style="margin-top:6px;" onclick="navigator.clipboard.writeText('${d.connectionNote.replace(/'/g,"\\'")}').then(()=>showToast('Copied ✓'))">Copy</button></div>` : ''}
-    ${d.inMailSubject ? `<div class="neg-section"><div class="neg-label">InMail Subject</div><div class="neg-body">${d.inMailSubject}</div></div>` : ''}
-    ${d.inMailBody ? `<div class="neg-section"><div class="neg-label">InMail Body</div><div class="neg-email-wrap">${d.inMailBody}</div></div>` : ''}
-    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${t}</div>`).join('')}</div>` : ''}`;
+    ${d.connectionNote ? `<div class="neg-section"><div class="neg-label">Connection Note <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)">${d.connectionNote.length}/300</span></div><div class="outreach-note">${esc(d.connectionNote)}</div><button class="btn btn-outline btn-sm outreach-copy-btn" style="margin-top:6px;">Copy</button></div>` : ''}
+    ${d.inMailSubject ? `<div class="neg-section"><div class="neg-label">InMail Subject</div><div class="neg-body">${esc(d.inMailSubject)}</div></div>` : ''}
+    ${d.inMailBody ? `<div class="neg-section"><div class="neg-label">InMail Body</div><div class="neg-email-wrap">${esc(d.inMailBody)}</div></div>` : ''}
+    ${d.tips?.length ? `<div class="neg-section"><div class="neg-label">Tips</div>${d.tips.map(t=>`<div class="eval-block-body" style="margin-bottom:6px;">${esc(t)}</div>`).join('')}</div>` : ''}`;
+  const copyBtn = document.querySelector('#outreach-result-content .outreach-copy-btn');
+  if (copyBtn) copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(String(d.connectionNote)).then(() => showToast('Copied ✓'));
+  });
 }
 
 // ===== PROFILE =====

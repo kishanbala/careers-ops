@@ -5,6 +5,10 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+### Security
+- Harden output escaping for all model-derived text in the UI; Find Jobs links accept https: URLs only; Outreach Copy no longer uses inline handlers.
+- `api/evaluate.js`: origin allowlist (403) and per-IP in-memory rate limit (429).
+
 ## [1.3.0] - 2026-11-16
 
 ### Changed
