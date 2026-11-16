@@ -5,7 +5,7 @@ This is a personal project, not a hosted service with other users' data — but 
 - `ANTHROPIC_API_KEY` is never committed. It's read from an environment variable on Vercel (or `.env.local`, which is gitignored) and used only server-side in `api/evaluate.js`. It is never sent to the browser.
 - The API endpoint caps request size (50,000 characters per field) to bound cost from a malformed or malicious request.
 - The endpoint has no authentication and no rate limiting (see [README → Known limitations](README.md#known-limitations)). Anyone with the URL can call it and consume API credits. Don't point this at a key you can't afford to have abused, and rotate the key immediately if usage spikes unexpectedly.
-- All user-supplied data (CV text, job descriptions) stays in the browser's `localStorage` — nothing is persisted server-side.
+- User-supplied data (CV text, job descriptions, profile) is stored only in the browser's `localStorage`. Each request sends it to the serverless function, which relays it to the Anthropic API; `api/evaluate.js` does not persist or log it. Vercel's platform logs and Anthropic's own data handling are outside this repository's control. (Upstream career-ops, by contrast, runs locally with no backend; see [docs/COMPARISON.md](docs/COMPARISON.md).)
 
 ## Reporting an issue
 

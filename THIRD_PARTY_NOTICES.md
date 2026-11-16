@@ -3,6 +3,8 @@
 Portions of this project are derived from [career-ops](https://github.com/santifer/career-ops).
 Specifically: the prompt files in `prompts/` are English adaptations of its `modes/*.md` (each file names its source in a `derived-from` header, and `prompts/modes.json` maps them), and `lib/scoring.js` uses the scoring dimensions and weights from `modes/ofertas.md`.
 
+Upstream baseline reviewed: `santifer/career-ops` `main`, 2026-11-16 (release manifest 1.40.0). See [docs/COMPARISON.md](docs/COMPARISON.md) for the full list of what is derived, what is original, and what differs. This project is not affiliated with or endorsed by the upstream project or its maintainer; upstream's Trademark Policy covers the "career-ops" name separately from the MIT code licence.
+
 The upstream license applies to those portions:
 
 Copyright (c) 2026 Santiago Fernández de Valderrama

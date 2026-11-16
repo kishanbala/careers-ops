@@ -3,6 +3,21 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project doesn't yet follow strict [SemVer](https://semver.org/) version-for-version, but version bumps are meaningful (breaking/major surface change → minor+, fix/hardening → patch-ish).
 
+## [Unreleased]
+
+### Added
+- `docs/COMPARISON.md`: side-by-side with upstream career-ops (baseline 1.40.0), derived vs original, known divergences, not-ported list, licence/naming notes.
+- Prompt-injection guardrail: pasted job descriptions are treated as data (`prompts/_shared.md`).
+- Frontend renders gaps, red-flag questions, keywords and STAR+R stories.
+
+### Fixed
+- `api/evaluate.js` extracts the first balanced JSON object when the model appends prose (CV generation no longer returns `raw`).
+- CV preview crash when `skills` is `{proficient, intermediate}`.
+
+### Changed
+- `docs/ARCHITECTURE.md` corrected: upstream prompts are English (not Spanish), block lettering (upstream G = posting legitimacy, H = draft answers), recommendation-band and LinkedIn-limit divergences, comp-location claim softened to what was verified.
+- README, SECURITY.md and THIRD_PARTY_NOTICES.md: non-affiliation statement, accurate data-path wording, link to the comparison.
+
 ## [1.2.0] — 2026-11-16
 
 ### Changed

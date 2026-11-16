@@ -20,7 +20,7 @@ A personal, AI-powered job-search and career-management tool. Paste a job descri
 
 | Mode | What it does |
 |---|---|
-| `evaluate` | Scores a job offer against your CV across 6 dimensions (role impact, CV match, compensation, growth, team culture, mission fit), with a letter grade, salary benchmark by job location, personalization hooks, STAR story starters, and named gaps with a bridging narrative. |
+| `evaluate` | Archetype-first evaluation (blocks A-F), scored on 10 weighted dimensions computed server-side, with a letter grade, salary benchmark by job location, personalization hooks, STAR story starters, and named gaps with a bridging narrative. |
 | `pdf` | Rewrites your CV tailored to a specific JD — keyword injection, bullet reframing, no invented experience, every original role preserved. |
 | `research` | Company research brief: stage, funding, headcount, culture, interview process, red flags, comp, verdict. |
 | `negotiate` | A negotiation script — opening, anchor, fallback, close — plus a ready-to-send email. |
@@ -110,7 +110,7 @@ Checks that `lib/prompts.generated.js` is in sync with `prompts/*.md`, then runs
 
 ## Prompt architecture
 
-The model-facing logic follows [santifer/career-ops](https://github.com/santifer/career-ops): a shared rule set plus one prompt per mode, an archetype-first evaluation (blocks A-G), and a 10-dimension weighted score. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the mapping, what is intentionally different, and what is not ported yet.
+The model-facing logic is adapted from [santifer/career-ops](https://github.com/santifer/career-ops): a shared rule set plus one prompt per mode, an archetype-first evaluation, and a 10-dimension weighted score. See [docs/COMPARISON.md](docs/COMPARISON.md) for exactly what is shared, what differs, and where this project diverges from upstream today, and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the mapping and backlog.
 
 - Edit prompts in `prompts/*.md`, then run `npm run build:prompts` (`npm test` fails if you forget).
 - `prompts/modes.json` maps each mode to its parts and to the upstream `modes/` files it derives from.
@@ -137,9 +137,11 @@ The model ID lives in one place — `MODEL` in `api/evaluate.js`. Anthropic reti
 
 This is a solo personal project; see [CHANGELOG.md](CHANGELOG.md) for what's changed and [SECURITY.md](SECURITY.md) for how API keys and request limits are handled. CI (`.github/workflows/ci.yml`) runs the test suite on every push and PR to `main`.
 
-## Credits
+## Credits and relationship to upstream
 
-Derived from [career-ops](https://github.com/santifer/career-ops) by [Santiago Fernández de Valderrama](https://github.com/santifer), MIT licensed: the evaluation architecture, archetypes, scoring dimensions and prompt rules come from there (see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). This repository is an independent project, not a GitHub fork: it reworks that system into a single Vercel-hosted web app (static frontend + one serverless function) rather than a CLI-driven tool, with its own UI, API contract, and test suite.
+Derived in part from [career-ops](https://github.com/santifer/career-ops) by [Santiago Fernández de Valderrama](https://github.com/santifer), MIT licensed: the evaluation architecture, archetypes, scoring weights and prompt rules come from there (see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). This repository is an independent project, not a GitHub fork, and is **not affiliated with or endorsed by** the upstream project or its maintainer.
+
+Upstream is a local-first toolkit that an AI coding CLI runs against files on your machine (it also has an experimental local web UI). This project is a hosted web app: a static frontend and one serverless function, a fixed Claude model, browser `localStorage` instead of files, seven modes instead of upstream's wider set, and server-side scoring. [docs/COMPARISON.md](docs/COMPARISON.md) has the side-by-side, the list of known divergences, and what is not ported.
 
 ## License
 
