@@ -6,6 +6,7 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 ## [Unreleased]
 
 ### Changed
+- Bronze medal chip (B+) meets AA: darkest gradient stop lightened from `#8A5229` to `#A96432` (black text 4.56:1; light and mid stops unchanged). Fixes BUG-16; per Bala's decision A on #22.
 - Phase 2A (#22): Gunmetal + Brass design tokens in Light and Dark (`public/css/tokens.css`, design-decisions §4 hex values), keyed on `[data-theme]` and following `prefers-color-scheme` without JS. Legacy token names stay as aliases, so every existing screen is re-skinned, not rebuilt. Fonts are now Familjen Grotesk, Figtree and IBM Plex Mono, self-hosted woff2 (Inter and DM Mono removed). `e2e/split.spec.js` and `ci.yml` take PR labels (`visual:all`, `visual:<screen>`) to allow intentional pixel changes.
 - App shell (Phase 2B, #23): header with logo and theme-toggle slot, left nav (≥768 px; menu drawer on phones), phone bottom nav (Today · Pipeline · + · Stories · Profile) shown only once a role exists. The v1 top nav, sidebar and tab bar are replaced; every v1 page is still reachable under a collapsed "Tools" group (`.nav-item[data-page]`), Career Strategy hidden until built. Legacy page sections are unchanged.
 - Evaluate & Track stores the full job description (was cut at 500 characters) and a v2 role (`makeRole`).

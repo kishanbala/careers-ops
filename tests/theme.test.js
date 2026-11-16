@@ -52,7 +52,7 @@ test("design §4 hex values are exact in dark", () => {
 test("medals, fonts, radii and sizes", () => {
   assert.equal(shared["--medal-gold"], "linear-gradient(135deg, #F3D98A 0%, #C9A227 50%, #A8841A 100%)");
   assert.equal(shared["--medal-silver"], "linear-gradient(135deg, #F4F5F7 0%, #B9BEC6 50%, #9AA0A9 100%)");
-  assert.equal(shared["--medal-bronze"], "linear-gradient(135deg, #E2A777 0%, #A8693A 50%, #8A5229 100%)");
+  assert.equal(shared["--medal-bronze"], "linear-gradient(135deg, #E2A777 0%, #A8693A 50%, #A96432 100%)");
   assert.match(shared["--font-display"], /^'Familjen Grotesk'/);
   assert.match(shared["--font-body"], /^'Figtree'/);
   assert.match(shared["--font-mono"], /^'IBM Plex Mono'/);
