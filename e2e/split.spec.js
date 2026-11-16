@@ -9,10 +9,11 @@ const path = require("node:path");
 const { test, expect, profile, fx } = require("./helpers");
 
 const BASE = process.env.BASELINE_DIR ? path.resolve(process.env.BASELINE_DIR) : path.join(__dirname, "baseline");
-// Bala's decision C on issue #20 (relayed by the Orchestrator): accept a small tolerance. GitHub's runner shows
-// 1 px renderer noise on one random 390 px shot per run (cv-390, then stories-390); locally every run is 0 px.
+// Tolerance per Bala on issue #20: decision C (small tolerance), then decision A on follow-up comment 6929651153
+// (30 px per shot, ~0.005% of a page). GitHub's runner shows renderer noise on random 390 px shots (1 px on cv-390
+// and stories-390, 7 px on evaluate-result-390); locally every run is 0 px.
 // More than this per screenshot, or any size change, still fails.
-const MAX_DIFF_PIXELS = 5;
+const MAX_DIFF_PIXELS = 30;
 const BASE_URL = process.env.SPLIT_BASE_URL || "http://127.0.0.1:4173";
 const HOST = new URL(BASE_URL).host;
 const UPDATE = process.env.UPDATE_BASELINE === "1";
