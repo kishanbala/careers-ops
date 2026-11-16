@@ -237,3 +237,30 @@ for (const mode of ["light", "dark"]) {
     expect(page.errors).toEqual([]);
   });
 }
+
+// Evaluate page, including the result state with the gauge (the dashboard-only check missed these).
+for (const mode of ["light", "dark"]) {
+  test(`axe colour-contrast on Evaluate and its result, ${mode} theme`, async ({ page }) => {
+    const SYN = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "tests", "fixtures", "synthetic-profile.json"), "utf8"));
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.addInitScript((p) => localStorage.setItem("co_profile", JSON.stringify(p)), profile.profile || profile);
+    await seedTheme(page, mode);
+    await boot(page);
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+    await page.evaluate(() => document.querySelector('.nav-item[data-page="evaluate"]').click());
+    await expect(page.locator("#page-evaluate")).toBeVisible();
+    const scan = async (label) => {
+      await page.evaluate(() => document.fonts.ready);
+      await page.waitForTimeout(400);
+      const res = await new AxeBuilder({ page }).withRules(["color-contrast"]).analyze();
+      expect(res.violations.flatMap((v) => v.nodes.map((n) => `${label} ${n.target.join(" ")}: ${n.any[0] && n.any[0].message}`))).toEqual([]);
+    };
+    await scan("form");
+    await page.fill("#eval-jd", SYN.jds.standard);
+    await page.click("#eval-run-btn");
+    await expect(page.locator("#eval-result-state")).toBeVisible({ timeout: 15000 });
+    await scan("result");
+    expect(page.errors).toEqual([]);
+  });
+}
