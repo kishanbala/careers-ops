@@ -131,3 +131,4 @@ Built on top of [career-ops](https://github.com/santifer/career-ops) by [Santiag
 ## License
 
 MIT — see [LICENSE](LICENSE).
+See also [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
