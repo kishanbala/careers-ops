@@ -1287,6 +1287,11 @@ function buildDims(dims) {
   </div>`;
 }
 
+// Escape model output before it goes into innerHTML
+function esc(v) {
+  return String(v == null ? '' : v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
 // ===== EVAL BLOCKS =====
 function renderEvalBlocks(data) {
   const blockTitles = {
@@ -1301,8 +1306,20 @@ function renderEvalBlocks(data) {
       html += `<div class="eval-block"><div class="eval-block-title">${title}</div><div class="eval-block-body">${blocks[k]}</div></div>`;
     }
   }
+  if (data.gaps?.length) {
+    html += `<div class="eval-block"><div class="eval-block-title">Gaps & How to Frame Them</div>${data.gaps.map(g => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">${g.severity === 'blocker' ? '🔴' : '🟡'} ${esc(g.gap)} <span style="font-size:11px;opacity:.7;">(${esc(g.severity || '')})</span></div><div class="star-starter">${esc(g.why)}<br><strong>Bridge:</strong> ${esc(g.bridge)}</div></div>`).join('')}</div>`;
+  }
   if (data.starStories?.length) {
-    html += `<div class="eval-block"><div class="eval-block-title">STAR Story Starters</div>${data.starStories.map(s => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">❓ ${s.question}</div><div class="star-starter">💡 ${s.starter}</div></div>`).join('')}</div>`;
+    html += `<div class="eval-block"><div class="eval-block-title">STAR+R Story Starters</div>${data.starStories.map(s => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">❓ ${esc(s.question)}</div><div class="star-starter">💡 ${esc(s.starter)}${s.reflection ? `<br><strong>R:</strong> ${esc(s.reflection)}` : ''}</div></div>`).join('')}</div>`;
+  }
+  if (data.redFlagQuestions?.length) {
+    html += `<div class="eval-block"><div class="eval-block-title">Red-Flag Questions</div>${data.redFlagQuestions.map(q => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">⚠️ ${esc(q.question)}</div><div class="star-starter">${esc(q.answer)}</div></div>`).join('')}</div>`;
+  }
+  if (data.keywords?.length) {
+    html += `<div class="eval-block"><div class="eval-block-title">ATS Keywords</div><div class="eval-block-body">${data.keywords.map(k => `<span class="eval-meta-chip" style="display:inline-block;margin:2px 4px 2px 0;background:var(--bg);">${esc(k)}</span>`).join('')}</div></div>`;
+  }
+  if (data.draftAnswers?.length) {
+    html += `<div class="eval-block"><div class="eval-block-title">Draft Application Answers</div>${data.draftAnswers.map(a => `<div class="star-item" style="margin-bottom:8px;"><div class="star-q">${esc(a.question)}</div><div class="star-starter">${esc(a.answer)}</div></div>`).join('')}</div>`;
   }
   return html;
 }
@@ -1559,24 +1576,17 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
   });
 });
 
+function flattenSkills(sk) {
+  if (!sk) return [];
+  if (typeof sk === 'string') return sk.split(',').map(x => x.trim()).filter(Boolean);
+  if (Array.isArray(sk)) return sk.flatMap(flattenSkills);
+  if (typeof sk === 'object') return Object.values(sk).flatMap(flattenSkills);
+  return [String(sk)];
+}
+
 function renderCVPreview(data) {
-  // FIX: Normalize skills to array of strings (handles all formats)
-  if (data.skills) {
-    if (typeof data.skills === 'string') {
-      // Case 1: String → split into array
-      data.skills = data.skills.split(',').map(s => s.trim()).filter(Boolean);
-    } else if (Array.isArray(data.skills)) {
-      // Case 2: Array of objects → extract string values
-      data.skills = data.skills.map(skill => {
-        if (typeof skill === 'object' && skill !== null) {
-          // Extract first string property value
-          return Object.values(skill).find(v => typeof v === 'string') || String(skill);
-        }
-        return String(skill);
-      }).filter(Boolean);
-    }
-  }
-  
+  data.skills = flattenSkills(data.skills);
+
   // Styled CV preview matching original design
   const exp = (data.experience || []).map(e => `
     <div style="margin-bottom:14px;">
@@ -1587,22 +1597,6 @@ function renderCVPreview(data) {
       <div style="font-size:12px;color:#555;margin-bottom:6px;">${e.company}</div>
       <ul style="margin:0;padding-left:16px;">${(e.bullets||[]).map(b=>`<li style="font-size:12px;margin-bottom:3px;">${b}</li>`).join('')}</ul>
     </div>`).join('');
-
-  document.getElementById('cv-styled-preview').innerHTML = `
-    <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">
-      <div style="background:#f3f2ef;padding:18px 24px 14px;border-bottom:3px solid #175253;">
-        <h1 style="font-size:22px;font-weight:700;color:#175253;margin:0 0 2px;">${data.name || ''}</h1>
-        <div style="font-size:13px;color:#555;">${data.title || ''}</div>
-        <div style="font-size:12px;color:#777;margin-top:4px;">${data.contact || ''}</div>
-      </div>
-      <div style="padding:20px 24px;">
-        ${data.summary ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Profile</div><p style="font-size:13px;line-height:1.6;color:#333;">${data.summary}</p></div>` : ''}
-        ${exp ? `<div style="margin-bottom:18px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:10px;">Experience</div>${exp}</div>` : ''}
-        ${data.skills?.length ? `<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#175253;border-bottom:1.5px solid #175253;padding-bottom:3px;margin-bottom:8px;">Skills</div><div style="font-size:12px;line-height:1.8;">${data.skills.join(' · ')}</div></div>` : ''}
-      </div>
-    </div>`;
-
-  // ... rest of function stays the same
 
   document.getElementById('cv-styled-preview').innerHTML = `
     <div class="cv-preview-content" style="font-family:'Source Sans Pro',sans-serif;max-width:680px;">

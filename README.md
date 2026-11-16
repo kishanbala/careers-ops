@@ -97,7 +97,7 @@ Errors: `400` (no/invalid content), `413` (content over 50,000 characters), `405
 npm test
 ```
 
-Runs `tests/evaluate.test.js` on Node's built-in test runner (`node:test`) — no test framework dependency. The Anthropic SDK is mocked via `require.cache`, so the suite makes zero real API calls and costs nothing to run. It covers:
+Checks that `lib/prompts.generated.js` is in sync with `prompts/*.md`, then runs every `tests/*.test.js` on Node's built-in test runner (`node:test`) — no test framework dependency. The Anthropic SDK is mocked via `require.cache`, so the suite makes zero real API calls and costs nothing to run. It covers:
 
 - Transport: CORS headers, `OPTIONS`/method handling, missing/invalid/oversized `content`
 - The retired-model regression this fix addressed (asserts the exact model ID sent, and that it's never the old one)
@@ -105,6 +105,17 @@ Runs `tests/evaluate.test.js` on Node's built-in test runner (`node:test`) — n
 - `cv` / `profile` context injection into the prompt
 - Response parsing: leading `thinking` blocks, markdown-fenced JSON, non-JSON fallback, empty model output
 - Upstream API failures surfacing as `500` with the underlying message, CORS headers included
+- Prompt layer (`tests/prompts.test.js`): generated file in sync, attribution headers present, every mode's JSON schema parses, the `evaluate` schema keeps every field the frontend reads, the `pdf` hard rules and `scan` no-fabrication rules can't be edited away unnoticed
+- Scoring (`tests/scoring.test.js`, `tests/evaluate-scoring.test.js`): upstream weights, grade boundaries, legacy-dimension mapping, truncated-output flag
+
+## Prompt architecture
+
+The model-facing logic follows [santifer/career-ops](https://github.com/santifer/career-ops): a shared rule set plus one prompt per mode, an archetype-first evaluation (blocks A-G), and a 10-dimension weighted score. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the mapping, what is intentionally different, and what is not ported yet.
+
+- Edit prompts in `prompts/*.md`, then run `npm run build:prompts` (`npm test` fails if you forget).
+- `prompts/modes.json` maps each mode to its parts and to the upstream `modes/` files it derives from.
+- `npm run upstream:check` reports upstream prompt changes and names the local prompt files to review; `npm run upstream:accept` records a new baseline after you've reviewed them.
+- Scoring is computed by the server (`lib/scoring.js`) from the model's 10 dimension scores, not by the model.
 
 ## Model updates
 
@@ -128,7 +139,7 @@ This is a solo personal project; see [CHANGELOG.md](CHANGELOG.md) for what's cha
 
 ## Credits
 
-Built on top of [career-ops](https://github.com/santifer/career-ops) by [Santiago Fernández de Valderrama](https://github.com/santifer), MIT licensed. This fork reworks it into a single Vercel-hosted web app (static frontend + one serverless function) rather than a CLI-driven tool, with its own UI, API contract, and test suite.
+Derived from [career-ops](https://github.com/santifer/career-ops) by [Santiago Fernández de Valderrama](https://github.com/santifer), MIT licensed: the evaluation architecture, archetypes, scoring dimensions and prompt rules come from there (see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)). This repository is an independent project, not a GitHub fork: it reworks that system into a single Vercel-hosted web app (static frontend + one serverless function) rather than a CLI-driven tool, with its own UI, API contract, and test suite.
 
 ## License
 

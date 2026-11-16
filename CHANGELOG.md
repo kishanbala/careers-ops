@@ -3,6 +3,23 @@
 All notable changes to this project are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this project doesn't yet follow strict [SemVer](https://semver.org/) version-for-version, but version bumps are meaningful (breaking/major surface change → minor+, fix/hardening → patch-ish).
 
+## [1.2.0] — 2026-11-16
+
+### Changed
+- **Prompts moved out of code into `prompts/*.md`** and aligned with the upstream career-ops architecture: shared rules for every mode, archetype-first evaluation (blocks A-G + ATS keywords + red-flag questions), STAR+R stories with Reflection, 3-sentence outreach framework, and upstream's ethics rule (below 3.0/5 = advise skipping). Built into `lib/prompts.generated.js` by `npm run build:prompts`; `npm test` fails if it is stale.
+- **Scoring is now computed by the server** (`lib/scoring.js`) from 10 weighted dimensions (upstream `ofertas.md` weights). The 6-key `dimensions` object the UI renders is derived from them, so the frontend is unchanged. If the model omits `scoring`, its own legacy fields are returned as before.
+- `scan` no longer presents invented postings as real: URLs are company careers pages or empty, and every result carries `verified: false`.
+- Comp benchmarks moved from code into `prompts/comp-benchmarks.md` and labelled as static estimates.
+- `scripts/upstream-check.mjs`: default upstream repo corrected to `santifer/career-ops` (it pointed at `career-ops-hq/career-ops`), and drift reports now name the local prompt files to review.
+
+### Added
+- `docs/ARCHITECTURE.md`: upstream-to-web-app mapping, intentional differences, and the not-yet-ported backlog.
+- Responses cut off at `max_tokens` now carry `truncated: true`.
+- 26 tests (54 total): prompt/schema contract, attribution, scoring maths, handler integration.
+
+### Fixed
+- `.gitignore`: removed duplicate `.vercel`; ignore `upstream-report.md`.
+
 ## [1.1.0] — 2026-11-16
 
 ### Fixed

@@ -1,6 +1,9 @@
 # Third-Party Notices
 
-Portions of this project are derived from [career-ops](https://github.com/santifer/career-ops):
+Portions of this project are derived from [career-ops](https://github.com/santifer/career-ops).
+Specifically: the prompt files in `prompts/` are English adaptations of its `modes/*.md` (each file names its source in a `derived-from` header, and `prompts/modes.json` maps them), and `lib/scoring.js` uses the scoring dimensions and weights from `modes/ofertas.md`.
+
+The upstream license applies to those portions:
 
 Copyright (c) 2026 Santiago Fernández de Valderrama
 
