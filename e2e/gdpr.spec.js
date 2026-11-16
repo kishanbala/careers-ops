@@ -19,3 +19,14 @@ test("privacy notice opens and names Vercel and Anthropic", async ({ page }) => 
   await expect(page.locator("body")).toContainText("Vercel");
   await expect(page.locator("body")).toContainText("Anthropic");
 });
+
+test("Privacy link is visible and works at phone, tablet and desktop widths", async ({ page }) => {
+  for (const [w, h] of [[390, 844], [820, 1180], [1440, 900]]) {
+    await page.setViewportSize({ width: w, height: h });
+    await page.goto("/");
+    const link = page.getByRole("link", { name: "Privacy notice" });
+    await link.scrollIntoViewIfNeeded();
+    await expect(link).toBeVisible();
+    await page.screenshot({ path: `e2e-results/shots/privacy-link-${w}.png` });
+  }
+});
