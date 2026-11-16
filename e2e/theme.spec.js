@@ -261,6 +261,21 @@ for (const mode of ["light", "dark"]) {
     await page.click("#eval-run-btn");
     await expect(page.locator("#eval-result-state")).toBeVisible({ timeout: 15000 });
     await scan("result");
+    // axe skips SVG <text>, so check the gauge score and scale labels by hand (WCAG ratio, computed fill vs surface behind)
+    const ratios = await page.evaluate(() => {
+      const parse = (c) => (c.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
+      const lum = ([r, g, b]) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+      const svg = document.querySelector("#eval-result-state .gauge-svg") || document.querySelector(".gauge-svg");
+      let bgEl = svg, bg = "rgba(0, 0, 0, 0)";
+      while (bgEl && /rgba\(.*, 0\)|transparent/.test(bg)) { bg = getComputedStyle(bgEl).backgroundColor; bgEl = bgEl.parentElement; }
+      const L2 = lum(parse(bg));
+      return [...svg.querySelectorAll("text")].map((t) => {
+        const L1 = lum(parse(getComputedStyle(t).fill));
+        return { text: t.textContent, ratio: (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05) };
+      });
+    });
+    expect(ratios.length).toBe(3);
+    for (const r of ratios) expect(r.ratio, `gauge text "${r.text}" contrast`).toBeGreaterThanOrEqual(4.5);
     expect(page.errors).toEqual([]);
   });
 }
