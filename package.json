@@ -1,6 +1,6 @@
 {
   "name": "careers-ops",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Career Ops - AI-powered job search web interface",
   "private": true,
   "license": "MIT",
@@ -15,7 +15,11 @@
   },
   "scripts": {
     "deploy": "vercel --prod",
-    "test": "node --test tests/evaluate.test.js"
+    "build:prompts": "node scripts/build-prompts.mjs",
+    "prompts:check": "node scripts/build-prompts.mjs --check",
+    "test": "npm run prompts:check && node --test",
+    "upstream:check": "node scripts/upstream-check.mjs",
+    "upstream:accept": "node scripts/upstream-check.mjs --accept"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0"

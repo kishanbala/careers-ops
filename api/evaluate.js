@@ -1,4 +1,6 @@
 const Anthropic = require("@anthropic-ai/sdk");
+const PROMPTS = require("../lib/prompts.generated.js");
+const { applyScoring } = require("../lib/scoring.js");
 
 // Single place to bump when a model is retired (see platform.claude.com/docs/en/about-claude/model-deprecations)
 const MODEL = "claude-sonnet-5-5";
@@ -25,42 +27,9 @@ module.exports = async function handler(req, res) {
     return res.status(413).json({ error: "Content too large" });
   }
 
-  const systemPrompts = {
-    evaluate: `You are Career-Ops. Evaluate this job offer against the CV.
-
-CRITICAL RULES:
-1. COMPENSATION: Extract the job location (city + country) from the JD itself. Use THAT location for salary benchmarks, never the candidate location. Switzerland = CHF (Senior DA: CHF 95k-130k). Germany = EUR (Senior DA: EUR 65k-85k). Netherlands = EUR (Senior DA: EUR 55k-80k). UK = GBP. Always state the job city, country and currency. Note if significantly above/below market.
-2. SCORING: Score each dimension 1-5. Grade: A (4.5+), A- (4.0+), B+ (3.5+), B (3.0+), C (2.5+), D (below 2.5).
-3. CV MATCH: Be specific — name actual skills from the JD and map them to actual experience from the CV.
-4. PERSONALIZATION: Give 2-3 specific hooks based on actual CV achievements vs actual JD requirements.
-5. GAPS: Identify 2-4 real gaps between the CV and JD. For each gap name it clearly, explain why it matters for this specific role, and give a concrete bridging narrative using actual CV experience. Never be vague — name the specific missing skill or experience.
-
-Return ONLY valid JSON, no markdown fences:
-{"archetype":"string","roleTitle":"string","company":"string","jobLocation":"city, country","finalScore":4.2,"grade":"A-","recommendation":"Strongly Recommend","matchPercent":85,"dimensions":{"roleImpact":4.5,"cvMatch":4.2,"compensation":4.0,"growthPath":4.3,"teamCulture":4.1,"missionAlign":4.5},"blocks":{"roleSummary":"string","cvMatch":"string","levelStrategy":"string","compResearch":"string","personalizationHook":"string","interviewPrep":"string"},"starStories":[{"question":"string","starter":"string"},{"question":"string","starter":"string"},{"question":"string","starter":"string"}],"gaps":[{"gap":"string (name of the gap)","why":"string (why it matters for this role)","bridge":"string (how to frame existing experience to address it)"}]}`,
-
-    pdf: `You are Career-Ops CV tailor. Given a CV and job description, rewrite the CV tailored to the JD. Inject relevant keywords naturally. Reframe bullets to match JD priorities. Do not invent experience. Lead with impact metrics.
-
-CRITICAL RULES:
-1. NEVER remove, merge, or combine any jobs or roles from the original CV — include every single position as a separate entry.
-2. ALWAYS preserve nationality/citizenship (e.g. EU National) in the nationality field.
-3. Keep all original contact details intact.
-4. If the CV has 5 roles, the output must have exactly 5 experience entries. Count them before returning.
-
-Return ONLY valid JSON, no markdown fences:
-{"name":"string","title":"string","email":"string","phone":"string","location":"string","nationality":"string (e.g. EU National)","linkedin":"string","summary":"string","experience":[{"company":"string","role":"string","period":"string","location":"string","bullets":["string"]}],"skills":{"proficient":["string"],"intermediate":["string"]},"languages":[{"lang":"string","level":"string"}],"education":[{"institution":"string","degree":"string","period":"string","location":"string"}],"interests":["string"],"keywords_injected":["string"]}` ,
-
-    research: `You are Career-Ops researcher. Return ONLY valid JSON: {"company":"string","stage":"string","funding":"string","headcount":"string","aiScore":"A","overview":"string","culture":"string","interviewProcess":"string","redFlags":"string","compensation":"string","verdict":"string"}`,
-
-    negotiate: `You are Career-Ops negotiation coach. Return ONLY valid JSON: {"opening":"string","anchor":"string","fallback":"string","close":"string","emailSubject":"string","emailBody":"string","tips":["string"]}`,
-
-    story: `You are Career-Ops STAR story generator. Return ONLY valid JSON: {"question":"string","situation":"string","task":"string","action":"string","result":"string","reflection":"string","fullStory":"string","tags":["string"]}`,
-
-    scan: `You are Career-Ops scanner. Suggest 6 realistic data analyst / BI job openings in Germany and Europe. Return ONLY valid JSON: {"results":[{"company":"string","role":"string","url":"string","portal":"string","category":"string","isNew":true}],"summary":"string"}`,
-
-    contacto: `You are Career-Ops outreach specialist. Return ONLY valid JSON: {"connectionNote":"string under 300 chars","inMailSubject":"string","inMailBody":"string","tips":["string"]}`
-  };
-
-  const systemPrompt = systemPrompts[mode] || systemPrompts.evaluate;
+  // Prompts live in prompts/*.md (derived from santifer/career-ops modes/) and are built into lib/prompts.generated.js.
+  const effectiveMode = Object.prototype.hasOwnProperty.call(PROMPTS, mode) ? mode : "evaluate";
+  const systemPrompt = PROMPTS[effectiveMode];
   let userMessage = content;
   if (cv) userMessage += `\n\nCANDIDATE CV:\n${cv}`;
   if (profile && profile.name) userMessage += `\n\nCANDIDATE CONTEXT:\nName: ${profile.name}\nTarget Role: ${profile.target || ""}\nTarget Salary: ${profile.salary || ""}\nLocation: ${profile.location || ""}\nCareer Story: ${profile.story || ""}`;
@@ -80,9 +49,12 @@ Return ONLY valid JSON, no markdown fences:
 
     try {
       const parsed = JSON.parse(cleaned);
-      return res.status(200).json({ success: true, data: parsed, mode });
+      const data = effectiveMode === "evaluate" ? applyScoring(parsed) : parsed;
+      return res.status(200).json({ success: true, data, mode });
     } catch {
-      return res.status(200).json({ success: true, data: { raw: rawText }, mode });
+      // stop_reason "max_tokens" means the JSON was cut off; flag it so the UI/log can tell it from a format slip.
+      const truncated = message.stop_reason === "max_tokens";
+      return res.status(200).json({ success: true, data: { raw: rawText }, mode, ...(truncated && { truncated: true }) });
     }
   } catch (error) {
     return res.status(500).json({ error: "API call failed", message: error.message });

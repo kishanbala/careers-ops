@@ -1,0 +1,10 @@
+{
+  "_comment": "mode -> prompt parts (in order) + the upstream santifer/career-ops modes/ files each one is derived from. upstream-check uses 'upstream' to say which local prompt to review.",
+  "evaluate":  { "parts": ["_shared", "archetypes", "comp-benchmarks", "evaluate"], "upstream": ["oferta.md", "ofertas.md", "_shared.md"] },
+  "pdf":       { "parts": ["_shared", "archetypes", "pdf"], "upstream": ["pdf.md"] },
+  "research":  { "parts": ["_shared", "research"], "upstream": ["deep.md"] },
+  "negotiate": { "parts": ["_shared", "comp-benchmarks", "negotiate"], "upstream": ["_shared.md"] },
+  "story":     { "parts": ["_shared", "story"], "upstream": ["oferta.md"] },
+  "scan":      { "parts": ["_shared", "scan"], "upstream": ["scan.md"] },
+  "contacto":  { "parts": ["_shared", "contacto"], "upstream": ["contacto.md"] }
+}
