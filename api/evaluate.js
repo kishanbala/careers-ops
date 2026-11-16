@@ -28,7 +28,7 @@ function extractJson(text) {
 // Browser-origin allowlist: production site, this project's Vercel previews, localhost.
 // NOTE: Origin/Referer can be forged by non-browser clients; the Anthropic spend limit is the real backstop.
 const PROD_ORIGIN = "https://www.kairoapp.eu";
-const PREVIEW_HOST = /^kairo(-[a-z0-9-]+)?\.vercel\.app$/;
+const PREVIEW_HOST = /^kairo-[a-z0-9-]+-kishanbalas-projects\.vercel\.app$/;
 function originAllowed(value) {
   if (!value) return false;
   let u;

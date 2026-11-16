@@ -106,7 +106,7 @@ function call(handler, headers, ip = "1.2.3.4") {
 
 test("origin: allowed origins pass", async () => {
   const h = require(HANDLER_PATH);
-  for (const origin of ["https://www.kairoapp.eu", "https://kairo-git-feature-x.vercel.app", "http://localhost:3000"]) {
+  for (const origin of ["https://www.kairoapp.eu", "https://kairo-abc123-kishanbalas-projects.vercel.app", "https://kairo-git-fix-security-hardening-kishanbalas-projects.vercel.app", "http://localhost:3000"]) {
     assert.equal((await call(h, { origin }, origin)).statusCode, 200, origin);
   }
   assert.equal((await call(h, { referer: "https://www.kairoapp.eu/app" })).statusCode, 200);
@@ -114,7 +114,7 @@ test("origin: allowed origins pass", async () => {
 
 test("origin: other origins and referers get 403", async () => {
   const h = require(HANDLER_PATH);
-  for (const headers of [{ origin: "https://evil.example" }, { origin: "https://kairoapp.eu.evil.example" }, { origin: "https://other-project.vercel.app" }, { origin: "http://www.kairoapp.eu" }, { referer: "https://evil.example/x" }]) {
+  for (const headers of [{ origin: "https://evil.example" }, { origin: "https://kairoapp.eu.evil.example" }, { origin: "https://other-project.vercel.app" }, { origin: "https://kairo-evil.vercel.app" }, { origin: "http://www.kairoapp.eu" }, { referer: "https://evil.example/x" }]) {
     assert.equal((await call(h, headers)).statusCode, 403, JSON.stringify(headers));
   }
 });
