@@ -47,5 +47,7 @@ jobs:
         if: always()
         with:
           name: e2e-screenshots-and-axe
-          path: e2e-results/
+          path: |
+            e2e-results/
+            baseline-ci/
           if-no-files-found: ignore

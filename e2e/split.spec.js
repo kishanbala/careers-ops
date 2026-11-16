@@ -37,10 +37,25 @@ const seed = (page, populated) =>
     if (st) localStorage.setItem("co_stories", JSON.stringify(st));
   }, [profile.profile || profile, populated ? PIPELINE : null, populated ? STORIES : null]);
 
+// Same procedure for capture and compare. Removes transient render noise (seen once in CI: 1 px on cv-390):
+// no focus, fonts loaded, transitions settled, two rAFs, then shoot until two consecutive shots are identical
+// (what toHaveScreenshot does internally). The 0-pixel threshold itself is unchanged.
 async function shot(page) {
+  await page.evaluate(() => document.activeElement?.blur?.());
+  await page.mouse.move(0, 0);
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(400); // let 0.15–0.6 s CSS transitions (nav hover/active, dim bars) settle fully
-  return page.screenshot({ fullPage: true, animations: "disabled", caret: "hide" });
+  const take = async () => {
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+    return page.screenshot({ fullPage: true, animations: "disabled", caret: "hide" });
+  };
+  let prev = await take();
+  for (let i = 0; i < 5; i++) {
+    const next = await take();
+    if (next.equals(prev)) return next;
+    prev = next;
+  }
+  throw new Error("screenshot did not stabilise after 6 shots");
 }
 
 async function diffPixels(browser, a, b) {
