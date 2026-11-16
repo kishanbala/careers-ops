@@ -1,7 +1,7 @@
 # Career Ops
 
 [![CI](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml/badge.svg)](https://github.com/kishanbala/careers-ops/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/github/license/kishanbala/careers-ops)](LICENSE)
+[![License: MIT](https://img.shields.io/github/license/kishanbala/careers-ops?cacheSeconds=3600)](LICENSE)
 
 A personal, AI-powered job-search and career-management tool. Paste a job description and your CV, and get an offer evaluation, a tailored CV rewrite, company research, a negotiation script, STAR interview stories, LinkedIn outreach copy, and a role scanner — all from one Claude-backed API.
 
