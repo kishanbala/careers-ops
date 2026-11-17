@@ -1,0 +1,50 @@
+{
+  "_label": "SYNTHETIC: not a real person or company. Phase 3B (#29) role workspace edge cases.",
+  "noFullData": {
+    "id": 1700000000901,
+    "role": "Reporting Analyst",
+    "company": "Thistledown Freight (fictional)",
+    "score": 3.1,
+    "grade": "B",
+    "location": "Ghent, Belgium",
+    "status": "researching",
+    "date": "2026-10-01T08:00:00.000Z",
+    "jd": "SYNTHETIC JD for a fictional reporting analyst role.",
+    "appliedAt": null,
+    "interviewAt": null,
+    "nextAction": null,
+    "nextActionAt": null,
+    "stageHistory": [],
+    "jdComplete": true
+  },
+  "hostile": {
+    "id": 1700000000902,
+    "role": "<img src=x onerror=\"window.__pwned=1\">Analyst",
+    "company": "<script>window.__pwned=1</script>Co (fictional)",
+    "score": 4.6,
+    "grade": "A",
+    "location": "Nowhere (fictional)",
+    "status": "researching",
+    "date": "2026-10-01T08:00:00.000Z",
+    "jd": "SYNTHETIC JD <img src=x onerror=\"window.__pwned=1\">",
+    "fullData": {
+      "roleTitle": "<img src=x onerror=\"window.__pwned=1\">Analyst",
+      "company": "<script>window.__pwned=1</script>Co (fictional)",
+      "finalScore": 4.6,
+      "grade": "A",
+      "scoring": { "northStar": 5, "cvMatch": 4.5, "level": 4, "comp": 4, "growth": 5, "remote": 4, "companyReputation": 4, "techStack": 5, "speedToOffer": 4, "cultureSignals": 5 },
+      "blocks": { "roleSummary": "<img src=x onerror=\"window.__pwned=1\"> summary", "interviewPrep": "<a href=\"javascript:window.__pwned=1\">click</a>" },
+      "gaps": [{ "gap": "<script>window.__pwned=1</script>gap", "why": "w", "bridge": "b", "severity": "blocker" }],
+      "starStories": [{ "question": "<img src=x onerror=\"window.__pwned=1\">Q?", "starter": "S", "reflection": "R" }],
+      "redFlagQuestions": [{ "question": "<b>bold</b>?", "answer": "<img src=x onerror=\"window.__pwned=1\">" }],
+      "keywords": ["<img src=x onerror=\"window.__pwned=1\">"],
+      "draftAnswers": []
+    },
+    "appliedAt": null,
+    "interviewAt": null,
+    "nextAction": null,
+    "nextActionAt": null,
+    "stageHistory": [],
+    "jdComplete": true
+  }
+}

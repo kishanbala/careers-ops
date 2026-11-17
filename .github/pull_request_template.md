@@ -23,4 +23,4 @@ Closes #
 - [ ] No unescaped model output, secrets or new third-party requests
 - [ ] Matches design-decisions doc
 - [ ] Paused actions make no API call; bugs logged in `KNOWN-BUGS.md` without duplicates
-- [ ] `docs/build-ledger.csv` rows + CHANGELOG entry added
+- [ ] `changes/<branch-slug>.md` + `.csv` added (no direct edits to CHANGELOG.md / build-ledger.csv)

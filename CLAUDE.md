@@ -25,4 +25,4 @@ Source of truth: `docs/revamp/build-plan.md` + `docs/revamp/design-decisions.md`
 `flattenSkills`, `extractJson`, prompt-injection guardrail (`prompts/_shared.md`), `thinking between_tools` + `max_tokens` 6000, `prompts/pdf.md` hard rules, evaluate under 60 s.
 
 ## Every PR
-Body order: What changed · How to check · Screenshots · Checks · Cost · Risk. Add a `docs/build-ledger.csv` row and a CHANGELOG entry. `Closes #<issue>`.
+Body order: What changed · How to check · Screenshots · Checks · Cost · Risk. Add the CHANGELOG entry and ledger row as new files `changes/<branch-slug>.md` and `changes/<branch-slug>.csv` (see `changes/README.md`). Never edit `CHANGELOG.md` or `docs/build-ledger.csv` directly; only the Release agent folds them (`node scripts/fold-changes.mjs`). `Closes #<issue>`.
