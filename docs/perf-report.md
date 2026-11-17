@@ -24,7 +24,7 @@ Scores vary a few points between runs; the Home page was run three to five times
 - **Render and bandwidth contention from `pdf.min.js` (320 KB, synchronous in the body):** it delayed first paint and LCP on the simulated 4G link. It is now loaded on demand by `extractPdfText` in `public/js/pdf.js` (same origin, same file), so nothing changes for the user except a short wait on the first CV PDF import. Loading it after `load` instead (idle) was tried: it moved the cost into TBT (1.4 s) and scored 57.
 - **Console error:** `/favicon.ico` returned 404. `<link rel="icon" href="data:,">` in the head (no request).
 - **Fonts:** four above-the-fold woff2 files (Figtree 400/600, Familjen Grotesk 600/700) are preloaded with `as=font crossorigin`; `fonts.css` already uses `font-display: swap`.
-- **Request chain:** `modulepreload` for `main.js`, `store.js`, `router.js`, `shell.js`, `views/home.js`.
+- **Request chain:** `modulepreload` hints were tried and dropped: no score gain, and they made the 820 px populated pixel shots fail to stabilise (see BUG-90).
 
 Not changed (out of 4C scope, not needed for 90): CLS 0.11 from the footer (BUG-70), unused JS, 16 separate CSS files, cache headers.
 
