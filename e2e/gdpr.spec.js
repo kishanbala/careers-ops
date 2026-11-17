@@ -7,6 +7,8 @@ test("page load makes only same-origin requests; PDF.js and fonts are local", as
   page.on("response", (r) => r.url().includes("/fonts/") && fonts.push(r.status()));
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  // Phase 4C (#41): PDF.js is lazy-loaded on first PDF import (not on page load); trigger it with an unreadable blob.
+  await page.evaluate(async () => { const m = await import("/js/pdf.js"); try { await m.extractPdfText(new Blob(["x"])); } catch {} });
   expect([...hosts]).toEqual(["127.0.0.1:4173"]);
   expect(await page.evaluate(() => typeof pdfjsLib)).toBe("object");
   expect(await page.evaluate(() => pdfjsLib.GlobalWorkerOptions.workerSrc)).toContain("/vendor/pdfjs/");

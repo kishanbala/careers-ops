@@ -19,13 +19,16 @@
     "prompts:check": "node scripts/build-prompts.mjs --check",
     "test": "npm run prompts:check && node --test",
     "upstream:check": "node scripts/upstream-check.mjs",
-    "upstream:accept": "node scripts/upstream-check.mjs --accept"
+    "upstream:accept": "node scripts/upstream-check.mjs --accept",
+    "perf:lighthouse": "node scripts/perf/lighthouse.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.14.0",
-    "@playwright/test": "^1.63.0"
+    "@playwright/test": "^1.63.0",
+    "chrome-launcher": "^1.2.3",
+    "lighthouse": "^13.6.0"
   }
 }
