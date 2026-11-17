@@ -10,3 +10,4 @@ upstream-report.md
 .backup-pre-align/
 e2e-results/
 playwright-report/
+perf-results/
