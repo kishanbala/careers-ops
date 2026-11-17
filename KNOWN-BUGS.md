@@ -183,7 +183,7 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Suspected cause (unconfirmed):** the §4 bronze gradient is too dark at its end stop for any single text colour. Decision for Bala: lighten the end stop, drop the gradient behind text, or accept the limit for a 13 px mono label.
 - **Status:** fixed in PR #25 (end stop lightened from `#8A5229` to `#A96432`; black text 4.56:1 on it, 4.75:1 on the mid stop).
 
-### BUG-17 · P3 · v2 · shell bottom nav (found in review, PR #35)
+### BUG-40 · P3 · v2 · shell bottom nav (found in review, PR #35)
 - **Environment:** 390 px, Light, Chromium.
 - **Steps:**
   1. Seed one role and open `#/today` at 390 px.
@@ -192,4 +192,4 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Actual:** about 4.3:1. The same on main.
 - **Evidence:** review comment on PR #35; styles in `public/css/shell.css`.
 - **Suspected cause (unconfirmed):** brass `--accent` on the ink bar is just under AA for small text.
-- **Status:** Open. Foundation item, not fixed in the 3C PR.
+- **Status:** open. Foundation item, not fixed in the 3C PR.
