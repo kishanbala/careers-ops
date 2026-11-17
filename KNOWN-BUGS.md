@@ -233,4 +233,4 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Actual:** the text "null" appears after the panel (`public/js/ui/home/demo.js` passed the absent toggle, `null`, to `replaceChildren`).
 - **Evidence:** `e2e/a11y.spec.js` "BUG-60".
 - **Suspected cause (unconfirmed):** `replaceChildren(null)` stringifies null; the toggle is null when reduced motion is on.
-- **Status:** fixed in Phase 4B (#40), PR number below once opened.
+- **Status:** fixed in PR #48 (Phase 4B, #40).
