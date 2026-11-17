@@ -116,6 +116,7 @@ function detailPane(selectedId) {
 
   return h('section', { class: 'p-detail-pane', 'aria-label': 'Role detail' },
     h('div', { class: 'card p-detail' },
+      h('h1', { class: 'p-sr-title' }, `Pipeline: ${str(r.role) || 'Untitled role'}`),
       h('a', { class: 'p-back', href: href('pipeline') }, '← All roles'),
       h('div', { class: 'p-d-head' },
         chip(r.grade, 'lg'),

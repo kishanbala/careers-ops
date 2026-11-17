@@ -8,13 +8,25 @@ A personal, AI-powered job-search and career-management tool. Paste a job descri
 **Live:** https://www.kairoapp.eu/
 **Repo:** https://github.com/kishanbala/kairo
 
-<!--
-  TODO: add 2-3 screenshots or a short GIF here before linking this repo from a
-  resume/LinkedIn — e.g.:
-  ![Dashboard](docs/screenshot-dashboard.png)
-  ![Offer evaluation](docs/screenshot-evaluate.png)
-  A reviewer who can't run the app will judge it on this section alone.
--->
+## Screenshots
+
+![First run: Home, Profile, Add role, the fit result, then Today](docs/img/first-run.gif)
+
+The first-run flow above (about 15 seconds, made-up data only). Every screen works on a phone and on a desktop, in light and dark.
+
+| | Light | Dark |
+|---|---|---|
+| **Today** (desktop) | ![Today, desktop, light](docs/img/today-desktop-light.webp) | ![Today, desktop, dark](docs/img/today-desktop-dark.webp) |
+| **Role workspace** (desktop) | ![Role, desktop, light](docs/img/role-desktop-light.webp) | ![Role, desktop, dark](docs/img/role-desktop-dark.webp) |
+| **Home** (desktop) | ![Home, desktop, light](docs/img/home-desktop-light.webp) | ![Home, desktop, dark](docs/img/home-desktop-dark.webp) |
+
+| Phone | Light | Dark |
+|---|---|---|
+| **Today** | ![Today, phone, light](docs/img/today-phone-light.webp) | ![Today, phone, dark](docs/img/today-phone-dark.webp) |
+| **Role** | ![Role, phone, light](docs/img/role-phone-light.webp) | ![Role, phone, dark](docs/img/role-phone-dark.webp) |
+| **Home** | ![Home, phone, light](docs/img/home-phone-light.webp) | ![Home, phone, dark](docs/img/home-phone-dark.webp) |
+
+All images are generated from a fictional profile (`tests/fixtures/synthetic-profile.json`) and a mocked API by `node scripts/screenshots/capture.mjs` (needs `npm ci`, a Playwright chromium, `ffmpeg` and Python with Pillow). They contain no real person, CV or company.
 
 ## Features
 
@@ -28,13 +40,25 @@ A personal, AI-powered job-search and career-management tool. Paste a job descri
 | `scan` | Suggests realistic open roles matching a focus area. |
 | `contacto` | LinkedIn connection note + InMail draft for outreach. |
 
-All seven modes are driven by **one serverless function** (`api/evaluate.js`); the frontend just changes the `mode` field.
+All seven modes are driven by **one serverless function** (`api/evaluate.js`); the frontend just changes the `mode` field. Screens call it only through `runTool()` in `public/js/api.js`.
+
+## Screens
+
+| Route | Screen |
+|---|---|
+| `#/home` | First-run welcome: what Kairo does, an example result, a four-step demo, backup and restore. |
+| `#/today` | The next moves across your roles, grouped by time. |
+| `#/pipeline`, `#/pipeline/:id` | Your saved roles by stage, with a detail panel. |
+| `#/role/:id/:tab` | One role: Fit, Tailored CV, Research, Outreach, Interview, Negotiate. |
+| `#/stories` | Story bank (STAR answers). |
+| `#/profile` | Profile and CV text (paste or upload a PDF), theme, storage use. |
+| `#/add`, `#/add/several`, `#/add/scan` | Add one job description, several at once, or find roles (paused). |
 
 ## Stack
 
-- **Frontend:** a single static page, `public/index.html` (vanilla JS, no build step). PDF.js for CV text extraction.
+- **Frontend:** a static single-page app (`public/index.html` plus ES modules, vanilla JS, no build step): a shell with a hash router, seven views (Home, Today, Pipeline, Role, Stories, Profile, Add role), a small UI kit, and a Light / Dark theme. PDF.js (served locally) extracts CV text. See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 - **Backend:** one Vercel serverless function, `api/evaluate.js`, calling the Anthropic Claude API.
-- **Persistence:** `localStorage` in the browser — no database.
+- **Persistence:** `localStorage` in the browser (schema v2, additive only) — no database. Fonts and PDF.js are self-hosted: no third-party requests on page load.
 - **Model:** `claude-sonnet-5-5` (see [Model updates](#model-updates) below).
 
 ## Setup
@@ -97,7 +121,7 @@ Errors: `400` (no/invalid content), `413` (content over 50,000 characters), `405
 npm test
 ```
 
-Checks that `lib/prompts.generated.js` is in sync with `prompts/*.md`, then runs every `tests/*.test.js` on Node's built-in test runner (`node:test`) — no test framework dependency. The Anthropic SDK is mocked via `require.cache`, so the suite makes zero real API calls and costs nothing to run. It covers:
+Checks that `lib/prompts.generated.js` is in sync with `prompts/*.md`, then runs every `tests/*.test.js` on Node's built-in test runner (`node:test`) — no test framework dependency. Browser tests (shell, every view in three viewports and both themes, accessibility, GDPR, pixel checks) live in `e2e/` and run with `npx playwright test` against a local static server and mocked API; see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#tests). The Anthropic SDK is mocked via `require.cache`, so the suite makes zero real API calls and costs nothing to run. It covers:
 
 - Transport: CORS headers, `OPTIONS`/method handling, missing/invalid/oversized `content`
 - The retired-model regression this fix addressed (asserts the exact model ID sent, and that it's never the old one)
@@ -126,7 +150,8 @@ The model ID lives in one place — `MODEL` in `api/evaluate.js`. Anthropic reti
 - `Access-Control-Allow-Origin: *` — the API accepts requests from any origin. Acceptable for a single-user personal tool; would need an origin allowlist or auth before sharing more broadly.
 - No auth — anyone with the URL can call the API and spend your Anthropic credits. The 50,000-character content cap limits damage per request but doesn't rate-limit.
 - `vercel.json` sets `maxDuration: 60` for the API function. **This requires a Vercel Pro plan** — on the Hobby plan, functions are capped at 10s regardless of this setting, which can cause timeouts on longer CV rewrites. Either upgrade the plan or lower expectations for `pdf`/`evaluate` mode on Hobby.
-- No database — all evaluation history lives in the browser's `localStorage` and doesn't sync across devices.
+- No database — all evaluation history lives in the browser's `localStorage` and doesn't sync across devices. Use Export backup on Home to move it.
+- Some actions are paused behind feature flags (`public/js/features.js`): scanning for roles, the CV archetype choice, the full CV preview and deleting a role. They stay visible with a "Being rebuilt" note.
 
 ## Roadmap
 

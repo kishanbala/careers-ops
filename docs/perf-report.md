@@ -6,7 +6,7 @@ Reproduce: `npm ci && npm run perf:lighthouse` (starts `scripts/static-server.mj
 
 | Category | Before | After |
 |---|---|---|
-| Performance | 73 | 93 |
+| Performance | 73 | 92-93 |
 | Accessibility | 100 | 100 |
 | Best practices | 96 | 100 |
 
@@ -30,4 +30,4 @@ Not changed (out of 4C scope, not needed for 90): CLS 0.11 from the footer (BUG-
 
 ## Network log (GDPR)
 
-`e2e/network-log.spec.js` loads every top-level route on a fresh load (`#/`, home, today, pipeline, stories, profile, add, add/several, add/scan, role) with a synthetic profile, records every request at context level and fails on any non-same-origin host. Logs are written to `e2e-results/network-log/<route>.json`, uploaded by CI in the existing `e2e-screenshots-and-axe` artifact.
+`e2e/network-log.spec.js` loads every top-level route on a fresh load in three states, all with synthetic data only: no profile (first run), profile only (plus `#/role/999`), and profile with the seeded pipeline and stories from `tests/fixtures/views/seed-v2.json` (plus a real `#/role/<id>`, its `cv` and `interview` tabs, and `#/pipeline/<id>`). It records every request at context level and fails on any non-same-origin host. Logs (URL, method, resource type) are written to `e2e-results/network-log/<state>-<route>.json`, uploaded by CI in the existing `e2e-screenshots-and-axe` artifact.
