@@ -114,7 +114,7 @@ export function mount(el) {
   // ----- privacy -----
   const privacy = h('section', { class: 'home-section home-privacy', 'aria-labelledby': 'home-privacy-h', dataset: { section: 'home-privacy' } },
     heading('home-privacy-h', 'Your data'),
-    h('p', { class: 'home-privacy-line' }, PRIVACY_LINE, ' ', h('a', { href: '/privacy.html' }, 'Read the privacy notice'), '.'));
+    h('p', { class: 'home-privacy-line' }, PRIVACY_LINE, ' ', h('a', { href: '/privacy.html' }, 'How we handle your data'), '.'));
 
   // ----- backup -----
   const status = h('p', { class: 'home-status', role: 'status', 'aria-live': 'polite' });
@@ -134,20 +134,27 @@ export function mount(el) {
     if (!parsed.ok) { say(parsed.error, 'error'); return; }
     const check = importAll(parsed.obj, { dryRun: true });
     if (!check.ok) { say(`This is not a usable Kairo backup. ${check.errors.join(' ')}`, 'error'); return; }
+    const saveFirst = h('input', { type: 'checkbox', checked: true, id: 'home-save-first', dataset: { role: 'save-first' }, style: { width: '24px', height: '24px', 'flex': 'none' } });
+    saveFirst.checked = true;
     openModal({
       title: 'Restore this backup?',
       body: h('div', null,
         h('p', null, `The backup holds ${describeCounts(check.counts)}.`),
-        h('p', null, 'Restoring replaces what is saved in this browser now. If you are unsure, export a backup of the current data first.')),
+        h('p', null, 'Restoring replaces what is saved in this browser now.'),
+        h('label', { for: 'home-save-first', style: { display: 'flex', gap: '12px', 'align-items': 'center', 'min-height': 'var(--tap-min)' } }, saveFirst, 'Save a backup of my current data first (recommended)')),
       actions: [
         { label: 'Cancel', onClick: close => close() },
         {
           label: 'Restore backup', primary: true,
           onClick: close => {
+            let saved = false;
+            if (saveFirst.checked) {
+              try { downloadBackup(); saved = true; } catch { close(); say('Your current data could not be saved first, so nothing was restored.', 'error'); return; }
+            }
             const res = importAll(parsed.obj);
             close();
             if (!alive) return;
-            if (res.ok) say(`Restored ${describeCounts(res.counts)}.`, 'ok');
+            if (res.ok) say(`Restored ${describeCounts(res.counts)}.${saved ? ' Your previous data was saved to your downloads.' : ''}`, 'ok');
             else say(res.errors.join(' '), 'error');
           },
         },

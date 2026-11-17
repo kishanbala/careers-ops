@@ -3,20 +3,20 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { test, expect } = require("./helpers");
-const { seedState, mockApi, fixClock, axeCheck, noHorizontalOverflow, storageSnapshot } = require("./phase3-helpers");
+const { SEED, seedState, mockApi, fixClock, axeCheck, noHorizontalOverflow, storageSnapshot } = require("./phase3-helpers");
 
 const FIX = path.join(__dirname, "..", "tests", "fixtures", "views");
 const VALID = path.join(FIX, "home-backup-valid.json");
 const INVALID = path.join(FIX, "home-backup-invalid.json");
 const VIEWPORTS = [[390, 844], [820, 1180], [1440, 900]];
 const THEMES = ["light", "dark"];
-const ORIGIN = "http://127.0.0.1:4173";
+const origin = () => new URL(test.info().project.use.baseURL).origin;
 
 // Every request the page makes must stay on this origin (or be a local blob/data URL): no third-party hosts (design §6).
 function watchHosts(page) {
   const seen = [];
   page.on("request", (r) => seen.push(r.url()));
-  return () => seen.filter((u) => !(u.startsWith(ORIGIN) || u.startsWith("blob:") || u.startsWith("data:")));
+  return () => seen.filter((u) => !(u.startsWith(origin()) || u.startsWith("blob:") || u.startsWith("data:")));
 }
 
 async function openHome(page, { theme } = {}) {
@@ -86,7 +86,7 @@ test("See an example first: inline, no API, one same-origin fetch, toggles, stor
   await expect(page.locator("#home-example")).toBeHidden();
   await btn.click();
   await expect(page.locator("#home-example")).toBeVisible();
-  expect(exampleFetches).toEqual([`${ORIGIN}/data/example-evaluation.json`]); // cached after the first open
+  expect(exampleFetches).toEqual([`${origin()}/data/example-evaluation.json`]); // cached after the first open
   expect(page.apiCalls).toEqual([]);
   expect(await storageSnapshot(page)).toEqual(before);
 });
@@ -122,6 +122,7 @@ test("demo: 4 steps, auto-advances at about 3.6 s, Pause stops it, Play resumes,
   await expect(demo).toHaveAttribute("data-playing", "true");
   await expect(demo).toHaveAttribute("data-step", "cv", { timeout: 6000 }); // wraps round
   expect(page.apiCalls).toEqual([]);
+  expect(page.errors).toEqual([]); // real browser timers: no "Illegal invocation" on mount or tick
 });
 
 test("reduced motion: the demo is static, no Pause/Play, steps still clickable", async ({ page }) => {
@@ -202,7 +203,7 @@ test("restore: Cancel changes nothing; Restore replaces the data and says what i
   await page.locator('#view-home [data-role="restore-input"]').setInputFiles(VALID);
   await dlg.getByRole("button", { name: "Restore backup" }).click();
   await expect(dlg).toHaveCount(0);
-  await expect(page.locator("#view-home .home-status")).toHaveText("Restored your profile, 4 roles, 2 stories.");
+  await expect(page.locator("#view-home .home-status")).toContainText("Restored your profile, 4 roles, 2 stories.");
   const after = await storageSnapshot(page);
   expect(JSON.parse(after.co_pipeline)).toHaveLength(4);
   expect(JSON.parse(after.co_stories)).toHaveLength(2);
@@ -210,6 +211,32 @@ test("restore: Cancel changes nothing; Restore replaces the data and says what i
   expect(after.co_schema).toBe("2");
   expect(page.apiCalls).toEqual([]);
   expect(page.errors).toEqual([]);
+});
+
+test("restore: current data is saved to a file first by default, and the box can be turned off", async ({ page }) => {
+  const mine = SEED.storage.co_pipeline.slice(0, 1);
+  await seedState(page, { pipeline: mine });
+  await openHome(page);
+  const input = page.locator('#view-home [data-role="restore-input"]');
+  const dlg = page.locator("dialog.k-modal");
+  const box = dlg.locator('[data-role="save-first"]');
+
+  await input.setInputFiles(VALID);
+  await expect(box).toBeChecked();
+  const [dl] = await Promise.all([page.waitForEvent("download"), dlg.getByRole("button", { name: "Restore backup" }).click()]);
+  const saved = JSON.parse(fs.readFileSync(await dl.path(), "utf8"));
+  expect(saved.data.co_pipeline).toHaveLength(1); // the data that was there before the restore
+  expect(saved.data.co_pipeline[0].id).toBe(mine[0].id);
+  await expect(page.locator("#view-home .home-status")).toContainText("previous data was saved");
+  expect(JSON.parse((await storageSnapshot(page)).co_pipeline)).toHaveLength(4);
+
+  let downloads = 0;
+  page.on("download", () => downloads++);
+  await input.setInputFiles(VALID);
+  await box.uncheck();
+  await dlg.getByRole("button", { name: "Restore backup" }).click();
+  await expect(dlg).toHaveCount(0);
+  expect(downloads).toBe(0);
 });
 
 test("restore: a modal opened over Home has no axe violations and Esc closes it", async ({ page }) => {

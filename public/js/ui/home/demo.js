@@ -28,7 +28,9 @@ function scene(id) {
 }
 
 // Renders into `el`; returns { destroy, state } so the view can clean up the timer.
-export function mountDemo(el, { reduced = prefersReducedMotion(), timers = { setInterval, clearInterval } } = {}) {
+// timers (tests only): { setInterval, clearInterval }. Default calls the globals directly (a method call on a plain
+// object would throw "Illegal invocation" in browsers).
+export function mountDemo(el, { reduced = prefersReducedMotion(), timers } = {}) {
   let index = 0;
   let playing = !reduced;
   let timer = null;
@@ -59,8 +61,8 @@ export function mountDemo(el, { reduced = prefersReducedMotion(), timers = { set
       toggle.setAttribute('aria-pressed', String(!playing));
     }
   }
-  function stop() { if (timer != null) { timers.clearInterval(timer); timer = null; } }
-  function start() { stop(); if (playing && !reduced) timer = timers.setInterval(() => { index = nextIndex(index); paint(); }, STEP_MS); }
+  function stop() { if (timer != null) { if (timers) timers.clearInterval(timer); else clearInterval(timer); timer = null; } }
+  function start() { stop(); if (playing && !reduced) { const tick = () => { index = nextIndex(index); paint(); }; timer = timers ? timers.setInterval(tick, STEP_MS) : setInterval(tick, STEP_MS); } }
   function setPlaying(p) { playing = !!p && !reduced; paint(); start(); }
   function select(i) { index = clampIndex(i); paint(); start(); } // a click restarts the 3.6 s clock
 
