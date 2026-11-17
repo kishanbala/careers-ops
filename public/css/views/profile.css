@@ -1,1 +1,75 @@
-/* #view-profile only: every selector starts with #view-profile (tests/ui-css-scope.test.js). Filled by its Phase 3 screen. */
+/* ===== PHASE 3D: PROFILE & CV (#view-profile) =====
+   Every selector starts with #view-profile (lint: tests/ui-css-scope.test.js). Tokens only.
+   Phone < 768: one column. Tablet 768-1023: one column, wider cards. Desktop >= 1024: about you | CV side by side. */
+#view-profile { color: var(--text); }
+#view-profile .page-title { font-family: var(--font-display); }
+#view-profile .pf-form { display: grid; gap: 16px; }
+#view-profile .pf-cols { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+#view-profile .pf-card { margin: 0; min-width: 0; }
+#view-profile .card + .card { margin-top: 0; }
+#view-profile .pf-card--wide { margin-top: 16px; }
+
+#view-profile .pf-field { margin-bottom: 16px; }
+#view-profile .pf-field:last-child { margin-bottom: 0; }
+#view-profile .form-label { color: var(--muted); }
+#view-profile .form-input,
+#view-profile .form-textarea {
+  min-height: var(--tap-min); border-color: var(--border); background: var(--surface); color: var(--text);
+  font-family: var(--font-body); font-size: 15px;
+}
+#view-profile .form-input:focus,
+#view-profile .form-textarea:focus { border-color: var(--primary-border); box-shadow: none; }
+#view-profile .form-input:focus-visible,
+#view-profile .form-textarea:focus-visible,
+#view-profile .btn:focus-visible,
+#view-profile .pf-next:focus-visible { outline: 2px solid var(--primary-border); outline-offset: 2px; }
+#view-profile .form-input[aria-invalid="true"] { border-color: var(--text); }
+#view-profile .pf-narrow { max-width: 160px; font-family: var(--font-mono); }
+#view-profile .pf-cv { min-height: 280px; font-family: var(--font-mono); font-size: 13px; }
+#view-profile .pf-story { min-height: 110px; }
+
+#view-profile .btn { min-height: var(--tap-min); padding: 0 20px; font-family: var(--font-body); font-size: 14px; justify-content: center; }
+#view-profile .btn-primary { background: var(--primary-sheen); background-color: var(--primary); color: var(--on-primary); border: 1px solid var(--primary-border); }
+#view-profile .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+
+#view-profile .pf-hint { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+#view-profile .pf-card > .pf-hint { margin: 0 0 12px; }
+#view-profile .pf-error { margin: 6px 0 0; color: var(--text); font-size: 13px; font-weight: 600; }
+#view-profile .pf-error[hidden] { display: none; }
+#view-profile .pf-line-now { display: none; }
+#view-profile .pf-count { margin: 6px 0 0; color: var(--muted); font-family: var(--font-mono); font-size: 12px; }
+#view-profile .pf-count--over { color: var(--text); font-weight: 600; }
+#view-profile .pf-upload { margin-bottom: 8px; }
+#view-profile .pf-file { display: none; }
+#view-profile .pf-status { margin: 0 0 12px; min-height: 0; color: var(--muted); font-size: 13px; }
+#view-profile .pf-status:empty { margin: 0; }
+#view-profile .pf-status--error { color: var(--text); font-weight: 600; }
+
+#view-profile .pf-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+#view-profile .pf-save-status { margin: 0; color: var(--text); font-size: 14px; font-weight: 600; }
+#view-profile .pf-save-status.pf-status--error { color: var(--text); }
+#view-profile .pf-next { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--apply-text); text-decoration: underline; }
+
+#view-profile .pf-split { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); }
+#view-profile .pf-label { margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }
+#view-profile .pf-meter { height: 12px; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--strip-track); }
+#view-profile .pf-meter-fill { display: block; height: 100%; background: var(--strip-strong); }
+#view-profile .pf-meter--warn { border-color: var(--text); }
+#view-profile .pf-meter--warn .pf-meter-fill { background: var(--text); }
+#view-profile .pf-meter-text { margin: 8px 0 0; font-family: var(--font-mono); font-size: 13px; }
+#view-profile .pf-warn {
+  margin: 12px 0 0; padding: 10px 14px; border: 1px solid var(--primary-border); border-radius: var(--radius);
+  background: var(--surface-sub); color: var(--text); font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  #view-profile .pf-split { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  #view-profile .pf-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #view-profile .pf-cols > .pf-card:last-child { grid-column: 1 / -1; }
+}
+
+/* The shared Light | Dark control is 36px tall inside a 44px pill; here each option is a full 44px target. */
+#view-profile .theme-seg-opt { min-height: var(--tap-min); }
+#view-profile .theme-seg-opt:focus-visible { outline: 2px solid var(--primary-border); outline-offset: 2px; }

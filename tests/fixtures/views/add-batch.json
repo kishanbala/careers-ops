@@ -1,0 +1,6 @@
+{
+  "_label": "SYNTHETIC - fictional job-description text for tests/view-add.test.js (Phase 3D). No real company.",
+  "three": "SYNTHETIC job A\n---\nSYNTHETIC job B\n---\nSYNTHETIC job C",
+  "messy": "\n---\nfirst\n  ---  \n\n---\nsecond\n-----\nthird\n---\n",
+  "inline": "Salary 50---60k stays in one job"
+}

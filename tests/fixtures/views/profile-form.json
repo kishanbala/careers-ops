@@ -1,0 +1,15 @@
+{
+  "_label": "SYNTHETIC - fictional form values for tests/view-profile.test.js (Phase 3D). No real person.",
+  "minscoreOk": [["", ""], ["   ", ""], ["4", "4"], ["4.0", "4"], [" 3.5 ", "3.5"], ["3,5", "3.5"], ["1", "1"], ["5", "5"], [null, ""]],
+  "minscoreBad": ["0", "0.9", "5.1", "9", "abc", "4.x", "-2"],
+  "form": {
+    "name": "  Pat Placeholder (SYNTHETIC)  ",
+    "title": "Analyst",
+    "location": "Nowhere (fictional)",
+    "target": "Analytics Engineer",
+    "salary": "",
+    "minscore": "3.5",
+    "story": "  SYNTHETIC story.  ",
+    "cv": "SYNTHETIC CV line one.\n  SYNTHETIC CV line two, with indent.\n"
+  }
+}
