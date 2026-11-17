@@ -1,0 +1,6 @@
+{
+  "_label": "SYNTHETIC: wrong app, must be refused",
+  "app": "something-else",
+  "schema": 2,
+  "data": {}
+}
