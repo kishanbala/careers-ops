@@ -59,6 +59,7 @@ function closeMenu() {
 // (not on first load, where the skip link must stay the first tab stop).
 function focusHeading(el) {
   if (firstRender) { firstRender = false; return; }
+  if (el.contains(document.activeElement)) return; // the view placed focus itself (Role keeps the tab focused)
   const hd = el.querySelector('h1');
   if (!hd) return;
   hd.setAttribute('tabindex', '-1');
