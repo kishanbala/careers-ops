@@ -210,6 +210,71 @@ export function linkStory(storyId, roleId) {
   return s;
 }
 
+// ===== PHASE 3 HELPERS (Phase 3 spec §3, §4; additive) =====
+// isUsable decides whether a model reply is worth keeping. api.js re-exports it (spec §3), and
+// addRole/addStory use it so a blank entry is never saved. Pure: no storage, no DOM.
+const filled = v => typeof v === 'string' && v.trim() !== '';
+export function isUsable(mode, data) {
+  if (!isObj(data)) return false;
+  switch (mode) {
+    case 'evaluate': return typeof data.finalScore === 'number' && Number.isFinite(data.finalScore) && (filled(data.roleTitle) || filled(data.grade));
+    case 'story': return filled(data.question) && (filled(data.fullStory) || filled(data.situation));
+    case 'pdf': return (Array.isArray(data.experience) && data.experience.length > 0) || filled(data.summary);
+    case 'research': return filled(data.overview) || filled(data.verdict);
+    case 'negotiate': return filled(data.opening) || filled(data.emailBody);
+    case 'contacto': return filled(data.connectionNote);
+    default: return false;
+  }
+}
+
+// Ids are Date.now() like v1; bump past any id already in the list (two saves in one millisecond).
+function freshId(list) {
+  let id = Date.now();
+  const taken = new Set(list.filter(isObj).map(x => String(x.id)));
+  while (taken.has(String(id))) id++;
+  return id;
+}
+
+// Insert at the front and persist; on a storage error the in-memory list is put back and the error rethrown.
+function unshiftAndSave(list, key, item) {
+  list.unshift(item);
+  try { LS.set(key, list); } catch (e) {
+    const i = list.indexOf(item);
+    if (i !== -1) list.splice(i, 1);
+    throw e;
+  }
+  return item;
+}
+
+export function addRole(evalData, jd) {
+  if (!isUsable('evaluate', evalData)) return null;
+  const role = makeRole(evalData, jd);
+  role.id = freshId(pipeline);
+  return unshiftAndSave(pipeline, 'co_pipeline', role);
+}
+
+export function addStory(story, { roleId } = {}) {
+  if (!isUsable('story', story)) return null;
+  const s = { ...story, id: freshId(stories), roleIds: roleId == null ? [] : [roleId] };
+  return unshiftAndSave(stories, 'co_stories', s);
+}
+
+export function removeStory(id) {
+  const i = stories.findIndex(x => isObj(x) && String(x.id) === String(id));
+  if (i === -1) return false;
+  const [gone] = stories.splice(i, 1);
+  try { LS.set('co_stories', stories); } catch (e) { stories.splice(i, 0, gone); throw e; }
+  return true;
+}
+
+export function saveProfile(patch) {
+  const prev = profile;
+  const next = { ...(isObj(prev) ? prev : {}), ...(isObj(patch) ? patch : {}) };
+  setProfile(next); // listeners read the new binding
+  try { LS.set('co_profile', next); } catch (e) { setProfile(prev); throw e; }
+  return next;
+}
+
 // ===== BACKUP EXPORT / IMPORT (UI is Phase 3A) =====
 export function exportAll(storage = defaultStorage()) {
   const get = k => { try { return JSON.parse(storage.getItem(k)); } catch { return null; } };

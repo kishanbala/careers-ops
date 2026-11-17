@@ -10,4 +10,5 @@ export function mount(el, { state }) {
     action: 'Evaluate your first job',
     href: href('add'),
   });
+  el.querySelector('.view-action')?.setAttribute('data-action', 'first-job'); // spec §6 hook (shell.spec.js)
 }
