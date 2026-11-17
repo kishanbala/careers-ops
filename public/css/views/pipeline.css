@@ -1,1 +1,86 @@
-/* #view-pipeline only: every selector starts with #view-pipeline (tests/ui-css-scope.test.js). Filled by its Phase 3 screen. */
+/* #view-pipeline only: every selector starts with #view-pipeline (tests/ui-css-scope.test.js). Phase 3C.
+   Phone <768: the list, or the detail alone (push navigation). Tablet 768-1023: list over detail.
+   Desktop >=1024: list and detail side by side. */
+#view-pipeline { color: var(--text); }
+#view-pipeline .p-wrap { display: block; }
+#view-pipeline .p-hint { margin: 0; color: var(--muted); font-size: 13px; }
+#view-pipeline .p-btn { min-height: var(--tap-min); justify-content: center; }
+#view-pipeline .p-select, #view-pipeline .p-input { min-height: var(--tap-min); }
+#view-pipeline .p-filter { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+#view-pipeline .p-filter .form-label { margin: 0; }
+#view-pipeline .p-filter .p-select { max-width: 240px; }
+#view-pipeline .p-none { padding: 12px 0; }
+#view-pipeline .p-empty-title { margin: 0 0 4px; font-weight: 600; font-size: 15px; }
+#view-pipeline .p-empty .p-btn { margin-top: 12px; }
+
+/* List */
+#view-pipeline .p-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+#view-pipeline .p-item {
+  display: flex; align-items: flex-start; gap: 12px; min-height: var(--tap-min); padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); color: var(--text);
+}
+#view-pipeline .p-item:hover { border-color: var(--primary-border); }
+#view-pipeline .p-item.is-selected { border-color: var(--primary-border); box-shadow: inset 4px 0 0 var(--primary); }
+#view-pipeline .p-item:focus-visible { outline: 2px solid var(--primary-border); outline-offset: 2px; }
+#view-pipeline .p-item-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1 1 auto; }
+#view-pipeline .p-item-title { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
+#view-pipeline .p-item-co { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+#view-pipeline .p-item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 6px; }
+#view-pipeline .p-item-score { font-family: var(--font-mono); font-weight: 600; font-size: 14px; }
+#view-pipeline .p-item-stage { color: var(--muted); font-size: 12px; font-weight: 600; }
+#view-pipeline .p-item-next { margin-top: 4px; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+
+/* Detail */
+#view-pipeline .p-detail { padding: 20px; }
+#view-pipeline .p-back { display: inline-flex; align-items: center; min-height: var(--tap-min); margin-bottom: 4px; color: var(--apply-text); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+#view-pipeline .p-d-head { display: flex; align-items: center; gap: 14px; }
+#view-pipeline .p-d-title { margin: 0; font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 1.25; overflow-wrap: anywhere; }
+#view-pipeline .p-d-co { margin: 2px 0 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+#view-pipeline .p-d-score { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+#view-pipeline .p-d-num { font-family: var(--font-mono); font-size: 28px; font-weight: 600; }
+#view-pipeline .p-d-of { color: var(--muted); font-size: 14px; }
+#view-pipeline .p-note { margin: 8px 0; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-sub); font-size: 13px; }
+#view-pipeline .p-note a { color: var(--apply-text); text-decoration: underline; text-underline-offset: 2px; }
+#view-pipeline .p-field { margin: 14px 0 0; }
+#view-pipeline .p-field .btn { margin-top: 8px; }
+#view-pipeline .p-status:empty { margin: 0; }
+#view-pipeline .p-status { margin: 8px 0 0; color: var(--text); font-size: 13px; font-weight: 600; }
+#view-pipeline .p-facts { display: grid; grid-template-columns: 1fr; gap: 6px; margin: 12px 0 0; }
+#view-pipeline .p-fact { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+#view-pipeline .p-fact dt { color: var(--muted); }
+#view-pipeline .p-fact dd { margin: 0; font-family: var(--font-mono); text-align: right; }
+#view-pipeline .p-sub { margin: 20px 0 0; font-family: var(--font-display); font-size: 15px; font-weight: 600; }
+#view-pipeline .p-two { display: grid; grid-template-columns: 1fr; gap: 0 12px; }
+#view-pipeline .p-form .btn { margin-top: 14px; }
+#view-pipeline .p-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+#view-pipeline .p-history { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+#view-pipeline .p-placeholder { padding: 24px; }
+#view-pipeline .p-detail .paused-banner { margin-top: 12px; }
+
+/* Phone: push navigation */
+@media (max-width: 767px) {
+  #view-pipeline .p-wrap[data-detail="true"] .p-list-pane { display: none; }
+  #view-pipeline .p-wrap[data-detail="false"] .p-detail-pane { display: none; }
+  #view-pipeline .p-filter .p-select { max-width: none; flex: 1 1 auto; }
+}
+
+/* Tablet: list over detail */
+@media (min-width: 768px) {
+  #view-pipeline .p-back { display: none; }
+  #view-pipeline .p-list-pane { margin-bottom: 24px; }
+  #view-pipeline .p-wrap[data-detail="true"] .p-list { max-height: 360px; overflow-y: auto; padding: 2px; }
+  #view-pipeline .p-two { grid-template-columns: 1fr 1fr; }
+  #view-pipeline .p-facts { grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  #view-pipeline .p-fact { flex-direction: column; justify-content: flex-start; border-bottom: none; }
+  #view-pipeline .p-fact dd { text-align: left; }
+}
+
+/* Desktop: side by side */
+@media (min-width: 1024px) {
+  #view-pipeline .p-wrap { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
+  #view-pipeline .p-list-pane { margin-bottom: 0; }
+  #view-pipeline .p-list { max-height: none; overflow: visible; padding: 0; }
+  #view-pipeline .p-facts { grid-template-columns: 1fr; gap: 6px; }
+  #view-pipeline .p-fact { flex-direction: row; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  #view-pipeline .p-fact dd { text-align: right; }
+}
