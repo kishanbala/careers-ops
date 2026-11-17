@@ -5,6 +5,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); this pr
 
 ## [Unreleased]
 
+### Fixed
+- Docs (#50): restored the `- **Steps:**` line in the BUG-60 entry of `KNOWN-BUGS.md` (dropped by a merge conflict resolution in #47). The entry now matches commit a665dc5; no other text changed.
+
 ## [2.0.0] - YYYY-MM-DD
 
 Kairo v2 is the revamp of the v1 career copilot, built from the commits on `main` after v1.3.0 (`01e720b`). It adds an app shell with a hash router, Gunmetal and Brass light and dark themes, the Home, Today, Pipeline, Role workspace, Profile, Add role and Story bank screens, and storage schema v2. The schema v2 migration is additive: it only adds fields and keeps a one-time `co_backup_v1` copy of the v1 data before its first write. The v1 build still reads v2 data (`e2e/rollback.spec.js`). Security: model-derived text is escaped in the UI, Find Jobs links accept https: only, and `api/evaluate.js` has an origin check and a per-IP rate limit. Fonts and PDF.js are self-hosted, so the page makes no third-party requests on load (`e2e/network-log.spec.js`), and the privacy notice is at `/privacy.html`. Accessibility fixes come from the Phase 4B audit (`docs/a11y-audit.md`). Paused in v2 (shown as "Being rebuilt. Back soon."): Find Jobs scanning, the CV archetype choice, CV Full preview and deleting a role from Pipeline. Career Strategy is hidden until it is built. Lighthouse figures are in `docs/perf-report.md`.
