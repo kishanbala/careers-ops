@@ -65,6 +65,13 @@ test("layout: phone is list OR detail (with a back link); tablet is list over de
   expect(d2.x).toBeGreaterThanOrEqual(l2.x + l2.width - 1);
   expect(Math.abs(d2.y - l2.y)).toBeLessThan(40);
   await expect(page.locator(`#view-pipeline .p-item[href="#/pipeline/${ID}"]`)).toHaveAttribute("aria-current", "true");
+  // desktop: the list is never clipped or given its own scrollbar, with a role open
+  const clip = await page.locator("#view-pipeline .p-list").evaluate((e) => ({ over: e.scrollHeight - e.clientHeight, ov: getComputedStyle(e).overflowY, mh: getComputedStyle(e).maxHeight }));
+  expect(clip).toEqual({ over: 0, ov: "visible", mh: "none" });
+  expect(await page.locator("#view-pipeline .p-item").count()).toBe(4);
+  await page.setViewportSize({ width: 390, height: 844 });
+  const phone = await page.locator("#view-pipeline .p-detail-pane").boundingBox();
+  expect(phone.width).toBeGreaterThan(300);
   expect(page.apiCalls).toEqual([]);
 });
 

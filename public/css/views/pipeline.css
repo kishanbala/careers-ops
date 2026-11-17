@@ -79,7 +79,7 @@
 @media (min-width: 1024px) {
   #view-pipeline .p-wrap { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 24px; align-items: start; }
   #view-pipeline .p-list-pane { margin-bottom: 0; }
-  #view-pipeline .p-list { max-height: none; overflow: visible; padding: 0; }
+  #view-pipeline .p-wrap[data-detail="true"] .p-list, #view-pipeline .p-list { max-height: none; overflow: visible; padding: 0; }
   #view-pipeline .p-facts { grid-template-columns: 1fr; gap: 6px; }
   #view-pipeline .p-fact { flex-direction: row; justify-content: space-between; border-bottom: 1px solid var(--border); }
   #view-pipeline .p-fact dd { text-align: right; }

@@ -34,8 +34,7 @@ function firstJob(el) {
   err,
   noCv ? h('p', { class: 't-note' }, 'Your CV is not saved yet. ', h('a', { href: href('profile') }, 'Add it in Profile'), ' so the verdict can be checked against it.') : null,
   h('div', { class: 't-actions' },
-    h('button', { type: 'submit', class: 'btn btn-primary t-btn', dataset: { action: 'first-job' } }, 'Evaluate your first job'),
-    h('a', { class: 'btn btn-outline t-btn', href: href('add', { mode: 'several' }) }, 'Paste several jobs')));
+    h('button', { type: 'submit', class: 'btn btn-primary t-btn', dataset: { action: 'first-job' } }, 'Evaluate your first job')));
   el.append(
     h('div', { class: 'page-header' },
       h('h1', { class: 'page-title' }, 'Today'),

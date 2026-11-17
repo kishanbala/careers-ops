@@ -86,6 +86,7 @@ test("first job: empty box shows a message and goes nowhere; a JD is handed to #
   await page.goto("/#/today");
   const before = await storageSnapshot(page);
   const btn = page.locator('#view-today [data-action="first-job"]');
+  await expect(page.locator("#view-today .t-actions").locator("a, button")).toHaveCount(1); // one action only (design §3)
   await btn.click();
   await expect(page.locator("#view-today .t-error")).toHaveText("Paste a job description first.");
   expect(await page.evaluate(() => location.hash)).toBe("#/today");
