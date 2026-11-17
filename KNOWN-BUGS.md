@@ -234,10 +234,8 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Evidence:** `docs/perf-report.md`.
 - **Suspected cause (unconfirmed):** the footer mounts before the view content, so it jumps down when the view fills in. Fix belongs in view/shell code (4B scope), not in the 4C head-only change.
 - **Status:** open.
-
 ### BUG-60 · P3 · v2 · HOME-02 / how it works demo (found in review of the docs PR)
 - **Environment:** any width, Light and Dark, Chromium with `prefers-reduced-motion: reduce`.
-- **Steps:**
   1. Open `#/home` with reduced motion on.
   2. Look under "How it works".
 - **Expected:** the four steps and the panel only; no Play/Pause button.
