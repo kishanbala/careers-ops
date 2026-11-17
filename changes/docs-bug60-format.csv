@@ -1,0 +1,1 @@
+2026-11-17,docs,#50,Builder,Claude Code (cloud session),claude-haiku-5-5,,0,0,0,0,restore BUG-60 Steps line in KNOWN-BUGS.md to match a665dc5; docs only; no tests changed
