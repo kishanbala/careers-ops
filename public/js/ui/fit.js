@@ -40,7 +40,7 @@ export function renderFit(el, evalData, { role, compact = false } = {}) {
         h('span', { class: 'k-fit-dim-score' }, fmtScore(sc[k]))))));
     const gaps = Array.isArray(d.gaps) ? d.gaps.filter(g => g && typeof g === 'object' && str(g.gap)) : [];
     if (gaps.length) {
-      parts.push(h('h3', { class: 'k-fit-subhead' }, 'Gaps'));
+      parts.push(h('h2', { class: 'k-fit-subhead' }, 'Gaps'));
       parts.push(h('ul', { class: 'k-fit-gaps' }, gaps.map(g => h('li', { class: 'k-fit-gap' },
         h('p', { class: 'k-fit-gap-title' }, str(g.gap), str(g.severity) ? h('span', { class: 'k-fit-gap-sev' }, ` · ${str(g.severity)}`) : null),
         str(g.why) ? h('p', { class: 'k-fit-gap-why' }, str(g.why)) : null,

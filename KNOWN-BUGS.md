@@ -211,7 +211,7 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Actual:** about 4.3:1. The same on main.
 - **Evidence:** review comment on PR #35; styles in `public/css/shell.css`.
 - **Suspected cause (unconfirmed):** brass `--accent` on the ink bar is just under AA for small text.
-- **Status:** open. Foundation item, not fixed in the 3C PR.
+- **Status:** fixed in PR #48 (active label colour `#C9A66B`, covered by `e2e/a11y.spec.js`).
 
 ### BUG-90 · P3 · v2 · test infra, e2e/split.spec.js view shots (found in 4A build, #39)
 - **Environment:** local dev container, headless Chromium, `CI=true`, 820 px, Light, group "view shots, populated".
@@ -234,3 +234,12 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Evidence:** `docs/perf-report.md`.
 - **Suspected cause (unconfirmed):** the footer mounts before the view content, so it jumps down when the view fills in. Fix belongs in view/shell code (4B scope), not in the 4C head-only change.
 - **Status:** open.
+### BUG-60 · P3 · v2 · HOME-02 / how it works demo (found in review of the docs PR)
+- **Environment:** any width, Light and Dark, Chromium with `prefers-reduced-motion: reduce`.
+  1. Open `#/home` with reduced motion on.
+  2. Look under "How it works".
+- **Expected:** the four steps and the panel only; no Play/Pause button.
+- **Actual:** the text "null" appears after the panel (`public/js/ui/home/demo.js` passed the absent toggle, `null`, to `replaceChildren`).
+- **Evidence:** `e2e/a11y.spec.js` "BUG-60".
+- **Suspected cause (unconfirmed):** `replaceChildren(null)` stringifies null; the toggle is null when reduced motion is on.
+- **Status:** fixed in PR #48 (Phase 4B, #40).
