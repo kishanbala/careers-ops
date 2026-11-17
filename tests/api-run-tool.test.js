@@ -4,7 +4,6 @@ const { test, beforeEach } = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
-const crypto = require("node:crypto");
 const { pathToFileURL } = require("node:url");
 
 const JS = path.join(__dirname, "..", "public", "js");
@@ -41,11 +40,16 @@ beforeEach(async () => {
 const CV_MODES = ["evaluate", "pdf", "story", "negotiate", "contacto"];
 const OK_FIXTURE = { evaluate: "evaluate.json", pdf: "pdf.json", story: "story.json", research: "research.json", negotiate: "negotiate.json", contacto: "contacto.json" };
 
-test("callAPI is byte-identical to Phase 2 (legacy pages keep using it until Phase 4)", () => {
+// Phase 4A (#39): the legacy callAPI was kept byte-identical for the v1 pages; it left with them. Same intent now:
+// the model path cannot drift behind runTool's back, because runTool is the only caller of /api/evaluate.
+test("callAPI is gone with the legacy pages; runTool is the only caller of /api/evaluate in public/js", async () => {
+  const api = await load();
+  assert.equal(api.callAPI, undefined);
+  const hits = fs.readdirSync(JS, { recursive: true }).filter((f) => f.endsWith(".js"))
+    .flatMap((f) => (fs.readFileSync(path.join(JS, f), "utf8").match(/\/api\/evaluate/g) || []).map(() => f));
+  assert.deepEqual([...new Set(hits)], ["api.js"]);
   const s = fs.readFileSync(path.join(JS, "api.js"), "utf8");
-  const a = s.indexOf("export async function callAPI");
-  const block = s.slice(a, s.indexOf("\n}\n", a) + 3);
-  assert.equal(crypto.createHash("sha256").update(block).digest("hex"), "d09f621147ef7d571104692de81ad4c5ab38c52ecd14252284a004d0afc1cc9d");
+  assert.ok(s.indexOf("fetch('/api/evaluate'") > s.indexOf("export async function runTool"), "the fetch lives inside runTool");
 });
 
 test("exports: runTool, isUsable (same function as store's), toolMessage, kinds", async () => {

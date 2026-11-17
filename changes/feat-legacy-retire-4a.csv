@@ -1,0 +1,1 @@
+2026-11-17,4A,#39,Builder,Claude Code (cloud session),claude-opus-5-5,,0,0,0,0,Legacy retire + global footer; legacy-dependent tests repointed to the new views; 42 legacy baselines retired; all 96 view shots change (footer + nav), labels visual:view-*; mocked API only

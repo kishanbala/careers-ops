@@ -247,11 +247,16 @@ test("makeRole keeps the full JD and starts the stage history", async () => {
   assert.equal(r.fullData, data);
 });
 
-test("addToPipeline in pages/evaluate.js uses makeRole (no 500-char cut)", () => {
-  const src = fs.readFileSync(path.join(__dirname, "..", "public", "js", "pages", "evaluate.js"), "utf8");
-  const fn = src.slice(src.indexOf("export function addToPipeline("), src.indexOf("\n}\n", src.indexOf("export function addToPipeline(")));
-  assert.match(fn, /makeRole\(data, jd\)/);
-  assert.ok(!src.includes("substring(0, 500)"));
+// Phase 4A (#39): pages/evaluate.js (addToPipeline) is retired; Add role saves through store.addRole. Same check there.
+test("addRole (used by Add role, replacing addToPipeline in pages/evaluate.js) uses makeRole (no 500-char cut)", () => {
+  const JS = path.join(__dirname, "..", "public", "js");
+  const src = fs.readFileSync(path.join(JS, "store.js"), "utf8");
+  const fn = src.slice(src.indexOf("export function addRole("), src.indexOf("\n}\n", src.indexOf("export function addRole(")));
+  assert.match(fn, /makeRole\(evalData, jd\)/);
+  assert.match(fs.readFileSync(path.join(JS, "views", "add.js"), "utf8"), /addRole\(r\.data, jd\)/);
+  for (const f of fs.readdirSync(JS, { recursive: true }).filter((x) => x.endsWith(".js"))) {
+    assert.ok(!fs.readFileSync(path.join(JS, f), "utf8").includes("substring(0, 500)"), f);
+  }
 });
 
 test("updateRole / setStage / linkStory mutate the shared arrays in place, persist and notify", async () => {

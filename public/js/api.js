@@ -1,29 +1,5 @@
-// ===== API CALL WITH RETRY =====
-export async function callAPI(payload, retries = 3) {
-  for (let attempt = 0; attempt < retries; attempt++) {
-    try {
-      const res = await fetch('/api/evaluate', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.status === 429 || res.status === 529) {
-        if (attempt < retries - 1) {
-          await new Promise(r => setTimeout(r, Math.pow(2, attempt + 1) * 1000));
-          continue;
-        }
-        throw new Error('Rate limited — please try again in a moment.');
-      }
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      if (attempt === retries - 1) throw e;
-      await new Promise(r => setTimeout(r, 1500));
-    }
-  }
-}
-
 // ===== runTool (Phase 3 spec §3): the one way new screens call the model =====
-// callAPI above stays byte-identical for the legacy pages until Phase 4.
+// Phase 4A: the legacy callAPI left with the v1 pages; runTool is now the only caller of /api/evaluate.
 // runTool never throws. It sends no request for paused / empty / too long / missing-CV input,
 // retries only where a retry cannot double-bill a finished answer (BUG-14), and turns
 // {raw}, refusals and unusable replies into errors instead of blank results (BUG-01/02/05/06).

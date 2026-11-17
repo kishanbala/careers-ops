@@ -164,7 +164,9 @@ test("checklist, tools, bands, grades, privacy line and footer content", async (
   await expect(v.locator('.home-grade[data-grade="B+"] .grade-chip--bronze')).toBeVisible();
   await expect(v.locator(".home-privacy-line")).toContainText("Your CV and roles stay in this browser. When you run a tool, the text goes through our server to Anthropic's AI to produce the result. We don't store it.");
   await expect(v.locator(".home-privacy-line a")).toHaveAttribute("href", "/privacy.html");
-  const footer = v.locator(".k-site-footer");
+  // Phase 4A (#39): the footer is mounted by the shell below every view (not inside #view-home); still exactly one.
+  const footer = page.locator(".k-site-footer");
+  await expect(footer).toHaveCount(1);
   await expect(footer).toContainText("Evaluation method adapted from santifer/career-ops (MIT)");
   await expect(footer.locator("a")).toHaveCount(1); // Privacy only: the Impressum slot stays hidden
   await expect(footer.locator("a")).toHaveAttribute("href", "/privacy.html");

@@ -12,17 +12,18 @@ class MemStorage {
 }
 const S = (o) => new MemStorage(Object.fromEntries(Object.entries(o).map(([k, v]) => [k, typeof v === "string" ? v : JSON.stringify(v)])));
 
+// Phase 4A (#39): the v1 pages and #/legacy/:page are retired. Their old hashes now resolve like any unknown hash.
 const LEGACY = ["dashboard", "evaluate", "scan", "batch", "cv", "stories", "negotiate", "research", "outreach", "strategy", "profile"];
 
 test("router imports in Node without a DOM and ROUTES is frozen", async () => {
   const r = await load();
   assert.ok(Object.isFrozen(r.ROUTES));
   assert.ok(r.ROUTES.every((x) => Object.isFrozen(x)));
-  assert.deepEqual(r.ROUTES.map((x) => x.pattern), ["#/", "#/home", "#/today", "#/pipeline", "#/pipeline/:id", "#/role/:id/:tab?", "#/stories", "#/profile", "#/add", "#/add/several", "#/add/scan", "#/legacy/:page"]);
-  assert.deepEqual([...r.LEGACY_PAGES], LEGACY);
-  for (const k of ["parseHash", "href", "go", "start", "onRoute", "firstRunState", "navigateTo"]) assert.equal(typeof r[k], "function", k);
+  assert.deepEqual(r.ROUTES.map((x) => x.pattern), ["#/", "#/home", "#/today", "#/pipeline", "#/pipeline/:id", "#/role/:id/:tab?", "#/stories", "#/profile", "#/add", "#/add/several", "#/add/scan"]);
+  assert.equal(r.LEGACY_PAGES, undefined);
+  assert.equal(r.navigateTo, undefined);
+  for (const k of ["parseHash", "href", "go", "start", "onRoute", "firstRunState"]) assert.equal(typeof r[k], "function", k);
   r.go("home"); // no-op without a window
-  r.navigateTo("dashboard");
 });
 
 test("parseHash: every route", async () => {
@@ -39,7 +40,7 @@ test("parseHash: every route", async () => {
   for (const tab of ["fit", "cv", "research", "outreach", "interview", "negotiate"]) {
     assert.deepEqual(parseHash(`#/role/7/${tab}`), { name: "role", params: { id: "7", tab } });
   }
-  for (const page of LEGACY) assert.deepEqual(parseHash(`#/legacy/${page}`), { name: "legacy", params: { page } });
+  for (const page of LEGACY) assert.deepEqual(parseHash(`#/legacy/${page}`), { name: "root", params: {} }, page);
 });
 
 test("parseHash: unknown or malformed hashes resolve to #/", async () => {
@@ -51,7 +52,7 @@ test("parseHash: unknown or malformed hashes resolve to #/", async () => {
 
 test("href builds hashes that parse back to the same route", async () => {
   const { href, parseHash } = await load();
-  const routes = [["home"], ["today"], ["pipeline"], ["pipeline", { id: "17" }], ["role", { id: "17" }], ["role", { id: "17", tab: "negotiate" }], ["stories"], ["profile"], ["add"], ["add", { mode: "several" }], ["add", { mode: "scan" }], ...LEGACY.map((p) => ["legacy", { page: p }])];
+  const routes = [["home"], ["today"], ["pipeline"], ["pipeline", { id: "17" }], ["role", { id: "17" }], ["role", { id: "17", tab: "negotiate" }], ["stories"], ["profile"], ["add"], ["add", { mode: "several" }], ["add", { mode: "scan" }]];
   for (const [name, params = {}] of routes) {
     const h = href(name, params);
     const back = parseHash(h);
@@ -60,6 +61,7 @@ test("href builds hashes that parse back to the same route", async () => {
   }
   assert.equal(href("role", { id: "1", tab: "fit" }), "#/role/1");
   assert.equal(href("nope"), "#/");
+  assert.equal(href("legacy", { page: "cv" }), "#/");
 });
 
 test("firstRunState follows design §3 (saved roles always win) and is parse-safe", async () => {
@@ -87,5 +89,7 @@ test("resolveRoute: #/ resolves by state; #/ and #/today redirect to #/home in s
   assert.deepEqual(resolveRoute(parseHash("#/"), "today-empty"), { name: "today", params: {}, state: "today-empty", redirect: "#/today" });
   assert.deepEqual(resolveRoute(parseHash("#/nope"), "today"), { name: "today", params: {}, state: "today", redirect: "#/today" });
   assert.deepEqual(resolveRoute(parseHash("#/today"), "today"), { name: "today", params: {}, state: "today", redirect: null });
-  assert.deepEqual(resolveRoute(parseHash("#/legacy/cv"), "home"), { name: "legacy", params: { page: "cv" }, state: "home", redirect: null });
+  // old v1 bookmarks land on the first-run screen instead of a retired page
+  assert.deepEqual(resolveRoute(parseHash("#/legacy/cv"), "home"), { name: "home", params: {}, state: "home", redirect: "#/home" });
+  assert.deepEqual(resolveRoute(parseHash("#/legacy/dashboard"), "today"), { name: "today", params: {}, state: "today", redirect: "#/today" });
 });

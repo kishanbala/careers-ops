@@ -193,6 +193,7 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Evidence:** code reading: `shell.js` subscribes `onChange` only to `updateState()`; nothing else writes the badges.
 - **Suspected cause (unconfirmed by a test):** the shell (Foundation) has no badge subscription; the legacy function is the only writer. Fix belongs in the shell, not in a screen.
 - **Status:** Open.
+- **Note (Phase 4A, #39):** `pages/dashboard.js` is retired; `shell.js` now writes both badges once at start-up (same behaviour as before), still not on change. Fix stays in the bug track.
 
 ### BUG-51 · P3 · v2 · design tokens (found in 3D build)
 - **Environment:** any.
@@ -211,3 +212,14 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Evidence:** review comment on PR #35; styles in `public/css/shell.css`.
 - **Suspected cause (unconfirmed):** brass `--accent` on the ink bar is just under AA for small text.
 - **Status:** open. Foundation item, not fixed in the 3C PR.
+
+### BUG-90 · P3 · v2 · test infra, e2e/split.spec.js view shots (found in 4A build, #39)
+- **Environment:** local dev container, headless Chromium, `CI=true`, 820 px, Light, group "view shots, populated".
+- **Steps:**
+  1. `node e2e/capture-baseline.mjs <main>/public <dir>` (or the full `npx playwright test` against that baseline).
+  2. Watch `views 820px light › view shots, populated`.
+- **Expected:** every shot stabilises (two identical consecutive screenshots).
+- **Actual:** now and then "screenshot did not stabilise after 6 shots". Seen once rendering main@03b7b68 (capture) and once on the 4A branch; the re-run passed both times.
+- **Evidence:** `e2e/split.spec.js` `shot()`; same failure on the PR base, so not caused by the 4A change.
+- **Suspected cause (unconfirmed):** a still-moving element in one populated view at 820 px (a transition or the running clock) outlasts the 400 ms settle.
+- **Status:** open. Test-infra item; ID taken outside the reserved blocks because Phase 4A has none.

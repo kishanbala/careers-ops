@@ -22,7 +22,8 @@ function fnSource(src, name) {
 }
 const load = (src, name) => vm.runInNewContext(`${fnSource(src, name)};${name}`, {});
 
-const _flat = load(read("public/index.html"), "flattenSkills");
+// Phase 4A (#39): flattenSkills moved unchanged from pages/cv.js to render/skills.js (the role CV tab imports it from there).
+const _flat = load(read("public/js/render/skills.js"), "flattenSkills");
 const flattenSkills = (x) => [..._flat(x)]; // copy: vm arrays have a foreign prototype
 const extractJson = load(read("api/evaluate.js"), "extractJson");
 

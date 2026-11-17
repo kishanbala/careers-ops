@@ -41,9 +41,7 @@
   overflow-y: auto;
   background: var(--nav-bg);
 }
-.shell-link,
-.shell-tools > summary,
-.shell-tools .nav-item {
+.shell-link {
   display: flex; align-items: center; gap: 10px;
   min-height: var(--shell-tap);
   padding: 0 16px; margin: 1px 8px;
@@ -51,28 +49,14 @@
   color: var(--text-on-dark-muted); font-size: 13px; font-weight: 500;
   cursor: pointer; transition: color 0.15s, background 0.15s;
 }
-.shell-link:hover,
-.shell-tools > summary:hover,
-.shell-tools .nav-item:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.07); }
-.shell-link[aria-current="page"],
-.shell-tools .nav-item.active { color: var(--text-on-dark); background: rgba(255,255,255,0.1); }
+.shell-link:hover { color: var(--text-on-dark); background: rgba(255,255,255,0.07); }
+.shell-link[aria-current="page"] { color: var(--text-on-dark); background: rgba(255,255,255,0.1); }
 .shell-link[aria-current="page"] .nav-icon { opacity: 1; }
-.shell-tools { margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.08); }
-.shell-tools > summary { list-style: none; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-.shell-tools > summary::-webkit-details-marker { display: none; }
-.shell-tools > summary::after { content: "+"; margin-left: auto; font-size: 14px; }
-.shell-tools[open] > summary::after { content: "\2212"; }
-.shell-tools .nav-item {
-  width: calc(100% - 16px);
-  background: transparent; border: 0; text-align: left; font-family: inherit;
-}
-.shell-tools .nav-item[hidden] { display: none; }
 
 .shell-header a:focus-visible,
 .shell-header button:focus-visible,
 .shell-nav a:focus-visible,
 .shell-nav button:focus-visible,
-.shell-nav summary:focus-visible,
 .shell-bottom-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ===== MAIN ===== */
