@@ -5,7 +5,12 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-    types: [opened, synchronize, reopened, labeled, unlabeled]
+    types: [opened, synchronize, reopened, ready_for_review, labeled, unlabeled]
+
+# One run per PR; a new push or label cancels the superseded run. Never cancel runs on main.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   test:
@@ -19,6 +24,8 @@ jobs:
       - run: npm ci
       - run: npm test
   e2e:
+    # Drafts get `test` only; mark Ready after the visual:* labels exist (CLAUDE.md, Every PR).
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

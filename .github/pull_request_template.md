@@ -24,3 +24,4 @@ Closes #
 - [ ] Matches design-decisions doc
 - [ ] Paused actions make no API call; bugs logged in `KNOWN-BUGS.md` without duplicates
 - [ ] `changes/<branch-slug>.md` + `.csv` added (no direct edits to CHANGELOG.md / build-ledger.csv)
+- [ ] Opened as draft, `visual:*` labels added, then marked Ready (or left draft with a note)
