@@ -1,7 +1,6 @@
 // ===== HASH ROUTER (Phase 2 spec §6) =====
 // Pure parts (parseHash, href, firstRunState) work in Node; DOM parts are guarded.
 
-export const LEGACY_PAGES = Object.freeze(['dashboard', 'evaluate', 'scan', 'batch', 'cv', 'stories', 'negotiate', 'research', 'outreach', 'strategy', 'profile']);
 export const ROLE_TABS = Object.freeze(['fit', 'cv', 'research', 'outreach', 'interview', 'negotiate']);
 export const ADD_MODES = Object.freeze(['several', 'scan']);
 
@@ -17,7 +16,6 @@ export const ROUTES = Object.freeze([
   { name: 'add', pattern: '#/add' },
   { name: 'add', pattern: '#/add/several' },
   { name: 'add', pattern: '#/add/scan' },
-  { name: 'legacy', pattern: '#/legacy/:page' },
 ].map(r => Object.freeze(r)));
 
 const ROOT = Object.freeze({ name: 'root', params: Object.freeze({}) });
@@ -45,7 +43,6 @@ export function parseHash(hash) {
   }
   if (a === 'add' && n === 1) return { name: 'add', params: {} };
   if (a === 'add' && n === 2 && ADD_MODES.includes(b)) return { name: 'add', params: { mode: b } };
-  if (a === 'legacy' && n === 2 && LEGACY_PAGES.includes(b)) return { name: 'legacy', params: { page: b } };
   return { name: 'root', params: {} };
 }
 
@@ -57,7 +54,6 @@ export function href(name, params = {}) {
     case 'pipeline': return p.id != null ? `#/pipeline/${enc(p.id)}` : '#/pipeline';
     case 'role': return `#/role/${enc(p.id)}` + (p.tab && p.tab !== 'fit' ? `/${enc(p.tab)}` : '');
     case 'add': return ADD_MODES.includes(p.mode) ? `#/add/${p.mode}` : '#/add';
-    case 'legacy': return `#/legacy/${enc(p.page)}`;
     default: return '#/';
   }
 }
@@ -113,7 +109,7 @@ export function go(name, params = {}, { replace = false } = {}) {
   const h = href(name, params);
   if (replace) history.replaceState(history.state, '', h);
   else if (location.hash !== h) history.pushState(null, '', h);
-  dispatch(true); // render now: legacy callers expect the page to be visible after navigateTo returns
+  dispatch(true); // render now, so callers see the new view as soon as go() returns
 }
 
 export function start() {
@@ -122,16 +118,4 @@ export function start() {
   window.addEventListener('hashchange', () => dispatch());
   window.addEventListener('popstate', () => dispatch());
   dispatch(true);
-}
-
-// v1 signature kept so pages/* stay untouched.
-export function navigateTo(pageId) {
-  go('legacy', { page: pageId });
-  if (typeof window !== 'undefined') window.scrollTo(0, 0);
-}
-
-if (typeof document !== 'undefined') {
-  document.querySelectorAll('[data-page]').forEach(el => {
-    el.addEventListener('click', () => navigateTo(el.dataset.page));
-  });
 }

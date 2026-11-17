@@ -3,7 +3,7 @@
 // Paused (design §0): the archetype choice (cv.archetype, BUG-11) and Full preview (cv.fullPreview, BUG-09).
 import { h } from '../dom.js';
 import { pauseControl, pausedBanner } from '../paused.js';
-import { flattenSkills } from '../../pages/cv.js'; // protected fix: imported, never copied
+import { flattenSkills } from '../../render/skills.js'; // protected fix: imported, never copied
 import { showToast } from '../../render/toast.js';
 import { cvContact, cvExperience, cvEducation, cvLanguages, cvSkills, cvCopySections, str } from './model.js';
 import { field, boundInput, copyButton, toolCard } from './parts.js';

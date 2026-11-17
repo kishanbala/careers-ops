@@ -79,12 +79,6 @@
 #view-home .home-status[data-kind="error"] { color: var(--text); font-weight: 600; }
 #view-home .home-status[data-kind="ok"] { color: var(--text); }
 
-/* Footer (siteFooter) */
-#view-home .k-site-footer { padding: 20px 0 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
-#view-home .k-site-footer-text { margin: 0; }
-#view-home .k-site-footer-links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 4px 0 0; padding: 0; list-style: none; }
-#view-home .k-site-footer-links a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--muted); }
-
 @media (min-width: 768px) {
   #view-home .home-title { font-size: 44px; }
   #view-home .home-demo { grid-template-columns: 240px 1fr; align-items: start; }

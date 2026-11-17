@@ -1,17 +1,18 @@
-// Phase 1 (#20): the module split must be pixel-identical to the pre-split single-file app.
-// Baselines come from the pre-split build rendered in the SAME environment as the comparison:
-//  - CI: e2e/capture-baseline.mjs renders the PR base (pre-split main) into BASELINE_DIR first.
-//  - Local: e2e/baseline/ (captured in a dev container from main@c48b9ee), or run the capture script yourself.
+// Pixel checks (Phase 1 #20, extended in Phase 3 #27). Phase 4A (#39) retired the legacy v1 page shots
+// (<page>-<w>, dashboard/stories-populated-<w>, evaluate-result-<w>) with the v1 pages; the view shots below remain.
+// Baselines come from the PR base rendered in the SAME environment as the comparison:
+//  - CI: e2e/capture-baseline.mjs renders the PR base into BASELINE_DIR first.
+//  - Local: run the capture script yourself (node e2e/capture-baseline.mjs <base>/public <dir>) and set BASELINE_DIR.
 // Compare: at most MAX_DIFF_PIXELS differing pixels per shot (decoded on a canvas in the browser, no extra deps).
-// SPLIT_SKIP=1 skips (push to main: no pre-split base to compare against).
+// SPLIT_SKIP=1 skips (push to main: no base to compare against).
 // SPLIT_ALLOW (comma list of PR labels, set by CI) makes intentional pixel changes explicit (Phase 2 spec §7):
-//  - `visual:all` allows every shot; `visual:<prefix>` (e.g. `visual:dashboard`) allows shots whose name starts with <prefix>.
+//  - `visual:all` allows every shot; `visual:<prefix>` (e.g. `visual:view-home`) allows shots whose name starts with <prefix>.
 //  - Allowed shots are still captured on both sides and written to e2e-results/split-before|after/ (the PR's before/after
 //    screenshots) but are not size/pixel-asserted. All other shots keep the MAX_DIFF_PIXELS rule.
 //  - Host, error and API-call assertions stay on for every shot.
 const fs = require("node:fs");
 const path = require("node:path");
-const { test, expect, profile, fx } = require("./helpers");
+const { test, expect } = require("./helpers");
 
 const BASE = process.env.BASELINE_DIR ? path.resolve(process.env.BASELINE_DIR) : path.join(__dirname, "baseline");
 // Tolerance per Bala on issue #20: decision C (small tolerance), then decision A on follow-up comment 6929651153
@@ -25,29 +26,6 @@ const UPDATE = process.env.UPDATE_BASELINE === "1";
 const ALLOW = (process.env.SPLIT_ALLOW || "").split(",").map((l) => l.trim()).filter((l) => l.startsWith("visual:")).map((l) => l.slice("visual:".length));
 const allowed = (name) => ALLOW.some((p) => p === "all" || (p !== "" && name.startsWith(p)));
 const VIEWPORTS = [[390, 844], [820, 1180], [1440, 900]];
-const PAGES = ["dashboard", "evaluate", "scan", "batch", "cv", "stories", "negotiate", "research", "outreach", "strategy", "profile"];
-const SYN = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "tests", "fixtures", "synthetic-profile.json"), "utf8"));
-
-// Synthetic pipeline + story built from the recorded fixtures; fixed ids/dates so pixels are stable.
-const evalData = fx("evaluate.json").response.data;
-const storyData = fx("story.json").response.data;
-const entry = (i, status, date, extra = {}) => ({
-  id: 1700000000000 + i, role: evalData.roleTitle, company: evalData.company, score: evalData.finalScore, grade: evalData.grade,
-  match: evalData.matchPercent, archetype: evalData.archetype, location: evalData.jobLocation, status, date, fullData: evalData, jd: "SYNTHETIC JD", ...extra,
-});
-const PIPELINE = [
-  entry(1, "applied", "2026-11-10T12:00:00.000Z"),
-  entry(2, "interviewing", "2026-11-05T12:00:00.000Z", { company: "Fictional Co B", score: 4.2, grade: "A-", match: 90 }),
-  entry(3, "rejected", "2026-10-28T12:00:00.000Z", { company: "Fictional Co C", score: 2.1, grade: "D", match: 40, fullData: undefined }),
-];
-const STORIES = [{ id: 1700000000100, ...storyData }];
-
-const seed = (page, populated) =>
-  page.addInitScript(([p, pl, st]) => {
-    localStorage.setItem("co_profile", JSON.stringify(p));
-    if (pl) localStorage.setItem("co_pipeline", JSON.stringify(pl));
-    if (st) localStorage.setItem("co_stories", JSON.stringify(st));
-  }, [profile.profile || profile, populated ? PIPELINE : null, populated ? STORIES : null]);
 
 // Same procedure for capture and compare. Removes transient render noise (seen once in CI: 1 px on cv-390):
 // no focus, fonts loaded, transitions settled, two rAFs, then shoot until two consecutive shots are identical
@@ -114,53 +92,6 @@ function watch(page) {
   return { hosts, bad };
 }
 
-// Returns false when the nav item no longer exists (tolerated only when that page's shots are allowed to change).
-const nav = (page, id) => page.evaluate((i) => { const el = document.querySelector(`.nav-item[data-page="${i}"]`); if (!el) return false; el.click(); return true; }, id);
-
-for (const [w, h] of VIEWPORTS) {
-  test.describe(`split ${w}px`, () => {
-    test.skip(process.env.SPLIT_SKIP === "1", "no pre-split base to compare against");
-    test.use({ viewport: { width: w, height: h }, timezoneId: "UTC", locale: "en-GB", baseURL: BASE_URL });
-
-    test("every page matches the pre-split baseline", async ({ page, browser }) => {
-      const net = watch(page);
-      await seed(page, false);
-      await page.goto("/");
-      await page.waitForLoadState("networkidle");
-      for (const id of PAGES) {
-        if (!(await nav(page, id))) {
-          expect(allowed(id), `nav item for "${id}" is gone and visual:${id} / visual:all is not set`).toBe(true);
-          continue;
-        }
-        await expect(page.locator(`#page-${id}`)).toBeVisible();
-        await check(browser, `${id}-${w}`, await shot(page));
-      }
-      expect(page.errors).toEqual([]);
-      expect(net.bad).toEqual([]);
-      expect([...net.hosts]).toEqual([HOST]);
-    });
-
-    test("populated dashboard, stories and evaluate result match the baseline", async ({ page, browser }) => {
-      const net = watch(page);
-      await seed(page, true);
-      await page.goto("/");
-      await page.waitForLoadState("networkidle");
-      await check(browser, `dashboard-populated-${w}`, await shot(page));
-      await nav(page, "stories");
-      await check(browser, `stories-populated-${w}`, await shot(page));
-      await nav(page, "evaluate");
-      await page.fill("#eval-jd", SYN.jds.standard);
-      await page.click("#eval-run-btn");
-      await expect(page.locator("#eval-result-state")).toBeVisible({ timeout: 15000 });
-      await check(browser, `evaluate-result-${w}`, await shot(page));
-      expect(page.apiCalls).toEqual(["evaluate"]);
-      expect(page.errors).toEqual([]);
-      expect(net.bad).toEqual([]);
-      expect([...net.hosts]).toEqual([HOST]);
-    });
-  });
-}
-
 // ===== Phase 3 view shots (spec §9, issue #27; additive) =====
 // view-<screen>-<variant>-<w>-<theme> at 390/820/1440 x light/dark, from tests/fixtures/views/seed-v2.json,
 // clock fixed at 2026-11-20T09:00Z, no API calls (tabs show pre-filled inputs, not results).
@@ -215,7 +146,7 @@ for (const [w, h] of VIEWPORTS) {
             await page.waitForLoadState("networkidle");
             expect(await page.evaluate(() => location.hash), `${variant}: route`).toBe(hash);
             await expect(page.locator(`#view-${screen}`)).toHaveClass(/(^|\s)active(\s|$)/);
-            await page.waitForFunction((s) => document.getElementById(`view-${s}`).childElementCount > 0 || !!document.querySelector(".page-section.active"), screen);
+            await page.waitForFunction((s) => document.getElementById(`view-${s}`).childElementCount > 0, screen);
             await check(browser, `view-${variant}-${w}-${theme}`, await shot(page));
           }
           expect(page.apiCalls).toEqual([]);

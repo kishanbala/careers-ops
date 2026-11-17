@@ -1,7 +1,7 @@
 // Phase 2B shell, hash router, first-run states, storage v2 in the browser.
 // Rewritten for Phase 3 (issue #27, spec §9): view-agnostic. It checks the hash, which #view-<name> is the active
 // view, aria-current, the bottom nav and the spec §6 data-action hooks, so the Phase 2 stubs can be replaced by the
-// Phase 3 screens without editing this file. Legacy pages are still asserted only through #/legacy/:page.
+// Phase 3 screens without editing this file. Phase 4A (#39): the legacy pages and #/legacy/:page are retired.
 // Layout and routes only: no colour or font assertions (Phase 2 spec §8).
 const fs = require("node:fs");
 const path = require("node:path");
@@ -101,7 +101,8 @@ test("roles exist: Today is the start screen; bottom nav on phone only; left nav
   expect(page.errors).toEqual([]);
 });
 
-test("phone menu opens the nav drawer with the legacy tools; Escape closes it", async ({ page }) => {
+// Phase 4A (#39): the "Tools" group is gone; the drawer holds the five primary destinations.
+test("phone menu opens the nav drawer with the primary destinations; Escape closes it", async ({ page }) => {
   await page.setViewportSize(PHONE);
   await page.goto("/");
   const btn = page.locator(".shell-menu-btn");
@@ -109,32 +110,42 @@ test("phone menu opens the nav drawer with the legacy tools; Escape closes it", 
   await btn.click();
   await expect(btn).toHaveAttribute("aria-expanded", "true");
   await expect(page.locator(".shell-nav")).toBeVisible();
-  await page.locator(".shell-tools > summary").click();
-  await page.locator('.shell-tools .nav-item[data-page="research"]').click();
-  await expect(page.locator("#page-research")).toBeVisible();
+  await expect(page.locator(".shell-nav .shell-link")).toHaveCount(5);
+  await expect(page.locator(".shell-tools, .shell-nav .nav-item")).toHaveCount(0);
+  await page.locator('.shell-nav a[href="#/stories"]').click();
+  expect(await hash(page)).toBe("#/stories");
+  await expectView(page, "stories");
   await expect(page.locator(".shell-nav")).toBeHidden(); // navigating closes the drawer
   await btn.click();
   await page.keyboard.press("Escape");
   await expect(page.locator(".shell-nav")).toBeHidden();
 });
 
-test("legacy nav items route through #/legacy/:page; back and forward work", async ({ page }) => {
+// Phase 4A (#39): replaces "legacy nav items route through #/legacy/:page". Same intent on the views: nav links
+// route by hash, one view is active, back and forward work; old #/legacy/* bookmarks fall back to the first-run route.
+test("nav links route through the hash; back and forward work; old #/legacy links fall back", async ({ page }) => {
   await seedProfile(page);
   await page.setViewportSize(DESKTOP);
   await page.goto("/");
-  for (const id of ["evaluate", "cv", "negotiate"]) {
-    await page.evaluate((i) => document.querySelector(`.nav-item[data-page="${i}"]`).click(), id);
-    expect(await hash(page)).toBe(`#/legacy/${id}`);
-    await expect(page.locator(`#page-${id}`)).toBeVisible();
-    await expect(page.locator(".page-section.active")).toHaveCount(1);
+  for (const id of ["add", "profile", "stories"]) {
+    await page.locator(`.shell-nav a[href="#/${id}"]`).click();
+    expect(await hash(page)).toBe(`#/${id}`);
+    await expectView(page, id);
+    await expect(page.locator(`.shell-nav [data-dest="${id}"]`)).toHaveAttribute("aria-current", "page");
   }
   await page.goBack();
-  await expect(page.locator("#page-cv")).toBeVisible();
+  await expectView(page, "profile");
   await page.goBack();
-  await expect(page.locator("#page-evaluate")).toBeVisible();
+  await expectView(page, "add");
   await page.goForward();
-  await expect(page.locator("#page-cv")).toBeVisible();
-  await expect(page.locator('.nav-item[data-page="strategy"]')).toBeHidden(); // Career Strategy hidden until built (design §1)
+  await expectView(page, "profile");
+  await expect(page.locator(".shell-nav")).not.toContainText("Career Strategy"); // not built (design §1)
+  for (const old of ["cv", "evaluate", "dashboard"]) {
+    await page.goto(`/#/legacy/${old}`);
+    expect(await hash(page)).toBe("#/today");
+    await expectView(page, "today");
+  }
+  await expect(page.locator('[id^="page-"]')).toHaveCount(0);
   expect(page.errors).toEqual([]);
 });
 
@@ -182,17 +193,17 @@ test("v1 data is migrated on load: co_schema 2, co_backup_v1 snapshot, v2 fields
   expect(page.errors).toEqual([]);
 });
 
-// Legacy Evaluate & Track (#/legacy/evaluate; #/add becomes the 3D screen). Stores the full JD with a v2 role.
+// Phase 4A (#39): Evaluate & Track moved from #/legacy/evaluate to Add role (#/add). Stores the full JD with a v2 role.
 test("Evaluate & Track stores the full JD with a v2 role", async ({ page }) => {
   await seedProfile(page);
-  await page.goto("/#/legacy/evaluate");
-  await expect(page.locator("#page-evaluate")).toBeVisible();
+  await page.goto("/#/add");
+  await expectView(page, "add");
   const jd = "SYNTHETIC JD for a fictional company. ".repeat(40);
-  await page.fill("#eval-jd", jd);
-  await page.click("#eval-run-btn");
-  await expect(page.locator("#eval-result-state")).toBeVisible({ timeout: 15000 });
+  await page.getByLabel("Job description", { exact: true }).fill(jd);
+  await page.getByRole("button", { name: "Evaluate and track" }).click();
+  await expect(page).toHaveURL(/#\/role\/\d+$/, { timeout: 15000 });
   const role = await page.evaluate(() => JSON.parse(localStorage.getItem("co_pipeline"))[0]);
-  expect(role.jd).toBe(jd.trim());
+  expect(role.jd).toBe(jd);
   expect(role.jd.length).toBeGreaterThan(500);
   expect(role.jdComplete).toBe(true);
   expect(role.stageHistory).toEqual([{ status: "researching", at: role.date }]);

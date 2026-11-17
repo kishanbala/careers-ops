@@ -1,5 +1,5 @@
 /* ===== PHASE 3 SHARED KIT (spec §2, §5) =====
-   Every selector here uses a .k- class (lint: tests/ui-css-scope.test.js), so legacy pages stay pixel-identical.
+   Every selector here uses a .k- class (lint: tests/ui-css-scope.test.js), so the shell and screens cannot restyle each other.
    Canonical tokens only (tokens.css), no colour literals. Breakpoints as shell.css: <768 phone, 768-1023 tablet, >=1024 desktop. */
 
 /* Weighted score strip: segment width = weight, fill height = score / 5, line = apply line */
@@ -88,3 +88,9 @@
 @media (min-width: 768px) {
   .k-fit-dims { grid-template-columns: 1fr 1fr; column-gap: 24px; }
 }
+
+/* Site footer (ui/site-footer.js), mounted once by the shell below every view (Phase 4A, spec §11) */
+.k-site-footer { margin-top: 32px; padding: 20px 0 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; }
+.k-site-footer-text { margin: 0; }
+.k-site-footer-links { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 4px 0 0; padding: 0; list-style: none; }
+.k-site-footer-links a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--muted); }

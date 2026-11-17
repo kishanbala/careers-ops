@@ -215,7 +215,7 @@ test.describe("medal chips render", () => {
   });
 });
 
-// AA contrast on the legacy dashboard (populated), both themes. Only colour-contrast is asserted here.
+// AA contrast on "/" with roles (the legacy dashboard until Phase 4A; Today since 3C), both themes. Only colour-contrast is asserted here.
 for (const mode of ["light", "dark"]) {
   test(`axe colour-contrast on the legacy dashboard, ${mode} theme`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
@@ -238,7 +238,8 @@ for (const mode of ["light", "dark"]) {
   });
 }
 
-// Evaluate page, including the result state with the gauge (the dashboard-only check missed these).
+// Phase 4A (#39): the legacy Evaluate page and its SVG gauge are retired. Same contrast check on what replaced them:
+// Add role (the form) and the role workspace Fit tab (the result: grade medal, band, weighted strip, dimensions).
 for (const mode of ["light", "dark"]) {
   test(`axe colour-contrast on Evaluate and its result, ${mode} theme`, async ({ page }) => {
     const SYN = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "tests", "fixtures", "synthetic-profile.json"), "utf8"));
@@ -246,10 +247,10 @@ for (const mode of ["light", "dark"]) {
     await page.addInitScript((p) => localStorage.setItem("co_profile", JSON.stringify(p)), profile.profile || profile);
     await seedTheme(page, mode);
     await boot(page);
-    await page.goto("/");
+    await page.goto("/#/add");
     await page.waitForLoadState("networkidle");
-    await page.evaluate(() => document.querySelector('.nav-item[data-page="evaluate"]').click());
-    await expect(page.locator("#page-evaluate")).toBeVisible();
+    await expect(page.locator("#view-add h1")).toBeVisible();
+    expect(await theme(page)).toBe(mode);
     const scan = async (label) => {
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(400);
@@ -257,25 +258,12 @@ for (const mode of ["light", "dark"]) {
       expect(res.violations.flatMap((v) => v.nodes.map((n) => `${label} ${n.target.join(" ")}: ${n.any[0] && n.any[0].message}`))).toEqual([]);
     };
     await scan("form");
-    await page.fill("#eval-jd", SYN.jds.standard);
-    await page.click("#eval-run-btn");
-    await expect(page.locator("#eval-result-state")).toBeVisible({ timeout: 15000 });
+    await page.getByLabel("Job description", { exact: true }).fill(SYN.jds.standard);
+    await page.getByRole("button", { name: "Evaluate and track" }).click();
+    await expect(page).toHaveURL(/#\/role\/\d+$/, { timeout: 15000 });
+    await expect(page.locator("#view-role .k-strip")).toBeVisible();
     await scan("result");
-    // axe skips SVG <text>, so check the gauge score and scale labels by hand (WCAG ratio, computed fill vs surface behind)
-    const ratios = await page.evaluate(() => {
-      const parse = (c) => (c.match(/[\d.]+/g) || []).slice(0, 3).map(Number);
-      const lum = ([r, g, b]) => { const f = (v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
-      const svg = document.querySelector("#eval-result-state .gauge-svg") || document.querySelector(".gauge-svg");
-      let bgEl = svg, bg = "rgba(0, 0, 0, 0)";
-      while (bgEl && /rgba\(.*, 0\)|transparent/.test(bg)) { bg = getComputedStyle(bgEl).backgroundColor; bgEl = bgEl.parentElement; }
-      const L2 = lum(parse(bg));
-      return [...svg.querySelectorAll("text")].map((t) => {
-        const L1 = lum(parse(getComputedStyle(t).fill));
-        return { text: t.textContent, ratio: (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05) };
-      });
-    });
-    expect(ratios.length).toBe(3);
-    for (const r of ratios) expect(r.ratio, `gauge text "${r.text}" contrast`).toBeGreaterThanOrEqual(4.5);
+    expect(page.apiCalls).toEqual(["evaluate"]);
     expect(page.errors).toEqual([]);
   });
 }

@@ -7,7 +7,6 @@ import { exportAll, importAll } from '../store.js';
 import { renderFit } from '../ui/fit.js';
 import { openModal } from '../ui/modal.js';
 import { gradeTier } from '../render/grade-chip.js';
-import { siteFooter } from '../ui/site-footer.js';
 import { HERO, PRIVACY_LINE, CHECKLIST, TOOLS, BANDS, GRADES } from '../ui/home/content.js';
 import { mountDemo } from '../ui/home/demo.js';
 import { backupFilename, parseBackupText, describeCounts, MAX_BACKUP_BYTES } from '../ui/home/backup.js';
@@ -169,7 +168,7 @@ export function mount(el) {
       h('button', { type: 'button', class: 'btn btn-outline home-cta', dataset: { action: 'export-backup' }, onClick: () => { try { downloadBackup(); say('Backup saved to your downloads.', 'ok'); } catch { say('The backup could not be created.', 'error'); } } }, 'Export a backup')),
     file, status);
 
-  el.replaceChildren(h('div', { class: 'home' }, hero, demoSection, checklist, tools, scale, privacy, backup, siteFooter()));
+  el.replaceChildren(h('div', { class: 'home' }, hero, demoSection, checklist, tools, scale, privacy, backup)); // the site footer is mounted by the shell on every screen (Phase 4A)
   demo = mountDemo(demoEl);
 
   return () => { alive = false; if (demo) demo.destroy(); };

@@ -256,7 +256,7 @@ export function cvLanguages(data) {
   }).filter(Boolean);
 }
 
-// flattenSkills is the protected fix in pages/cv.js; the caller passes it in so this file stays pure.
+// flattenSkills is the protected fix in render/skills.js; the caller passes it in so this file stays pure.
 export function cvSkills(data, flattenSkills) {
   const d = isObj(data) ? data : {};
   const list = typeof flattenSkills === 'function' ? flattenSkills(d.skills) : [];
