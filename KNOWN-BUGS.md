@@ -183,9 +183,27 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Suspected cause (unconfirmed):** the §4 bronze gradient is too dark at its end stop for any single text colour. Decision for Bala: lighten the end stop, drop the gradient behind text, or accept the limit for a 13 px mono label.
 - **Status:** fixed in PR #25 (end stop lightened from `#8A5229` to `#A96432`; black text 4.56:1 on it, 4.75:1 on the mid stop).
 
+### BUG-50 · P3 · v2 · STORY-05 / DASH-01 (found in 3D build, PR for #31)
+- **Environment:** any viewport, Light and Dark, Chromium.
+- **Steps:**
+  1. Open `#/stories` and generate a story (or open `#/add` and track a role).
+  2. Look at the "Story bank" or "Pipeline" badge in the nav.
+- **Expected:** the count goes up as soon as the story or role is saved.
+- **Actual:** the badges (`#sb-stories-badge`, `#sb-badge`) are only written by the legacy `updateBadges()` in `pages/dashboard.js`, which the new views do not call. The count stays at its old value until a reload.
+- **Evidence:** code reading: `shell.js` subscribes `onChange` only to `updateState()`; nothing else writes the badges.
+- **Suspected cause (unconfirmed by a test):** the shell (Foundation) has no badge subscription; the legacy function is the only writer. Fix belongs in the shell, not in a screen.
+- **Status:** Open.
+
+### BUG-51 · P3 · v2 · design tokens (found in 3D build)
+- **Environment:** any.
+- **Steps:** build an error state in a Phase 3 view with canonical tokens only (`tests/ui-css-scope.test.js` rejects `--weak`, `--strong`, `--review`).
+- **Expected:** a canonical error colour token exists.
+- **Actual:** tokens.css defines no canonical error or warning colour; the only red is the legacy alias `--weak`. 3D shows errors with `--text`, bold, and a `--primary-border` outline plus a plain sentence, so colour is never the only signal.
+- **Evidence:** `public/css/tokens.css`, `tests/ui-css-scope.test.js` LEGACY_ALIASES.
+- **Suspected cause (unconfirmed):** design-decisions §4 lists no error colour. Decision for Bala: add one (both themes, AA).
+- **Status:** Open.
 ### BUG-40 · P3 · v2 · shell bottom nav (found in review, PR #35)
 - **Environment:** 390 px, Light, Chromium.
-- **Steps:**
   1. Seed one role and open `#/today` at 390 px.
   2. Measure the contrast of the active bottom-nav label (`.shell-tab[aria-current="page"]`, `--accent` on `--nav-bg`).
 - **Expected:** at least 4.5:1 (WCAG AA) for the 10 px label.

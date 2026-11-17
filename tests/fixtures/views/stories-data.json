@@ -1,0 +1,8 @@
+{
+  "_label": "SYNTHETIC - fictional roles and a story for tests/view-stories.test.js (Phase 3D). No real person or company.",
+  "story": { "id": 1, "question": "SYNTHETIC question?", "fullStory": " SYNTHETIC full story. ", "situation": "SYNTHETIC situation", "task": "", "action": "SYNTHETIC action", "result": "SYNTHETIC result", "reflection": null, "tags": ["synthetic"] },
+  "pipeline": [
+    { "id": 11, "role": "Analytics Engineer", "company": "Brightquill Labs" },
+    { "id": 12, "role": "Data Analyst", "company": "Larkspur Mobility" }
+  ]
+}

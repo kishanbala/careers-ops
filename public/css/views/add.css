@@ -1,1 +1,82 @@
-/* #view-add only: every selector starts with #view-add (tests/ui-css-scope.test.js). Filled by its Phase 3 screen. */
+/* ===== PHASE 3D: ADD ROLE (#view-add) =====
+   Every selector starts with #view-add (lint: tests/ui-css-scope.test.js). Tokens only.
+   Phone < 768: cards, one column. Tablet 768-1023 and desktop >= 1024: wider cards; batch rows become two-column. */
+#view-add { color: var(--text); }
+#view-add .page-title { font-family: var(--font-display); }
+#view-add .card + .card { margin-top: 16px; }
+#view-add .ad-card { min-width: 0; }
+#view-add .ad-result { margin-top: 16px; }
+
+#view-add .ad-modes { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+#view-add .ad-mode {
+  display: inline-flex; align-items: center; min-height: var(--tap-min); padding: 0 18px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-pill); background: var(--surface);
+  color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none;
+}
+#view-add .ad-mode[aria-current="page"] { background: var(--primary-sheen); background-color: var(--primary); border-color: var(--primary-border); color: var(--on-primary); }
+#view-add .ad-mode:focus-visible,
+#view-add .btn:focus-visible,
+#view-add .form-input:focus-visible,
+#view-add .form-textarea:focus-visible,
+#view-add .ad-row a:focus-visible,
+#view-add .ad-row summary:focus-visible { outline: 2px solid var(--primary-border); outline-offset: 2px; }
+
+#view-add .ad-field { margin-bottom: 16px; }
+#view-add .form-label { color: var(--muted); }
+#view-add .form-input,
+#view-add .form-textarea {
+  min-height: var(--tap-min); border-color: var(--border); background: var(--surface); color: var(--text);
+  font-family: var(--font-body); font-size: 15px;
+}
+#view-add .form-input:focus,
+#view-add .form-textarea:focus { border-color: var(--primary-border); box-shadow: none; }
+#view-add .ad-jd { min-height: 260px; }
+
+#view-add .btn { min-height: var(--tap-min); padding: 0 20px; font-family: var(--font-body); font-size: 14px; justify-content: center; }
+#view-add .btn-primary { background: var(--primary-sheen); background-color: var(--primary); color: var(--on-primary); border: 1px solid var(--primary-border); }
+#view-add .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+
+#view-add .ad-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+#view-add .ad-hint { margin: 10px 0 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+#view-add .ad-actions .ad-hint { margin: 0; }
+#view-add .ad-count { margin: 8px 0 0; color: var(--muted); font-size: 13px; }
+#view-add .ad-status { margin-top: 12px; }
+#view-add .ad-status:empty { margin: 0; }
+#view-add .k-tool-error { border-color: var(--text); }
+
+/* several: result rows (cards on every width, never a table) */
+#view-add .ad-results { margin-top: 16px; }
+#view-add .ad-summary { margin: 0 0 12px; font-size: 14px; font-weight: 600; }
+#view-add .ad-summary:empty { margin: 0; }
+#view-add .ad-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+#view-add .ad-row {
+  display: grid; gap: 10px; min-width: 0; padding: 16px;
+  border: 1px solid var(--border); border-radius: var(--radius-card); background: var(--surface); box-shadow: var(--shadow-sm);
+}
+#view-add .ad-row--failed { border-color: var(--text); }
+#view-add .ad-row-title { margin: 0; font-family: var(--font-display); font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+#view-add .ad-row-status { margin: 2px 0 0; color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+#view-add .ad-row-status--failed { color: var(--text); font-weight: 600; }
+#view-add .ad-row-score { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+#view-add .ad-row-num { font-family: var(--font-mono); font-size: 22px; font-weight: 600; }
+#view-add .ad-row-match { color: var(--muted); font-family: var(--font-mono); font-size: 13px; }
+#view-add .ad-row-more summary { display: flex; align-items: center; min-height: var(--tap-min); color: var(--apply-text); font-size: 14px; font-weight: 600; cursor: pointer; }
+#view-add .ad-row-tracked { margin: 0; font-size: 14px; font-weight: 600; }
+#view-add .ad-row-tracked a { display: inline-flex; align-items: center; min-height: var(--tap-min); color: var(--apply-text); text-decoration: underline; }
+#view-add .ad-row .btn { justify-self: start; }
+
+/* scan (paused) */
+#view-add .ad-portal-list { list-style: none; margin: 0 0 16px; padding: 0; display: grid; gap: 8px; }
+#view-add .ad-portal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface-sub); }
+#view-add .ad-portal-name { font-weight: 600; }
+#view-add .ad-portal-meta { color: var(--muted); font-size: 13px; }
+#view-add .paused-banner { margin-top: 12px; }
+
+@media (min-width: 768px) {
+  #view-add .ad-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #view-add .ad-portal-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  #view-add .ad-card { max-width: 900px; }
+  #view-add .ad-results { max-width: none; }
+}

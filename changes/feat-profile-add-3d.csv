@@ -1,0 +1,1 @@
+2026-11-17,3D,#31,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,Phase 3D Profile + Add role + Story bank (3 views, ui helpers, unit + e2e specs); mocked API only; 0 px diff on other shots vs main-rendered baselines locally; private port because 4173/4174 were in use by another session
