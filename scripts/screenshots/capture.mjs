@@ -37,8 +37,8 @@ await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
 
-async function newPage({ width, height, theme, seed }) {
-  const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: "reduce", colorScheme: theme });
+async function newPage({ width, height, theme, seed, motion = "reduce" }) {
+  const ctx = await browser.newContext({ viewport: { width, height }, deviceScaleFactor: 1, reducedMotion: motion, colorScheme: theme });
   const page = await ctx.newPage();
   await page.route(/^https?:\/\/(?!127\.0\.0\.1)/, (r) => r.abort());
   await page.route("**/api/evaluate", (route) => {
@@ -56,7 +56,7 @@ async function newPage({ width, height, theme, seed }) {
 }
 
 const SCREENS = [
-  { name: "home", hash: "#/home", seed: false, ready: "#view-home h1" },
+  { name: "home", hash: "#/home", seed: false, ready: "#view-home h1", motion: "no-preference" },
   { name: "today", hash: "#/today", seed: true, ready: "#view-today h1" },
   { name: "role", hash: `#/role/${SEED.storage.co_pipeline[0].id}`, seed: true, ready: "#view-role h1" },
 ];
@@ -64,7 +64,7 @@ const SIZES = [["desktop", 1280, 800], ["phone", 390, 844]];
 
 fs.mkdirSync(out, { recursive: true });
 for (const s of SCREENS) for (const [size, w, h] of SIZES) for (const theme of ["light", "dark"]) {
-  const { ctx, page } = await newPage({ width: w, height: h, theme, seed: s.seed });
+  const { ctx, page } = await newPage({ width: w, height: h, theme, seed: s.seed, motion: s.motion });
   await page.goto(base + "/" + s.hash);
   await page.locator(s.ready).waitFor();
   await page.waitForTimeout(400);
@@ -74,10 +74,13 @@ for (const s of SCREENS) for (const [size, w, h] of SIZES) for (const theme of [
 
 // First-run flow for the GIF: Home -> Profile (synthetic CV) -> Add role (synthetic JD) -> role workspace -> Today.
 {
-  const { ctx, page } = await newPage({ width: 1100, height: 700, theme: "light", seed: false });
+  const { ctx, page } = await newPage({ width: 1100, height: 700, theme: "light", seed: false, motion: "no-preference" });
   const frames = [];
   const shot = async (hold) => {
     await page.waitForTimeout(350);
+    await page.locator("#toast.show").waitFor({ state: "detached", timeout: 5000 }).catch(() => {});
+    await page.waitForFunction(() => !document.getElementById("toast")?.classList.contains("show"));
+    await page.waitForTimeout(700); // let the toast fade out
     const f = path.join(tmp, `frame-${String(frames.length).padStart(2, "0")}.png`);
     await page.screenshot({ path: f });
     frames.push({ f, hold });
