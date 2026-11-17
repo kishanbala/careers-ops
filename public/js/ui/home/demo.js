@@ -69,7 +69,7 @@ export function mountDemo(el, { reduced = prefersReducedMotion(), timers } = {})
   el.replaceChildren(
     h('div', { class: 'home-demo-steps', role: 'group', 'aria-label': 'How Kairo works, four steps' }, stepBtns),
     h('div', { 'aria-live': 'off' }, panel),
-    toggle);
+    ...(toggle ? [toggle] : [])); // BUG-60: replaceChildren(null) renders the text "null" under reduced motion
   paint();
   start();
   return {

@@ -11,6 +11,7 @@ let mainEl = null;
 let footerEl = null;
 let unmountView = null;
 let renderSeq = 0;
+let firstRender = true;
 
 const $$ = sel => [...document.querySelectorAll(sel)];
 
@@ -54,6 +55,17 @@ function closeMenu() {
   document.querySelector('.shell-menu-btn')?.setAttribute('aria-expanded', 'false');
 }
 
+// Route change: move focus to the new screen's h1 so keyboard and screen-reader users land at the top of it
+// (not on first load, where the skip link must stay the first tab stop).
+function focusHeading(el) {
+  if (firstRender) { firstRender = false; return; }
+  if (el.contains(document.activeElement)) return; // the view placed focus itself (Role keeps the tab focused)
+  const hd = [...el.querySelectorAll('h1')].find(x => x.getClientRects().length > 0); // first visible h1 (phone Pipeline hides the list one)
+  if (!hd) return;
+  hd.setAttribute('tabindex', '-1');
+  try { hd.focus({ preventScroll: true }); } catch { /* detached */ }
+}
+
 function render(route) {
   const seq = ++renderSeq;
   if (unmountView) { try { unmountView(); } catch (e) { console.warn(e); } unmountView = null; }
@@ -68,6 +80,7 @@ function render(route) {
     el.replaceChildren();
     const un = m.mount(el, { params: route.params, state: route.state });
     unmountView = () => { if (typeof un === 'function') un(); el.replaceChildren(); el.classList.remove('active'); };
+    focusHeading(el);
   }).catch(e => console.warn('view failed to load', route.name, e));
   if (typeof window !== 'undefined') window.scrollTo(0, 0);
 }
@@ -90,5 +103,11 @@ export function mountShell() {
     btn.setAttribute('aria-expanded', String(open));
   });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  // The skip link would change the hash (and re-route), so move focus by hand.
+  document.querySelector('.skip-link')?.addEventListener('click', e => {
+    e.preventDefault();
+    mainEl.focus({ preventScroll: false });
+    mainEl.scrollIntoView?.({ block: 'start' });
+  });
   onRoute(render);
 }

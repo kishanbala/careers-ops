@@ -22,6 +22,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#app-main" data-action="skip-to-main">Skip to main content</a>
+
 <div class="app-shell" data-state="home" data-has-roles="false">
 
 <!-- ===== SHELL HEADER ===== -->
@@ -61,7 +63,7 @@
 </nav>
 
 <!-- ===== MAIN CONTENT (views render here; the site footer is mounted last by shell.js) ===== -->
-<main class="main-content" id="app-main"></main>
+<main class="main-content" id="app-main" tabindex="-1"></main>
 
 <!-- ===== PHONE BOTTOM NAV (<768px, only once a role exists) ===== -->
 <nav class="shell-bottom-nav" aria-label="Primary">
@@ -89,7 +91,7 @@
 </div><!-- /.app-shell -->
 
 <!-- ===== TOAST ===== -->
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
 <!-- ===== PDF.js ===== -->
 <script src="/vendor/pdfjs/pdf.min.js"></script>
