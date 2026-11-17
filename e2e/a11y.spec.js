@@ -236,3 +236,36 @@ test("text zoom: 200% font size causes no horizontal overflow on a phone", async
   const over = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(over).toBeLessThanOrEqual(0);
 });
+
+// ---------- toasts (WCAG 4.1.3): a polite live region that exists before the message is set ----------
+const toast = (page, msg) => page.evaluate((m) => import("/js/render/toast.js").then((x) => x.showToast(m, 4000)), msg);
+test("toast is a polite status live region in the DOM before any message, and its text updates", async ({ page }) => {
+  await openState(page, stateOf("today-moves"), { w: 1440, h: 900, theme: "light" });
+  const t = page.locator("#toast");
+  await expect(t).toHaveAttribute("role", "status");
+  await expect(t).toHaveAttribute("aria-live", "polite");
+  await expect(t).toHaveAttribute("aria-atomic", "true");
+  await expect(t).toHaveText("");
+  await toast(page, "Profile saved");
+  await expect(t).toHaveText("Profile saved");
+  await toast(page, "Copied");
+  await expect(t).toHaveText("Copied");
+});
+for (const [w, h] of VIEWPORTS) {
+  for (const theme of THEMES) {
+    test(`axe (whole page) with a toast showing at ${w}px ${theme}`, async ({ page }) => {
+      await openState(page, stateOf("today-moves"), { w, h, theme });
+      await toast(page, "Profile saved");
+      await expect(page.locator("#toast")).toHaveText("Profile saved");
+      const res = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"]).analyze();
+      expect(res.violations.map((x) => x.id)).toEqual([]);
+    });
+  }
+}
+
+test("phone: opening a role from the Pipeline list moves focus to the visible h1 of the detail", async ({ page }) => {
+  await openState(page, stateOf("pipeline-list"), { ...phone });
+  await page.locator(`#view-pipeline .p-item[href="#/pipeline/${ROLE.id}"]`).click();
+  await expect(page.locator("#view-pipeline .p-detail")).toBeVisible();
+  await expect(page.locator("#view-pipeline .p-sr-title")).toBeFocused();
+});

@@ -8,7 +8,7 @@ Matrix: 21 states x 390 / 820 / 1440 px x light / dark = 126 axe runs (`e2e/a11y
 
 | # | Finding | WCAG | Where | Fix |
 |---|---|---|---|---|
-| 1 | Active bottom-nav label 4.3:1 (BUG-40) | 1.4.3 | `shell.css` `.shell-tab[aria-current]` | `#C9A66B` (the dark-theme brass), 5.9:1 on both inks. Checked in both themes by test. |
+| 1 | Active bottom-nav label 4.3:1 (BUG-40) | 1.4.3 | `shell.css` `.shell-tab[aria-current]` | `#C9A66B` (the dark-theme brass), 5.8:1 (light) / 5.9:1 (dark). Checked in both themes by test. |
 | 2 | Heading order jumps h1 to h3 ("Gaps" in the fit card) on Home example | 1.3.1 | `ui/fit.js` | `h3` to `h2` (class and look unchanged). |
 | 3 | Pipeline detail on a phone has no visible h1 (the list h1 is hidden) | 2.4.6 / best practice | `views/pipeline.js`, `pipeline.css` | A visually hidden `h1` ("Pipeline: <role>") inside the detail, hidden again from 768 px where the list h1 shows. |
 | 4 | No skip link | 2.4.1 | `index.html`, `shell.css`, `shell.js` | First tab stop, visible on focus, moves focus to `main` without touching the hash (the router owns it). `main` has `tabindex="-1"`. |
@@ -16,6 +16,8 @@ Matrix: 21 states x 390 / 820 / 1440 px x light / dark = 126 axe runs (`e2e/a11y
 | 6 | Text inputs, selects and date fields lost their ring (`outline: none`; only the border colour changed) | 2.4.7 | `components.css` | Keyboard focus ring on `.form-input/.form-textarea/.form-select` and date/time fields. |
 | 7 | No baseline focus ring outside the screens that had one (modal buttons, footer links, role tools) | 2.4.7 | `base.css` | Low-specificity `:focus-visible` ring; per-view rings still win. |
 | 8 | Reduced motion handled only in Home, Role and the running dot | 2.3.3 | `base.css` | Global `prefers-reduced-motion` rule cuts animations and transitions. |
+| 10 | Toasts ("Profile saved", "Copied", "Could not copy...") were never announced and axe flagged `region` on `#toast` | 4.1.3 | `index.html`, `render/toast.js` | `#toast` is `role=status aria-live=polite aria-atomic` and present before any message; text is cleared after hide and set a tick later so repeats are announced again. |
+| 11 | After a route change on a phone the Pipeline list h1 is hidden | 2.4.3 | `shell.js` | Focus goes to the first visible h1. |
 | 9 | Home "How it works" showed the text "null" under reduced motion (BUG-60) | 1.3.1 | `ui/home/demo.js` | The absent Play/Pause button is no longer passed as a child. |
 
 ## Checked and already fine
@@ -24,7 +26,7 @@ Matrix: 21 states x 390 / 820 / 1440 px x light / dark = 126 axe runs (`e2e/a11y
 - Landmarks: one `header`, two named `nav`s (Main, Primary), one `main`, footer inside `main`; one visible `h1` per screen.
 - Modal (`<dialog>`): labelled, Esc closes, focus returns to the opener, Tab never reaches the page behind.
 - Phone menu: `aria-expanded` follows, Esc closes.
-- Accessible names for every button, link, input and select in every state; errors and status messages are in `role=alert` / `role=status` regions.
+- Accessible names for every button, link, input and select in every state; tool errors use `role=alert`, running states `role=status`; toasts are a `role=status` live region (finding 10).
 - Tap targets 44 px or more on a phone for buttons, inputs, selects, nav and footer links.
 - No horizontal scroll at 390 px with 200% text size (Role).
 - Colour is never the only signal (bands and stages carry text).

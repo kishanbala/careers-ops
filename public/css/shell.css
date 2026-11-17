@@ -82,7 +82,7 @@
   transition: color 0.15s;
 }
 .shell-tab svg { width: 20px; height: 20px; }
-/* BUG-40: brass on ink was 4.3:1 for the 10px label; #C9A66B (the dark-theme brass) is 5.9:1 on both inks */
+/* BUG-40: brass on ink was 4.3:1 for the 10px label; #C9A66B (the dark-theme brass) is 5.8:1 light, 5.9:1 dark */
 .shell-tab[aria-current="page"] { color: #C9A66B; }
 .shell-tab-add svg {
   width: 36px; height: 36px; padding: 8px; border-radius: 50%;

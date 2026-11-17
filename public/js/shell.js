@@ -60,7 +60,7 @@ function closeMenu() {
 function focusHeading(el) {
   if (firstRender) { firstRender = false; return; }
   if (el.contains(document.activeElement)) return; // the view placed focus itself (Role keeps the tab focused)
-  const hd = el.querySelector('h1');
+  const hd = [...el.querySelectorAll('h1')].find(x => x.getClientRects().length > 0); // first visible h1 (phone Pipeline hides the list one)
   if (!hd) return;
   hd.setAttribute('tabindex', '-1');
   try { hd.focus({ preventScroll: true }); } catch { /* detached */ }

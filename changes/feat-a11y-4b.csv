@@ -1,1 +1,1 @@
-2026-11-17,4B,#40,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,Phase 4B a11y audit + fixes (BUG-40, BUG-60); mocked API only; 126 whole-page axe runs; private port 4391 because 4173 was in use by another session
+2026-11-17,4B,#40,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,"Phase 4B a11y audit + fixes (BUG-40, BUG-60); mocked API only; 126 whole-page axe runs; private port 4391 because 4173 was in use by another session"

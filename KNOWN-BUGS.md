@@ -211,7 +211,7 @@ Default environment for all v1 audit entries: https://www.kairoapp.eu, v1.3.0 (`
 - **Actual:** about 4.3:1. The same on main.
 - **Evidence:** review comment on PR #35; styles in `public/css/shell.css`.
 - **Suspected cause (unconfirmed):** brass `--accent` on the ink bar is just under AA for small text.
-- **Status:** fixed in Phase 4B (#40): active label colour `#C9A66B` (5.9:1), covered by `e2e/a11y.spec.js`.
+- **Status:** fixed in PR #48 (active label colour `#C9A66B`, covered by `e2e/a11y.spec.js`).
 
 ### BUG-90 · P3 · v2 · test infra, e2e/split.spec.js view shots (found in 4A build, #39)
 - **Environment:** local dev container, headless Chromium, `CI=true`, 820 px, Light, group "view shots, populated".
