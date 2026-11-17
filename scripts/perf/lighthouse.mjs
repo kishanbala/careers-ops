@@ -31,9 +31,9 @@ try {
     speedIndexMs: Math.round(a["speed-index"].numericValue),
   };
   const flagged = Object.values(a).filter((x) => x.score !== null && x.score < 0.9 && x.scoreDisplayMode !== "informative" && x.scoreDisplayMode !== "notApplicable").map((x) => ({ id: x.id, score: x.score, title: x.title }));
+  fs.mkdirSync(path.join(repo, "perf-results"), { recursive: true });
   if (process.env.PERF_FULL) fs.writeFileSync(path.join(repo, "perf-results", "full.json"), JSON.stringify(lhr));
   const out = { url, lighthouse: lhr.lighthouseVersion, formFactor: lhr.configSettings.formFactor, scores, metrics, flagged };
-  fs.mkdirSync(path.join(repo, "perf-results"), { recursive: true });
   fs.writeFileSync(path.join(repo, "perf-results", "lighthouse-home.json"), JSON.stringify(out, null, 2));
   console.log(JSON.stringify(out, null, 2));
   failed = Object.values(scores).some((s) => s < THRESHOLD);
