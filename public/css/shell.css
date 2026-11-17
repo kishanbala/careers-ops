@@ -58,6 +58,17 @@
 .shell-nav a:focus-visible,
 .shell-nav button:focus-visible,
 .shell-bottom-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.shell-bottom-nav a:focus-visible { outline-offset: -3px; }
+
+/* Skip link: first tab stop, visible only while focused */
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 200;
+  min-height: var(--shell-tap); display: inline-flex; align-items: center; padding: 0 16px;
+  border-radius: var(--radius); background: var(--ink); color: var(--on-ink); font-weight: 700; font-size: 14px;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; outline: 2px solid var(--primary); outline-offset: 2px; }
+#app-main:focus, .view h1[tabindex="-1"]:focus { outline: none; }
 
 /* ===== MAIN ===== */
 .main-content { margin-top: var(--shell-header-h); }
@@ -71,7 +82,8 @@
   transition: color 0.15s;
 }
 .shell-tab svg { width: 20px; height: 20px; }
-.shell-tab[aria-current="page"] { color: var(--accent); }
+/* BUG-40: brass on ink was 4.3:1 for the 10px label; #C9A66B (the dark-theme brass) is 5.9:1 on both inks */
+.shell-tab[aria-current="page"] { color: #C9A66B; }
 .shell-tab-add svg {
   width: 36px; height: 36px; padding: 8px; border-radius: 50%;
   background: var(--accent); color: var(--text-on-dark);
