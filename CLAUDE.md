@@ -26,3 +26,5 @@ Source of truth: `docs/revamp/build-plan.md` + `docs/revamp/design-decisions.md`
 
 ## Every PR
 Body order: What changed · How to check · Screenshots · Checks · Cost · Risk. Add the CHANGELOG entry and ledger row as new files `changes/<branch-slug>.md` and `changes/<branch-slug>.csv` (see `changes/README.md`). Never edit `CHANGELOG.md` or `docs/build-ledger.csv` directly; only the Release agent folds them (`node scripts/fold-changes.mjs`). `Closes #<issue>`.
+
+Builder PR workflow (CI skips `e2e` on drafts and runs it on Ready): open the PR as DRAFT -> add all needed `visual:*` labels (create missing ones) -> THEN mark it Ready for review. Never mark Ready before the labels exist. REST `PATCH /pulls/{n} -F draft=false` may be refused (GraphQL is blocked): then leave the PR draft and note "labels added, ready to be marked Ready" in the PR body/comment; Bala marks it Ready.
