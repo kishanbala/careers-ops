@@ -1,6 +1,6 @@
 {
   "name": "kairo",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Kairo - AI career copilot for job search",
   "private": true,
   "license": "MIT",
@@ -20,7 +20,8 @@
     "test": "npm run prompts:check && node --test",
     "upstream:check": "node scripts/upstream-check.mjs",
     "upstream:accept": "node scripts/upstream-check.mjs --accept",
-    "perf:lighthouse": "node scripts/perf/lighthouse.mjs"
+    "perf:lighthouse": "node scripts/perf/lighthouse.mjs",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0"

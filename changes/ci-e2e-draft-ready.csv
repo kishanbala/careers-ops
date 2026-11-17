@@ -1,1 +1,0 @@
-2026-11-17,CI,#44,Builder,Claude Code (cloud session),claude-sonnet-5-5,,0,0,0,0,e2e skips drafts and runs on ready_for_review; per-PR concurrency cancels superseded runs; builder draft->labels->Ready workflow documented
