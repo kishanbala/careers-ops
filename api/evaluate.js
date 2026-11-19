@@ -1,6 +1,7 @@
 const Anthropic = require("@anthropic-ai/sdk");
 const PROMPTS = require("../lib/prompts.generated.js");
 const { applyScoring } = require("../lib/scoring.js");
+const { logUsage } = require("../lib/usage-log.js");
 
 // Single place to bump when a model is retired (see platform.claude.com/docs/en/about-claude/model-deprecations)
 const MODEL = "claude-sonnet-5-5";
@@ -94,6 +95,9 @@ module.exports = async function handler(req, res) {
       system: systemPrompt,
       messages: [{ role: "user", content: userMessage }],
     });
+
+    const usage = message.usage || {};
+    await logUsage({ mode: effectiveMode, inputTokens: usage.input_tokens || 0, outputTokens: usage.output_tokens || 0 });
 
     const rawText = message.content.filter((b) => b.type === "text").map((b) => b.text).join("");
     const cleaned = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Kairo — Usage</title>
+<style>
+  :root {
+    --bg: #ECEEF0; --surface: #FFFFFF; --surface-sub: #F6F7F8; --border: #D5D9DE;
+    --text: #1E2227; --muted: #545B64; --primary: #B08D57; --primary-border: #8F6F3C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 32px 20px 60px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 24px; font-size: 13px; }
+  .gate { max-width: 360px; margin: 80px auto; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px; }
+  .gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 6px; font-size: 14px; margin: 12px 0; }
+  .gate button, .toolbar button { background: var(--primary); border: 1px solid var(--primary-border); color: #1E2227; padding: 9px 16px; border-radius: 6px; font-size: 14px; cursor: pointer; }
+  .err { color: #B3261E; font-size: 13px; margin-top: 8px; display: none; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .card .num { font-size: 24px; font-weight: 600; }
+  .card .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+  section h2 { font-size: 14px; margin: 0 0 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  th { color: var(--muted); font-weight: 500; }
+  .toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; gap: 12px; }
+  .toolbar select { padding: 7px 10px; border: 1px solid var(--border); border-radius: 6px; }
+  .bar-row { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+  .bar-row .d { width: 76px; color: var(--muted); font-size: 12px; flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--surface-sub); border-radius: 4px; height: 16px; overflow: hidden; }
+  .bar-fill { background: var(--primary); height: 100%; }
+  .bar-row .v { width: 90px; text-align: right; font-size: 12px; color: var(--muted); flex-shrink: 0; }
+  .hide { display: none; }
+  .loading, .empty { color: var(--muted); padding: 20px 0; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="gate" class="gate">
+    <h1>Kairo usage</h1>
+    <p class="sub">Admin key required.</p>
+    <input id="keyInput" type="password" placeholder="Admin key" autocomplete="off" />
+    <button id="gateBtn" style="width:100%">View dashboard</button>
+    <div id="gateErr" class="err"></div>
+  </div>
+
+  <div id="dash" class="hide">
+    <div class="toolbar">
+      <div>
+        <h1>Kairo API usage</h1>
+        <p class="sub" id="rangeLabel"></p>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center;">
+        <select id="rangeSel">
+          <option value="7">Last 7 days</option>
+          <option value="14" selected>Last 14 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="60">Last 60 days</option>
+        </select>
+        <button id="refreshBtn">Refresh</button>
+      </div>
+    </div>
+
+    <div id="content">
+      <div class="loading">Loading…</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const KEY_STORAGE = "kairo_admin_key";
+  const gate = document.getElementById("gate");
+  const dash = document.getElementById("dash");
+  const keyInput = document.getElementById("keyInput");
+  const gateErr = document.getElementById("gateErr");
+  const content = document.getElementById("content");
+  const rangeSel = document.getElementById("rangeSel");
+  const rangeLabel = document.getElementById("rangeLabel");
+
+  function fmt(n) { return Number(n || 0).toLocaleString(); }
+
+  async function load(key, days) {
+    content.innerHTML = '<div class="loading">Loading…</div>';
+    let res;
+    try {
+      res = await fetch(`/api/usage?days=${days}`, { headers: { Authorization: `Bearer ${key}` } });
+    } catch {
+      content.innerHTML = '<div class="empty">Could not reach /api/usage.</div>';
+      return;
+    }
+    if (res.status === 401) {
+      localStorage.removeItem(KEY_STORAGE);
+      gate.classList.remove("hide");
+      dash.classList.add("hide");
+      gateErr.textContent = "Wrong key.";
+      gateErr.style.display = "block";
+      return;
+    }
+    const data = await res.json();
+    if (!res.ok) {
+      content.innerHTML = `<div class="empty">${data.error || "Something went wrong"}${data.message ? ": " + data.message : ""}</div>`;
+      return;
+    }
+    if (!data.configured) {
+      content.innerHTML = '<div class="empty">Redis isn\'t configured yet (KV_REST_API_URL / KV_REST_API_TOKEN). No usage data to show.</div>';
+      return;
+    }
+    render(data, days);
+  }
+
+  function render(data, days) {
+    rangeLabel.textContent = `Last ${days} days · UTC`;
+    const maxReq = Math.max(1, ...data.daily.map((d) => d.requests));
+
+    const cards = `
+      <div class="cards">
+        <div class="card"><div class="num">${fmt(data.totals.requests)}</div><div class="label">Requests</div></div>
+        <div class="card"><div class="num">${fmt(data.totals.input_tokens)}</div><div class="label">Input tokens</div></div>
+        <div class="card"><div class="num">${fmt(data.totals.output_tokens)}</div><div class="label">Output tokens</div></div>
+        <div class="card"><div class="num">${fmt(data.totals.input_tokens + data.totals.output_tokens)}</div><div class="label">Total tokens</div></div>
+      </div>`;
+
+    const dailyRows = data.daily
+      .filter((d) => d.requests > 0 || d.input_tokens > 0)
+      .map((d) => `
+        <div class="bar-row">
+          <div class="d">${d.date.slice(5)}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(d.requests / maxReq) * 100}%"></div></div>
+          <div class="v">${fmt(d.requests)} req</div>
+        </div>`)
+      .join("") || '<div class="empty">No requests in this window.</div>';
+
+    const modeRows = data.modeTotals
+      .filter((m) => m.requests > 0)
+      .map((m) => `<tr><td>${m.mode}</td><td>${fmt(m.requests)}</td></tr>`)
+      .join("") || '<tr><td colspan="2" class="empty">No requests yet.</td></tr>';
+
+    const recentRows = data.recent
+      .map((r) => `<tr><td>${new Date(r.ts).toLocaleString()}</td><td>${r.mode}</td><td>${fmt(r.input)}</td><td>${fmt(r.output)}</td></tr>`)
+      .join("") || '<tr><td colspan="4" class="empty">No requests yet.</td></tr>';
+
+    content.innerHTML = `
+      ${cards}
+      <section>
+        <h2>Requests per day</h2>
+        ${dailyRows}
+      </section>
+      <section>
+        <h2>By mode (this window)</h2>
+        <table><thead><tr><th>Mode</th><th>Requests</th></tr></thead><tbody>${modeRows}</tbody></table>
+      </section>
+      <section>
+        <h2>Most recent (up to 50)</h2>
+        <table><thead><tr><th>Time</th><th>Mode</th><th>Input</th><th>Output</th></tr></thead><tbody>${recentRows}</tbody></table>
+      </section>`;
+  }
+
+  function showDash(key) {
+    gate.classList.add("hide");
+    dash.classList.remove("hide");
+    load(key, Number(rangeSel.value));
+  }
+
+  document.getElementById("gateBtn").addEventListener("click", () => {
+    const key = keyInput.value.trim();
+    if (!key) return;
+    localStorage.setItem(KEY_STORAGE, key);
+    gateErr.style.display = "none";
+    showDash(key);
+  });
+  keyInput.addEventListener("keydown", (e) => { if (e.key === "Enter") document.getElementById("gateBtn").click(); });
+
+  document.getElementById("refreshBtn").addEventListener("click", () => {
+    load(localStorage.getItem(KEY_STORAGE), Number(rangeSel.value));
+  });
+  rangeSel.addEventListener("change", () => {
+    load(localStorage.getItem(KEY_STORAGE), Number(rangeSel.value));
+  });
+
+  const stored = localStorage.getItem(KEY_STORAGE);
+  if (stored) showDash(stored);
+})();
+</script>
+</body>
+</html>
