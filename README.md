@@ -145,6 +145,17 @@ The model-facing logic is adapted from [santifer/career-ops](https://github.com/
 
 The model ID lives in one place — `MODEL` in `api/evaluate.js`. Anthropic retires model snapshots on a published schedule; when `claude-sonnet-5-5` is deprecated, check the [model deprecations page](https://platform.claude.com/docs/en/about-claude/model-deprecations) for the replacement, update `MODEL`, and re-run `npm test` plus a manual check against each of the 7 modes before deploying.
 
+## Usage dashboard
+
+`api/evaluate.js` logs every request's token counts to Redis (Upstash, via plain `fetch` — no SDK) and `public/admin/usage.html` renders them: requests/tokens per day, a breakdown by mode, and the 50 most recent calls.
+
+Setup (optional — everything else works with zero setup if you skip this):
+1. Vercel project → Storage/Integrations → add the free **Upstash** Redis integration (or create a DB directly at [console.upstash.com](https://console.upstash.com) and copy its REST URL/token).
+2. Set `ADMIN_DASHBOARD_KEY` in the project's environment variables — any long random string; this is the dashboard's password, unrelated to the Anthropic key.
+3. Visit `/admin/usage.html`, enter the key once (it's kept in `localStorage`).
+
+No Redis configured → logging is a silent no-op and the dashboard just says so; `evaluate.js` is unaffected either way.
+
 ## Known limitations
 
 - `Access-Control-Allow-Origin: *` — the API accepts requests from any origin. Acceptable for a single-user personal tool; would need an origin allowlist or auth before sharing more broadly.
