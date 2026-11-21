@@ -158,8 +158,8 @@ No Redis configured → logging is a silent no-op and the dashboard just says so
 
 ## Known limitations
 
-- `Access-Control-Allow-Origin: *` — the API accepts requests from any origin. Acceptable for a single-user personal tool; would need an origin allowlist or auth before sharing more broadly.
-- No auth — anyone with the URL can call the API and spend your Anthropic credits. The 50,000-character content cap limits damage per request but doesn't rate-limit.
+- `api/evaluate.js` checks `Origin`/`Referer` against an allowlist (production, this project's own Vercel previews, localhost) and rejects browser requests from elsewhere. Non-browser clients (curl, scripts) send no `Origin` header, so the check can't stop them — they fall through to the rate limit below instead.
+- No auth beyond that — it's a per-IP rate limit (20 requests / 10 minutes), not a key or login. Someone who discovers the URL and spreads requests across IPs could still spend your Anthropic credits; the 50,000-character content cap bounds damage per request, and your Anthropic spend limit is the real backstop.
 - `vercel.json` sets `maxDuration: 60` for the API function. **This requires a Vercel Pro plan** — on the Hobby plan, functions are capped at 10s regardless of this setting, which can cause timeouts on longer CV rewrites. Either upgrade the plan or lower expectations for `pdf`/`evaluate` mode on Hobby.
 - No database — all evaluation history lives in the browser's `localStorage` and doesn't sync across devices. Use Export backup on Home to move it.
 - Some actions are paused behind feature flags (`public/js/features.js`): scanning for roles, the CV archetype choice, the full CV preview and deleting a role. They stay visible with a "Being rebuilt" note.

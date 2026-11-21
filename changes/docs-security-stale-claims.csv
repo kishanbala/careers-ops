@@ -1,0 +1,1 @@
+2026-11-21,audit,,Builder,Claude Code (cloud session),claude-sonnet-5,,0,0,0,0,docs-only fix: README/SECURITY.md wrongly claimed no origin check / no rate limit; both have existed since Phase 0S
